@@ -8,22 +8,24 @@
   <meta name="renderer" content="webkit">
 
   
-  <title>git clone 代理与加速 | Baader-Meinhof</title>
+  <title>git 代理配置与 git clone 下载加速 | Serendipity-Eureka</title>
 
   <link rel="shortcut icon" href="/images/favicon.png">
-  <link rel="alternate" href="/atom.xml" title="Baader-Meinhof">
-  <meta name="description" content="解决 Github 下载慢的问题。 1git  clone">
+  <link rel="alternate" href="/atom.xml" title="Serendipity-Eureka">
+  <meta name="description" content="Topics: 解决 git clone 下载、GitHub 网页打开慢的问题；以及讨论一下git中如何配置代理服务器。 Notes: 此文将介绍两种方法解决墙内 git clone 下载慢的问题。其中方法一在本文发出时（2020-02-26）测试无效，但去年（2019年）测试有效；方法二需要使用 ssr 或 v2ray 代理，请尝试前确定您可以在使用代理的情况下打开谷歌搜索。 1. 修改 hos">
 <meta property="og:type" content="article">
-<meta property="og:title" content="git clone 代理与加速">
+<meta property="og:title" content="git 代理配置与 git clone 下载加速">
 <meta property="og:url" content="https://ingingx.github.io/git-clone-%E4%BB%A3%E7%90%86%E4%B8%8E%E5%8A%A0%E9%80%9F/index.html">
-<meta property="og:site_name" content="Baader-Meinhof">
-<meta property="og:description" content="解决 Github 下载慢的问题。 1git  clone">
+<meta property="og:site_name" content="Serendipity-Eureka">
+<meta property="og:description" content="Topics: 解决 git clone 下载、GitHub 网页打开慢的问题；以及讨论一下git中如何配置代理服务器。 Notes: 此文将介绍两种方法解决墙内 git clone 下载慢的问题。其中方法一在本文发出时（2020-02-26）测试无效，但去年（2019年）测试有效；方法二需要使用 ssr 或 v2ray 代理，请尝试前确定您可以在使用代理的情况下打开谷歌搜索。 1. 修改 hos">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ingingx.github.io/image/gitConfig.png">
 <meta property="article:published_time" content="2020-02-26T12:52:27.000Z">
-<meta property="article:modified_time" content="2020-02-26T12:54:56.323Z">
+<meta property="article:modified_time" content="2020-03-01T10:14:04.980Z">
 <meta property="article:author" content="Yingpeng MA">
 <meta property="article:tag" content="Git">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ingingx.github.io/image/gitConfig.png">
 
   <meta name="format-detection" content="telephone=no,email=no">
   <meta name="theme-color" content="#9C27B0">
@@ -31,17 +33,17 @@
   <meta name="keywords" content=",Git">
 
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="application-name" content="Baader-Meinhof">
+  <meta name="application-name" content="Serendipity-Eureka">
   <meta name="msapplication-starturl" content="https://ingingx.github.io/git-clone-%E4%BB%A3%E7%90%86%E4%B8%8E%E5%8A%A0%E9%80%9F/">
   <meta name="msapplication-navbutton-color" content="#9C27B0">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="Baader-Meinhof">
+  <meta name="apple-mobile-web-app-title" content="Serendipity-Eureka">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <link rel="apple-touch-icon" href="/images/favicon.png">
 
   
     <meta property="article:published_time" content="Wed Feb 26 2020 20:52:27 GMT+0800">
-    <meta property="article:modified_time" content="Wed Feb 26 2020 20:54:56 GMT+0800">
+    <meta property="article:modified_time" content="Sun Mar 01 2020 18:14:04 GMT+0800">
   
 
   
@@ -59,13 +61,14 @@
 <link rel="stylesheet" href="/css/mdui.css">
 <link rel="stylesheet" href="/css/style.css">
 
-<meta name="generator" content="Hexo 4.2.0"></head>
+<meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="Serendipity-Eureka" type="application/atom+xml">
+</head>
 <body class="mdui-appbar-with-toolbar mdui-drawer-body-left mdui-theme-primary-indigo mdui-theme-accent-pink">
   <script>var a=localStorage.getItem("mdui-theme-layout-dark");if(a){document.getElementsByTagName("body")[0].className+=" mdui-theme-layout-dark"};</script>
   <header id="header" class="mdui-appbar mdui-appbar-fixed mdui-appbar-scroll-hide mdui-appbar-inset">
   <div class="mdui-toolbar mdui-color-theme">
     <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#sidebar', swipe: true}"><i class="mdui-icon material-icons">menu</i></a>
-    <a href="/" class="mdui-typo-headline">Baader-Meinhof</a>
+    <a href="/" class="mdui-typo-headline">Serendipity-Eureka</a>
     <div class="mdui-toolbar-spacer"></div>
     <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-dialog="{target: '#search'}" mdui-tooltip="{content: 'Search'}"><i class="mdui-icon material-icons">search</i></a>
     <a href="/atom.xml" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'RSS'}"><i class="mdui-icon material-icons">rss_feed</i></a>
@@ -109,7 +112,7 @@
       </div>
       <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
         
-        <a class="mdui-ripple sidebar_archives-link" href="/archives/2020/02/">February 2020<span class="mdui-ripple sidebar_archives-count">3</span></a>
+        <a class="mdui-ripple sidebar_archives-link" href="/archives/2020/03/">March 2020<span class="mdui-ripple sidebar_archives-count">2</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2020/02/">February 2020<span class="mdui-ripple sidebar_archives-count">3</span></a>
         
       </div>
     </div>
@@ -121,7 +124,7 @@
       </div>
       <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
         
-        <a class="mdui-ripple sidebar_archives-link" href="/categories/Tech-Skills/">Tech Skills<span class="mdui-ripple sidebar_archives-count">2</span></a>
+        <a class="mdui-ripple sidebar_archives-link" href="/categories/Research/">Research<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/categories/Study/">Study<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/categories/Tech-Skills/">Tech Skills<span class="mdui-ripple sidebar_archives-count">3</span></a>
         
       </div>
     </div>
@@ -133,7 +136,7 @@
       </div>
       <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
         
-        <a class="mdui-ripple sidebar_archives-link" href="/tags/Git/" rel="tag">Git<span class="mdui-ripple sidebar_archives-count">2</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/Rookies/" rel="tag">Rookies<span class="mdui-ripple sidebar_archives-count">1</span></a>
+        <a class="mdui-ripple sidebar_archives-link" href="/tags/English/" rel="tag">English<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/Germany/" rel="tag">Germany<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/Git/" rel="tag">Git<span class="mdui-ripple sidebar_archives-count">2</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/Rookies/" rel="tag">Rookies<span class="mdui-ripple sidebar_archives-count">2</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/University/" rel="tag">University<span class="mdui-ripple sidebar_archives-count">1</span></a>
         
       </div>
     </div>
@@ -177,10 +180,10 @@
   <style>#main article .mdui-card-content .center-block{display:block!important;margin-right:auto!important;margin-left:auto!important}</style>
   <article class="mdui-card mdui-m-b-5">
     <header class="mdui-card-media">
-      <img src="/images/random/material-12.png" style="max-height: 240px;">
+      <img src="/images/random/material-9.png" style="max-height: 240px;">
       <div class="mdui-card-media-covered">
         <div class="mdui-card-primary">
-          <div class="mdui-card-primary-title">git clone 代理与加速</div>
+          <div class="mdui-card-primary-title">git 代理配置与 git clone 下载加速</div>
           <div class="mdui-card-primary-subtitle"><i class="iconfont">&#xe697;</i> 2020-02-26 / <i class="iconfont">&#xe601;</i> Yingpeng MA</div>
         </div>
       </div>
@@ -202,10 +205,10 @@
           <button class="mdui-btn mdui-btn-icon mdui-text-color-white" mdui-menu="{target: '#share_menu', align: 'right'}"><i class="mdui-icon material-icons">share</i></button>
           <ul class="mdui-menu" id="share_menu">
             <li class="mdui-menu-item">
-              <a href="http://service.weibo.com/share/share.php?appkey=&title=git clone 代理与加速&url=https://ingingx.github.io/git-clone-%E4%BB%A3%E7%90%86%E4%B8%8E%E5%8A%A0%E9%80%9F/&pic=https://ingingx.github.io/images/favicon.png&searchPic=false&style=simple" target="_blank" class="mdui-ripple">Share to Weibo</a>
+              <a href="http://service.weibo.com/share/share.php?appkey=&title=git 代理配置与 git clone 下载加速&url=https://ingingx.github.io/git-clone-%E4%BB%A3%E7%90%86%E4%B8%8E%E5%8A%A0%E9%80%9F/&pic=https://ingingx.github.io/images/favicon.png&searchPic=false&style=simple" target="_blank" class="mdui-ripple">Share to Weibo</a>
             </li>
             <li class="mdui-menu-item">
-              <a href="https://twitter.com/intent/tweet?text=git clone 代理与加速&url=https://ingingx.github.io/git-clone-%E4%BB%A3%E7%90%86%E4%B8%8E%E5%8A%A0%E9%80%9F/&via=Yingpeng MA" target="_blank" class="mdui-ripple">Share to Twitter</a>
+              <a href="https://twitter.com/intent/tweet?text=git 代理配置与 git clone 下载加速&url=https://ingingx.github.io/git-clone-%E4%BB%A3%E7%90%86%E4%B8%8E%E5%8A%A0%E9%80%9F/&via=Yingpeng MA" target="_blank" class="mdui-ripple">Share to Twitter</a>
             </li>
             <li class="mdui-menu-item">
               <a href="https://www.facebook.com/sharer/sharer.php?u=https://ingingx.github.io/git-clone-%E4%BB%A3%E7%90%86%E4%B8%8E%E5%8A%A0%E9%80%9F/" target="_blank" class="mdui-ripple">Share to Facebook</a>
@@ -214,21 +217,61 @@
               <a href="https://plus.google.com/share?url=https://ingingx.github.io/git-clone-%E4%BB%A3%E7%90%86%E4%B8%8E%E5%8A%A0%E9%80%9F/" target="_blank" class="mdui-ripple">Share to Google+</a>
             </li>
             <li class="mdui-menu-item">
-              <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://ingingx.github.io/git-clone-%E4%BB%A3%E7%90%86%E4%B8%8E%E5%8A%A0%E9%80%9F/&title=git clone 代理与加速" target="_blank" class="mdui-ripple">Share to LinkedIn</a>
+              <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://ingingx.github.io/git-clone-%E4%BB%A3%E7%90%86%E4%B8%8E%E5%8A%A0%E9%80%9F/&title=git 代理配置与 git clone 下载加速" target="_blank" class="mdui-ripple">Share to LinkedIn</a>
             </li>
             <li class="mdui-menu-item">
-              <a href="http://connect.qq.com/widget/shareqq/index.html?site=Baader-Meinhof&title=git clone 代理与加速&summary=&pics=https://ingingx.github.io/images/favicon.png&url=https://ingingx.github.io/git-clone-%E4%BB%A3%E7%90%86%E4%B8%8E%E5%8A%A0%E9%80%9F/" target="_blank" class="mdui-ripple">Share to QQ</a>
+              <a href="http://connect.qq.com/widget/shareqq/index.html?site=Serendipity-Eureka&title=git 代理配置与 git clone 下载加速&summary=&pics=https://ingingx.github.io/images/favicon.png&url=https://ingingx.github.io/git-clone-%E4%BB%A3%E7%90%86%E4%B8%8E%E5%8A%A0%E9%80%9F/" target="_blank" class="mdui-ripple">Share to QQ</a>
             </li>
             <li class="mdui-menu-item">
-              <a href="https://telegram.me/share/url?url=https://ingingx.github.io/git-clone-%E4%BB%A3%E7%90%86%E4%B8%8E%E5%8A%A0%E9%80%9F/&text=git clone 代理与加速" target="_blank" class="mdui-ripple">Share to Telegram</a>
+              <a href="https://telegram.me/share/url?url=https://ingingx.github.io/git-clone-%E4%BB%A3%E7%90%86%E4%B8%8E%E5%8A%A0%E9%80%9F/&text=git 代理配置与 git clone 下载加速" target="_blank" class="mdui-ripple">Share to Telegram</a>
             </li>
           </ul>
         
       </div>
     </header>
     <div class="mdui-card-content mdui-typo">
-      <p>解决 Github 下载慢的问题。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git  <span class="built_in">clone</span></span><br></pre></td></tr></table></figure>
+      <p>Topics: 解决 <code>git clone</code> 下载、GitHub 网页打开慢的问题；以及讨论一下git中如何配置代理服务器。</p>
+<p>Notes: 此文将介绍两种方法解决墙内 <code>git clone</code> 下载慢的问题。其中方法一在本文发出时（2020-02-26）测试无效，但去年（2019年）测试有效；方法二需要使用 ssr 或 v2ray 代理，请尝试前确定您可以在使用代理的情况下打开<a href="www.google.com">谷歌搜索</a>。</p>
+<h2 id="1-修改-host-文件以加速-git-clone-和-GitHub-访问"><a href="#1-修改-host-文件以加速-git-clone-和-GitHub-访问" class="headerlink" title="1. 修改 host 文件以加速 git clone 和 GitHub 访问"></a>1. 修改 <code>host</code> 文件以加速 <code>git clone</code> 和 GitHub 访问</h2><h3 id="steps"><a href="#steps" class="headerlink" title="steps:"></a>steps:</h3><p>在 <a href="https://www.ipip.net/ip.html" target="_blank" rel="noopener">ip 查询网页</a> 查询以下几个网址的当前 IP 地址：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">github.global.ssl.fastly.Net</span><br><span class="line">github.com</span><br></pre></td></tr></table></figure>
+
+<p>其中，第一个在 GitHub 上 clone 时的下载服务器地址，第二个是 GitHub 官网地址。</p>
+<p>由于本地 IP 不同，所以每个人查询到的 GitHub 访问 IP 也不同。我查询出来是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">199.59.148.140</span><br><span class="line">13.229.188.59</span><br></pre></td></tr></table></figure>
+<p>记录下这几个 IP， 去 host 文件，右键使用记事本打开：C:\Windows\System32\drivers\etc\hosts</p>
+<p>在 host 文件末尾添加：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">github.global.ssl.fastly.Net 199.59.148.140</span><br><span class="line">github.com 13.229.188.59</span><br></pre></td></tr></table></figure>
+<p>最后使用命令提示符刷新 DNS 缓存，让计算机每次访问以上两个网址的时候都是用我们设定的 IP 访问 （这样理论上就可以避免被墙）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ipconfig /flushdns</span><br></pre></td></tr></table></figure>
+
+<h3 id="notes"><a href="#notes" class="headerlink" title="notes:"></a>notes:</h3><p>之前博主也是使用这种办法加速 <code>git clone</code>，但是最近似乎墙更高了，在两台电脑上测试了多次都无法加速。如果有大佬知道其中缘由或者可以改进还望不吝赐教。</p>
+<h2 id="2-通过修改-Git-本身的配置以加速-git-clone"><a href="#2-通过修改-Git-本身的配置以加速-git-clone" class="headerlink" title="2. 通过修改 Git 本身的配置以加速 git clone"></a>2. 通过修改 Git 本身的配置以加速 <code>git clone</code></h2><h3 id="steps-1"><a href="#steps-1" class="headerlink" title="steps:"></a>steps:</h3><p>连接你的 vpn，设置为“全局代理模式”。可以通过尝试打开<a href="www.google.com">谷歌搜索</a>来测试是否连接成功。</p>
+<p>找到 vpn 的本地代理端口（一般是1080，但是也可能是其他的），我这里使用的是1080。</p>
+<p>打开命令提示符，查看 Git 的的配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config -l</span><br></pre></td></tr></table></figure>
+
+<p>确认你的配置列表里没有 <code>https.proxy</code>，<code>http.proxy</code> 等带有 <code>proxy</code> 的配置。如果有，请参照本文下一部分（3）中的“取消代理设置”将之取消。</p>
+<p>如果你使用 ssr 代理（socks5 协议），则输入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global http.proxy socks5://127.0.0.1:1080</span><br><span class="line">$ git config --global https.proxy socks5://127.0.0.1:1080</span><br></pre></td></tr></table></figure>
+
+<p>配置所有 Git 的网络访问都通过代理完成；</p>
+<p>如果你使用 v2ray 代理（http/https 协议），则输入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global http.proxy http://127.0.0.1:1080</span><br><span class="line">$ git config --global https.proxy https://127.0.0.1:1080</span><br></pre></td></tr></table></figure>
+
+<h3 id="notes-1"><a href="#notes-1" class="headerlink" title="notes:"></a>notes:</h3><p>这个方法需要使用 ssr 或 v2ray 等 vpn 代理，这通常需要付费租用代理服务器或者购买节点。但好处是比较稳定，只要代理没有问题，Git 就可以满带宽下载（unlike 方法1，花钱才能变强）。博主目前使用了3个月，没有出现任何问题。</p>
+<h2 id="3-Git-的代理配置和一些思考"><a href="#3-Git-的代理配置和一些思考" class="headerlink" title="3. Git 的代理配置和一些思考"></a>3. Git 的代理配置和一些思考</h2><p>在命令提示符，可以查看 Git 的的配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config -l</span><br></pre></td></tr></table></figure>
+
+<p><img src="/image/gitConfig.png" alt=""></p>
+<p>其中，最后两行就是我们刚设置的代理。</p>
+<p>如果想要恢复某个设置为初始值，可以这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global --<span class="built_in">unset</span> [configName]</span><br></pre></td></tr></table></figure>
+
+<p>比如，想要取消刚才设置的代理：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global --<span class="built_in">unset</span> http.proxy</span><br><span class="line">$ git config --global --<span class="built_in">unset</span> https.proxy</span><br></pre></td></tr></table></figure>
+
+<p>看一下 <code>git config -l</code>，是不是就没有代理的那个变量了？</p>
+<h3 id="notes-2"><a href="#notes-2" class="headerlink" title="notes:"></a>notes:</h3><p>Git 是强大的工具，想用好它绝不是几个命令就ok的。通常使用的命令大约有10-20个，要精通则需要熟练至少50个相关的命令以及搞懂各个部分的功能和组成结构。</p>
 
       <blockquote class="mdui-m-t-5">
         
@@ -237,6 +280,8 @@
       
     </div>
     <footer class="mdui-card-actions">
+      
+        <a class="mdui-ripple article_categories-link" href="/categories/Tech-Skills/">Tech Skills</a>
       
       
         <a class="mdui-ripple article_tags-link" href="/tags/Git/" rel="tag">Git</a>
@@ -253,6 +298,11 @@
 
   <nav id="paginator">
     
+      <a rel="prev" class="extend prev" href="/German-Computer-Vision-Research-Groups-and-Companies/">
+        <button aria-label="prev" class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-btn-icon mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons">arrow_back</i></button>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Prev
+      </a>
+    
     <div class="spacer"></div>
     
       <a rel="next" class="extend next" href="/Git-Installation-and-Badic-Git-Comments/">
@@ -264,6 +314,13 @@
 
 
 
+
+  <div style="position: fixed !important; right: 16px; top: 30%;">
+    <button class="mdui-fab mdui-fab-mini mdui-ripple" mdui-menu="{target: '#toc'}"><i class="mdui-icon material-icons">format_list_numbered</i></button>
+    <ul class="mdui-menu" id="toc">
+      <li class="mdui-menu-item" disabled><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-修改-host-文件以加速-git-clone-和-GitHub-访问"><span class="toc-number">1.</span> <span class="toc-text">1. 修改 host 文件以加速 git clone 和 GitHub 访问</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#steps"><span class="toc-number">1.1.</span> <span class="toc-text">steps:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#notes"><span class="toc-number">1.2.</span> <span class="toc-text">notes:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-通过修改-Git-本身的配置以加速-git-clone"><span class="toc-number">2.</span> <span class="toc-text">2. 通过修改 Git 本身的配置以加速 git clone</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#steps-1"><span class="toc-number">2.1.</span> <span class="toc-text">steps:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#notes-1"><span class="toc-number">2.2.</span> <span class="toc-text">notes:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Git-的代理配置和一些思考"><span class="toc-number">3.</span> <span class="toc-text">3. Git 的代理配置和一些思考</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#notes-2"><span class="toc-number">3.1.</span> <span class="toc-text">notes:</span></a></li></ol></li></ol></li>
+    </ul>
+  </div>
 </main>
   <footer id="footer" class="mdui-m-t-5 mdui-p-y-3 mdui-color-theme">
   <div class="mdui-p-y-0 mdui-text-center">
