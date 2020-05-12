@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>git 代理配置与 git clone 下载加速 | Serendipity-Eureka -- IngingX Notesbook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Topics: 解决 git clone 下载、GitHub 网页打开慢的问题；以及讨论一下git中如何配置代理服务器。 Notes: 此文将介绍两种方法解决墙内 git clone 下载慢的问题。其中方法一在本文发出时（2020-02-26）测试无效，但去年（2019年）测试有效；方法二需要使用 ssr 或 v2ray 代理，请尝试前确定您可以在使用代理的情况下打开谷歌搜索。 1. 修改 hos">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git 代理配置与 git clone 下载加速">
+<meta property="og:url" content="https://ingingx.github.io/git-clone-%E4%BB%A3%E7%90%86%E4%B8%8E%E5%8A%A0%E9%80%9F/index.html">
+<meta property="og:site_name" content="Serendipity-Eureka -- IngingX Notesbook">
+<meta property="og:description" content="Topics: 解决 git clone 下载、GitHub 网页打开慢的问题；以及讨论一下git中如何配置代理服务器。 Notes: 此文将介绍两种方法解决墙内 git clone 下载慢的问题。其中方法一在本文发出时（2020-02-26）测试无效，但去年（2019年）测试有效；方法二需要使用 ssr 或 v2ray 代理，请尝试前确定您可以在使用代理的情况下打开谷歌搜索。 1. 修改 hos">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ingingx.github.io/image/gitConfig.png">
+<meta property="article:published_time" content="2020-02-26T12:52:27.000Z">
+<meta property="article:modified_time" content="2020-05-12T08:09:47.565Z">
+<meta property="article:author" content="IngingX">
+<meta property="article:tag" content="Git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ingingx.github.io/image/gitConfig.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Serendipity-Eureka -- IngingX Notesbook" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/tocas.css">
+
+  
+<link rel="stylesheet" href="/css/animate.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <style type="text/css">
+    a.title-link:hover{
+        color: #34b2db !important;
+    }
+
+    a.title-link:active{
+        color: #2075c1 !important;
+    }
+
+    #menu-color-id{
+        background : #f7f7f7;
+    }
+
+    #menu-color-id a{
+        color: #5a5a5a;
+    }
+  </style>
+  
+<script src="/js/tocas.js"></script>
+
+  
+
+<meta name="generator" content="Hexo 4.2.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<body>
+<!-- navigation -->
+
+<div class="ts fluid basic link big menu" id="menu-color-id">
+
+    <!-- ejs : align to post page or index page -->
+        
+            <div class="ts very narrow container">
+        
+
+        
+            <a class="item" href="/">Home</a>
+        
+            <a class="item" href="/archives">Archives</a>
+        
+    </div>
+</div>
+<!-- the end of navigation -->
+
+<!-- big bang title -->
+<div class="ts padded horizontally fitted fluid slate" style="background-color: #f7f7f7;">
+    <!-- ejs : align to post page or index page -->
+    
+        <div class="ts very narrow container">
+    
+        <!-- Title -->
+        <h1 class="ts eleven wide column header be-center-h1">
+            <span style="color: #404040;" id="big-title">Serendipity-Eureka -- IngingX Notesbook</span>
+            <div class="sub header" id="slogan-bar" style=" margin-top: 15px; color: #404040;"></div>
+        </h1>
+        <!-- the end of title -->
+    </div>
+</div>
+<!-- the end of big bang title -->
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+
+<!-- main section -->
+<div class="ts text container">
+        <!-- left section -->
+        <div class="column" style=" padding: 35px; ">
+            <!-- Articles -->
+                
+                <h1 class="ts header">
+                    <span style="color: #333;">git 代理配置与 git clone 下载加速</span>
+                    <div class="sub header" style="color: #808080;">Publish: 2020/2/26 
+                     &nbsp;&nbsp;
+                        <ul class="unstyled radius-tag -list" itemprop="keywords"><li class="unstyled radius-tag -list-item"><a class="unstyled radius-tag -list-link" href="/tags/Git/" rel="tag">Git</a></li></ul>
+                    
+                    </div>
+                </h1>
+
+                <p>Topics: 解决 <code>git clone</code> 下载、GitHub 网页打开慢的问题；以及讨论一下git中如何配置代理服务器。</p>
+<p>Notes: 此文将介绍两种方法解决墙内 <code>git clone</code> 下载慢的问题。其中方法一在本文发出时（2020-02-26）测试无效，但去年（2019年）测试有效；方法二需要使用 ssr 或 v2ray 代理，请尝试前确定您可以在使用代理的情况下打开<a href="www.google.com">谷歌搜索</a>。</p>
+<h2 id="1-修改-host-文件以加速-git-clone-和-GitHub-访问"><a href="#1-修改-host-文件以加速-git-clone-和-GitHub-访问" class="headerlink" title="1. 修改 host 文件以加速 git clone 和 GitHub 访问"></a>1. 修改 <code>host</code> 文件以加速 <code>git clone</code> 和 GitHub 访问</h2><h3 id="steps"><a href="#steps" class="headerlink" title="steps:"></a>steps:</h3><p>在 <a href="https://www.ipip.net/ip.html" target="_blank" rel="noopener">ip 查询网页</a> 查询以下几个网址的当前 IP 地址：</p>
+<pre><code>github.global.ssl.fastly.Net
+github.com</code></pre><p>其中，第一个在 GitHub 上 clone 时的下载服务器地址，第二个是 GitHub 官网地址。</p>
+<p>由于本地 IP 不同，所以每个人查询到的 GitHub 访问 IP 也不同。我查询出来是：</p>
+<pre><code>199.59.148.140
+13.229.188.59</code></pre><p>记录下这几个 IP， 去 host 文件，右键使用记事本打开：C:\Windows\System32\drivers\etc\hosts</p>
+<p>在 host 文件末尾添加：</p>
+<pre><code>github.global.ssl.fastly.Net 199.59.148.140
+github.com 13.229.188.59</code></pre><p>最后使用命令提示符刷新 DNS 缓存，让计算机每次访问以上两个网址的时候都是用我们设定的 IP 访问 （这样理论上就可以避免被墙）：</p>
+<pre class=" language-bash"><code class="language-bash">$ ipconfig /flushdns</code></pre>
+<h3 id="notes"><a href="#notes" class="headerlink" title="notes:"></a>notes:</h3><p>之前博主也是使用这种办法加速 <code>git clone</code>，但是最近似乎墙更高了，在两台电脑上测试了多次都无法加速。如果有大佬知道其中缘由或者可以改进还望不吝赐教。</p>
+<h2 id="2-通过修改-Git-本身的配置以加速-git-clone"><a href="#2-通过修改-Git-本身的配置以加速-git-clone" class="headerlink" title="2. 通过修改 Git 本身的配置以加速 git clone"></a>2. 通过修改 Git 本身的配置以加速 <code>git clone</code></h2><h3 id="steps-1"><a href="#steps-1" class="headerlink" title="steps:"></a>steps:</h3><p>连接你的 vpn，设置为“全局代理模式”。可以通过尝试打开<a href="www.google.com">谷歌搜索</a>来测试是否连接成功。</p>
+<p>找到 vpn 的本地代理端口（一般是1080，但是也可能是其他的），我这里使用的是1080。</p>
+<p>打开命令提示符，查看 Git 的的配置：</p>
+<pre class=" language-bash"><code class="language-bash">$ <span class="token function">git</span> config -l</code></pre>
+<p>确认你的配置列表里没有 <code>https.proxy</code>，<code>http.proxy</code> 等带有 <code>proxy</code> 的配置。如果有，请参照本文下一部分（3）中的“取消代理设置”将之取消。</p>
+<p>如果你使用 ssr 代理（socks5 协议），则输入：</p>
+<pre class=" language-bash"><code class="language-bash">$ <span class="token function">git</span> config --global http.proxy socks5://127.0.0.1:1080
+$ <span class="token function">git</span> config --global https.proxy socks5://127.0.0.1:1080</code></pre>
+<p>配置所有 Git 的网络访问都通过代理完成；</p>
+<p>如果你使用 v2ray 代理（http/https 协议），则输入：</p>
+<pre class=" language-bash"><code class="language-bash">$ <span class="token function">git</span> config --global http.proxy http://127.0.0.1:1080
+$ <span class="token function">git</span> config --global https.proxy https://127.0.0.1:1080</code></pre>
+<h3 id="notes-1"><a href="#notes-1" class="headerlink" title="notes:"></a>notes:</h3><p>这个方法需要使用 ssr 或 v2ray 等 vpn 代理，这通常需要付费租用代理服务器或者购买节点。但好处是比较稳定，只要代理没有问题，Git 就可以满带宽下载（unlike 方法1，花钱才能变强）。博主目前使用了3个月，没有出现任何问题。</p>
+<h2 id="3-Git-的代理配置和一些思考"><a href="#3-Git-的代理配置和一些思考" class="headerlink" title="3. Git 的代理配置和一些思考"></a>3. Git 的代理配置和一些思考</h2><p>在命令提示符，可以查看 Git 的的配置：</p>
+<pre class=" language-bash"><code class="language-bash">$ <span class="token function">git</span> config -l</code></pre>
+<p><img src="/image/gitConfig.png" alt=""></p>
+<p>其中，最后两行就是我们刚设置的代理。</p>
+<p>如果想要恢复某个设置为初始值，可以这样：</p>
+<pre class=" language-bash"><code class="language-bash">$ <span class="token function">git</span> config --global --unset <span class="token punctuation">[</span>configName<span class="token punctuation">]</span></code></pre>
+<p>比如，想要取消刚才设置的代理：</p>
+<pre class=" language-bash"><code class="language-bash">$ <span class="token function">git</span> config --global --unset http.proxy
+$ <span class="token function">git</span> config --global --unset https.proxy</code></pre>
+<p>看一下 <code>git config -l</code>，是不是就没有代理的那个变量了？</p>
+<h3 id="notes-2"><a href="#notes-2" class="headerlink" title="notes:"></a>notes:</h3><p>Git 是强大的工具，想用好它绝不是几个命令就ok的。通常使用的命令大约有10-20个，要精通则需要熟练至少50个相关的命令以及搞懂各个部分的功能和组成结构。</p>
+
+            <!-- / the end of articles -->
+        </div>
+        <!-- / left section -->
+        
+        
+
+        <!-- Next Post and Prev Post -->
+        
+        <hr/>
+        <div class="next-prev-post-section">
+            
+                <a href="/%E5%87%A0%E4%B8%AA%E5%8D%95%E8%AF%8D%EF%BC%88%E4%BB%A5%E5%8F%8A%E5%8D%9A%E5%AE%A2%E5%90%8D%E7%9A%84%E7%94%B1%E6%9D%A5%E5%92%8C%E6%84%8F%E4%B9%89-%EF%BC%89/" class="styled-border">
+                    ←
+                    几个单词（以及博客名的由来和意义~）
+                    
+                </a>
+            
+            
+                <a href="/Git-Installation-and-Badic-Git-Comments/" class="styled-border">
+                    
+                    Start with Git
+                    →
+                </a>
+            
+        </div>
+        
+</div>
+<script type="text/javascript">
+    let img = document.getElementsByTagName("img");
+    for(let i = 0; i < img.length; i++){
+        img[i].className += " ts fluid image";
+    }
+</script>
+<!-- / main section -->
+
+<!-- copyright -->
+<div class="ts attached secondary segment">
+    <div class="ts narrow container">
+        <br>
+        <div class="ts large center aligned header">
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">&nbsp;Hexo</a>, Theme designs by <a href="https://github.com/hpcslag" target="_blank" rel="noopener">&nbsp;@hpcslag</a>, Theme modified by <a href="https://github.com/ingingx" target="_blank" rel="noopener">&nbsp;@ingingX</a>.
+            <div class="smaller sub header">
+                Style-Framework <a href="https://tocas-ui.com" target="_blank" rel="noopener">&nbsp;Tocas-UI</a>, designs by <a href="https://github.com/YamiOdymel" target="_blank" rel="noopener">&nbsp;@YamiOldmel</a>, The site started from Feb. 2020.
+            </div>
+        </div>
+        <br>
+    </div>
+</div>
+<!-- / copyright -->
+<script type="text/javascript">
+    
+    const slogans = ["One Student.","一只学生","Marjoring in Communication Engineering.","通信工程专业","Playing with Computer Tech.","摆弄摆弄电脑","Speaking Chinese, English, and German.","会中文、英语和德语","Living in China","住在中国","Coding, Reading, and Observing.","码代码、读书也观察人生"];
+</script>
+
+<script src="/js/script.js"></script>
+
+</body>
+</html>
