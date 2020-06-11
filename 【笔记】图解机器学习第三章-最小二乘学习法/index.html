@@ -136,7 +136,7 @@
                   
                   <span class="post-meta mr-2">
                     <i class="iconfont icon-chart"></i>
-                    1.3k 字
+                    1.1k 字
                   </span>
                 
 
@@ -146,7 +146,7 @@
                       <i class="iconfont icon-clock-fill"></i>
                     
                     
-                    12
+                    10
                      分钟
                   </span>
                 
@@ -189,44 +189,44 @@
             
             <article class="markdown-body">
               <h1 id="第三章-最小二乘学习法"><a href="#第三章-最小二乘学习法" class="headerlink" title="第三章 最小二乘学习法"></a>第三章 最小二乘学习法</h1><h2 id="3-1-最小二乘估计-（Least-Squares-Measure）"><a href="#3-1-最小二乘估计-（Least-Squares-Measure）" class="headerlink" title="3.1 最小二乘估计 （Least Squares Measure）"></a>3.1 最小二乘估计 （Least Squares Measure）</h2><p><strong>模型的输出</strong>： $f_\mathbf{\theta} (\mathbf{x}_i)$，即拟合值；</p>
-<p><strong>训练集的输出</strong>：$\mathbf{y} = {y<em>i}</em>{i=1}^n$，即真值；</p>
+<p><strong>训练集的输出</strong>：$\mathbf{y} = {y_i}$，即真值；</p>
 <p>所以，两者的残差就是：$f_\mathbf{\theta} (\mathbf{x}_i) - \mathbf{y}$；</p>
 <p>取残差的 $l2$ 范数：</p>
-<pre class=" language-hljs math"><code class="language-hljs math">J_&#123;LS&#125;(\mathbf&#123;\theta&#125;) &#x3D; \frac&#123;1&#125;&#123;2&#125;\left \| f_\mathbf&#123;\theta&#125; (\mathbf&#123;x&#125;_i) - \mathbf&#123;y&#125; \right \|^2 &#x3D; \frac&#123;1&#125;&#123;2&#125; \sum_&#123;i&#x3D;1&#125;^n (f_\mathbf&#123;\theta&#125; (\mathbf&#123;x&#125;_i) - y_i)^2</code></pre>
-<p>$J<em>{LS}(\mathbf{\theta})$ 是模型输出 $f</em>\mathbf{\theta} (\mathbf{x}_i)$ 和训练集输出 $\mathbf{y}$ 的 <strong>平方误差</strong>；</p>
+<script type="math/tex; mode=display">
+J_{LS}(\mathbf{\theta}) = \frac{1}{2}\left \| f_\mathbf{\theta} (\mathbf{x}_i) - \mathbf{y} \right \|^2 = \frac{1}{2} \sum_{i=1}^n (f_\mathbf{\theta} (\mathbf{x}_i) - y_i)^2</script><p>表示模型输出 $f_\mathbf{\theta} (\mathbf{x}_i)$ 和 训练集输出 $\mathbf{y} = {y_i}$ 的 <strong>平方误差</strong></p>
 <p>用向量形式表示模型的基函数：</p>
-<pre class=" language-hljs math"><code class="language-hljs math">\mathbf&#123;\Phi&#125; &#x3D; \mathbf&#123;\phi&#125;(\mathbf&#123;x&#125;) &#x3D; \left[ \begin&#123;matrix&#125; \phi_1(\mathbf&#123;x&#125;_1) & \cdots & \phi_b(\mathbf&#123;x&#125;_1) \\  \vdots & \ddots & \vdots \\ \phi_1(\mathbf&#123;x&#125;_n) & \cdots & \phi_b(\mathbf&#123;x&#125;_n) \end&#123;matrix&#125; \right]</code></pre>
-<p>称为 $n \times b$ 阶设计矩阵；</p>
+<script type="math/tex; mode=display">
+\mathbf{\Phi} = \mathbf{\phi}(\mathbf{x}) = \left[ \begin{matrix} \phi_1(\mathbf{x}_1) & \cdots & \phi_b(\mathbf{x}_1) \\  \vdots & \ddots & \vdots \\ \phi_1(\mathbf{x}_n) & \cdots & \phi_b(\mathbf{x}_n) \end{matrix} \right]</script><p>称为 $n \times b$ 阶设计矩阵；</p>
 <p>这样就可以把线性模型的输出表示为：</p>
-<pre class=" language-hljs math"><code class="language-hljs math">\mathbf&#123;f&#125;_\mathbf&#123;\theta&#125; (\mathbf&#123;x&#125;_i) &#x3D; \mathbf&#123;\theta&#125;^\top \mathbf&#123;\phi&#125;(\mathbf&#123;x&#125;) &#x3D; \mathbf&#123;\Phi&#125; \mathbf&#123;\theta&#125;</code></pre>
-<p>则<strong>平方误差</strong> $J_{LS}(\mathbf{\theta})$ 就变形为：</p>
-<pre class=" language-hljs math"><code class="language-hljs math">J_&#123;LS&#125;(\mathbf&#123;\theta&#125;) &#x3D; \frac&#123;1&#125;&#123;2&#125;\left \| \mathbf&#123;\Phi&#125; \mathbf&#123;\theta&#125; - \mathbf&#123;y&#125; \right \|^2</code></pre>
-<p>我们的希望是：<strong>找到一个 $\theta$，使得在这个值下的平方误差最小</strong>；</p>
-<p>用数学语言描述就是：<strong>$J<em>{LS}$ 对 $\theta$ 的偏导 $\nabla</em>\theta J_{LS}$ （梯度） 为 $0$ 的时候的 $\theta$ 满足最小二乘解</strong>，即：</p>
-<pre class=" language-hljs math"><code class="language-hljs math">\nabla_\theta J_&#123;LS&#125; &#x3D; \mathbf&#123;\Phi&#125;^\top \mathbf&#123;\Phi&#125; \mathbf&#123;\theta&#125; - \mathbf&#123;\Phi&#125;^\top \mathbf&#123;y&#125; &#x3D; 0
-\\
-\Downarrow
-\\
-\mathbf&#123;\Phi&#125;^\top \mathbf&#123;\Phi&#125; \mathbf&#123;\theta&#125; &#x3D; \mathbf&#123;\Phi&#125;^\top \mathbf&#123;y&#125;</code></pre>
-<p>这个方程的解 $\mathbf{\theta} = \hat{\mathbf{\theta}}_{LS}$ 就是我们要求的<strong>最小二乘解</strong>：</p>
-<pre class=" language-hljs math"><code class="language-hljs math">\hat&#123;\mathbf&#123;\theta&#125;&#125;_&#123;LS&#125; &#x3D; \mathbf&#123;\Phi&#125;^\dag \mathbf&#123;y&#125;</code></pre>
-<p>其中，$\mathbf{\Phi}^\dag$表示广义逆：$\mathbf{\Phi}^\dag = (\mathbf{\Phi}^\top \mathbf{\Phi})^{-1} \mathbf{\Phi}^\top$。</p>
+<script type="math/tex; mode=display">
+\mathbf{f}_\mathbf{\theta} (\mathbf{x}_i) = \mathbf{\theta}^\top \mathbf{\phi}(\mathbf{x}) = \mathbf{\Phi} \mathbf{\theta}</script><p>则<strong>平方误差</strong> $J_{LS}(\mathbf{\theta})$ 就变形为：</p>
+<script type="math/tex; mode=display">
+J_{LS}(\mathbf{\theta}) = \frac{1}{2}\left \| \mathbf{\Phi} \mathbf{\theta} - \mathbf{y} \right \|^2</script><p>我们的希望是：<strong>找到一个 $\theta$，使得在这个值下的平方误差 $J_{LS}(\mathbf{\theta})$ 最小</strong>；</p>
+<p>用数学语言描述就是：<strong>$J_{LS}(\mathbf{\theta})$  对 $\theta$ 的偏导（梯度）为 $0$ 时候，$\theta$ 满足最小二乘解</strong>，即：</p>
+<script type="math/tex; mode=display">
+\nabla_\theta J_{LS} = \mathbf{\Phi}^\top \mathbf{\Phi} \mathbf{\theta} - \mathbf{\Phi}^\top \mathbf{y} = 0</script><p>变形得到：</p>
+<script type="math/tex; mode=display">
+\mathbf{\Phi}^\top \mathbf{\Phi} \mathbf{\theta} = \mathbf{\Phi}^\top \mathbf{y}</script><p>这个方程的解 $\mathbf{\theta} = \hat{\mathbf{\theta}}_{LS}$ 就是我们要求的<strong>最小二乘解</strong>：</p>
+<script type="math/tex; mode=display">
+\hat{\mathbf{\theta}}_{LS} = \mathbf{\Phi}^\dagger \mathbf{y}</script><p>其中，$\mathbf{\Phi}^\dagger$表示广义逆：$\mathbf{\Phi}^\dagger = (\mathbf{\Phi}^\top \mathbf{\Phi})^{-1} \mathbf{\Phi}^\top$。</p>
 <h2 id="3-2-最小二乘解的性质"><a href="#3-2-最小二乘解的性质" class="headerlink" title="3.2 最小二乘解的性质"></a>3.2 最小二乘解的性质</h2><ul>
-<li><p><strong>奇异值分解</strong> $\mathbf{\Phi} = \sum_{k=1}^{\min(n,b)} \kappa_k \psi_k \varphi_k$，其中 $\kappa_k$ 称为奇异值，总是非负；$\psi_k$ 和 $\varphi_k$ 为左、右奇异向量，都是满足正交性。</p>
-</li>
-<li><p>在MATLAB中可以使用 <code>svd()</code> 函数进行奇异值分解。</p>
-</li>
+<li><strong>奇异值分解</strong> $\mathbf{\Phi} = \sum_{k=1}^{\min(n,b)} \kappa_k \psi_k \varphi_k$</li>
 </ul>
-<p>通过奇异值分解，$\mathbf{\Phi}^\dag$ 就可以表示为：$\mathbf{\Phi}^\dag = \sum_{k=1}^{\min(n,b)} \kappa_k^\dag \varphi_k \psi_k^\top$；</p>
-<p>所以，最小二乘解 $\hat{\mathbf{\theta}}_{LS}$ 可以表示为：</p>
-<pre class=" language-hljs math"><code class="language-hljs math">\hat&#123;\mathbf&#123;\theta&#125;&#125;_&#123;LS&#125;
-&#x3D; \mathbf&#123;\Phi&#125;^\dag \mathbf&#123;y&#125;
-&#x3D; \sum_&#123;k&#x3D;1&#125;^&#123;\min(n,b)&#125; \kappa_k^\dag (\psi_k^\top \mathbf&#123;y&#125;) \varphi_k</code></pre>
-<p>于是，最小二乘模型的输出 $\mathbf{f<em>{\hat{\mathbf{\theta}}</em>{LS}}}(\mathbf{x})$ 就表示为：</p>
-<pre class=" language-hljs math"><code class="language-hljs math">\mathbf&#123;f&#125;_\mathbf&#123;\theta&#125; (\mathbf&#123;x&#125;_i) &#x3D; \mathbf&#123;\Phi&#125; \mathbf&#123;\theta&#125; &#x3D; \mathbf&#123;\Phi&#125; \hat&#123;\mathbf&#123;\theta&#125;&#125;_&#123;LS&#125; &#x3D; \mathbf&#123;\Phi&#125; \mathbf&#123;\Phi&#125;^\dag \mathbf&#123;y&#125;</code></pre>
-<p>上式中的 $\mathbf{\Phi} \mathbf{\Phi}^\dag$ 是 $\mathbf{\Phi}$ 的值域 $\Re(\mathbf{\Phi})$ 的正投影矩阵，因此，输出向量 $\mathbf{f<em>{\hat{\mathbf{\theta}}</em>{LS}}}(\mathbf{x})$ 可以看作是由设计矩阵 $\mathbf{\Phi}$ 的正投影得到的（性质一）。</p>
-<p>性质二：最小二乘解 $\hat{\mathbf{\theta}}_{LS}$ 是真实的 $\mathbf{\theta}^\star$ 的无偏估计量。</p>
-<p>性质三：渐进无偏性。随者训练样本数 $n$ 的增加，最小二乘解 $\hat{\mathbf{\theta}}<em>{LS}$ 和其真实值 $\mathbf{\theta}^\star$ 的误差 $err(\hat{\mathbf{\theta}}</em>{LS}, \mathbf{\theta}^\star)$ 会逐渐向模型中的最优参数方向收敛。</p>
+<p>其中 $\kappa_k$ 称为奇异值，总是非负；$\psi_k$ 和 $\varphi_k$ 为左、右奇异向量，都是满足正交性。</p>
+<ul>
+<li>在MATLAB中可以使用 <code>svd()</code> 函数进行奇异值分解。</li>
+</ul>
+<p><strong>性质一</strong>：通过奇异值分解，$\mathbf{\Phi}^\dagger$ 就可以表示为：</p>
+<script type="math/tex; mode=display">
+\mathbf{\Phi}^\dagger = \sum_{k=1}^{\min(n,b)} \kappa_k^\dagger \varphi_k \psi_k^\top</script><p>所以，最小二乘解 $\hat{\mathbf{\theta}}_{LS}$ 可以表示为：</p>
+<script type="math/tex; mode=display">
+\hat{\mathbf{\theta}}_{LS}
+= \mathbf{\Phi}^\dagger \mathbf{y}
+= \sum_{k=1}^{\min(n,b)} \kappa_k^\dagger (\psi_k^\top \mathbf{y}) \varphi_k</script><p>于是，最小二乘模型的输出就表示为：</p>
+<script type="math/tex; mode=display">
+\mathbf{f}_\mathbf{\theta} (\mathbf{x}_i) = \mathbf{\Phi} \mathbf{\theta} = \mathbf{\Phi} \hat{\mathbf{\theta}}_{LS} = \mathbf{\Phi} \mathbf{\Phi}^\dagger \mathbf{y}</script><p>上式中的 $\mathbf{\Phi} \mathbf{\Phi}^\dagger$ 是 $\mathbf{\Phi}$ 的值域 $\Re(\mathbf{\Phi})$ 的正投影矩阵，因此，模型的输出 $\mathbf{f}_{\theta} (\mathbf{x}_i)$ 可以看作是由设计矩阵 $\mathbf{\Phi}$ 的正投影得到的。</p>
+<p><strong>性质二</strong>：最小二乘解 $\hat{\mathbf{\theta}}_{LS}$ 是真实的 $\mathbf{\theta}^\star$ 的无偏估计量。</p>
+<p><strong>性质三</strong>：渐进无偏性。随者训练样本数 $n$ 的增加，最小二乘解 $\hat{\mathbf{\theta}}_{LS}$ 和其真实值 $\mathbf{\theta}^\star$ 的误差会逐渐向模型中的最优参数方向收敛。</p>
 <h2 id="3-3-大规模数据的学习算法（随机梯度法）"><a href="#3-3-大规模数据的学习算法（随机梯度法）" class="headerlink" title="3.3 大规模数据的学习算法（随机梯度法）"></a>3.3 大规模数据的学习算法（随机梯度法）</h2><p><strong>为什么会有随机梯度法</strong> 设计矩阵 $\mathbf{\Phi}$ 的维度为 $n \times b$ ，当训练样本数 $n$ 或参数个数 $b$ 很大时，设计矩阵的运算会十分复杂导致计算机内存不足；这时使用随机梯度法会很好的降低计算迭代次数和计算机内存消耗。</p>
 <p><strong>什么是随机梯度法</strong> 沿着训练平方误差 $J_{LS}$ 的梯度下降，对参数 $\mathbf{\theta}$ 依次进行学习的算法：</p>
 <p>一般情况下，训练平方误差 $J_{LS}$ 是凸函数，所以它的局部最优解就是全局最优解；而随机梯度法就是寻找这个局部最优解。</p>
@@ -236,16 +236,16 @@
 </li>
 <li><p>随机选择一个样本 $(\mathbf{x}_k, y_k)$。</p>
 </li>
-<li><p>对于选定的样本，采用使其梯度下降的方式，对参数 $\mathbf{\theta}$ 进行更新。其中 $\varepsilon$ 是学习系数，表示梯度下降的步幅；$\nabla<em>\theta J</em>{LS}^{(k)}$ 是训练平方误差的梯度，表示梯度下降的方向：</p>
-<pre class=" language-hljs math"><code class="language-hljs math">\mathbf&#123;\theta&#125; &#x3D; \mathbf&#123;\theta&#125; - \varepsilon \nabla_\theta J_&#123;LS&#125;^&#123;(k)&#125;(\mathbf&#123;\theta&#125;)
-\\
-\ 
-\\
-\nabla_\theta J_&#123;LS&#125;^&#123;(k)&#125;(\mathbf&#123;\theta&#125;) &#x3D; \phi(\mathbf&#123;x&#125;_i)(f_&#123;\mathbf&#123;\theta&#125;&#125;(\mathbf&#123;x&#125;_i) - y_i)</code></pre>
+<li><p>对于选定的样本，采用使其梯度下降的方式，对参数 $\mathbf{\theta}$ 进行更新。</p>
 </li>
 <li><p>重复 2.、3. 步直到 $\mathbf{\theta}$ 达到收敛精度。</p>
 </li>
 </ol>
+<p>具体使用下式计算每一个 $\mathbf{\theta}$：</p>
+<script type="math/tex; mode=display">
+\mathbf{\theta} = \mathbf{\theta} - \varepsilon \nabla_\theta J_{LS}^{(k)}(\mathbf{\theta})</script><p>式中：</p>
+<script type="math/tex; mode=display">
+\nabla_\theta J_{LS}^{(k)}(\mathbf{\theta}) = \phi(\mathbf{x}_i)(f_{\mathbf{\theta}}(\mathbf{x}_i) - y_i)</script><p>是训练平方误差的梯度，表示梯度下降的方向；$\varepsilon$ 是学习系数，表示梯度下降的步幅。</p>
 <p><strong>Needs to know</strong> 随机梯度法的收敛速度强烈依赖于梯度下降步幅 $\varepsilon$，因此，选取合适的 $\varepsilon$ 值十分重要。然而实际中选择最优的 $\varepsilon$ （调参）也是很困难的。</p>
 
             </article>
