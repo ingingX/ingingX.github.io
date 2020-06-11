@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="IngingX">
+  <meta name="keywords" content="">
+  <title>【笔记】图解机器学习第三章 最小二乘学习法 - IngingX Notesbook</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 4.2.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>IngingX Notesbook</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              首页</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              归档</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              标签</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/bg_gray.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-06-11 15:32">
+                    2020年6月11日 下午
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    1.3k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    12
+                     分钟
+                  </span>
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  <span id="busuanzi_container_page_pv" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  Last updated：几秒前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h1 id="第三章-最小二乘学习法"><a href="#第三章-最小二乘学习法" class="headerlink" title="第三章 最小二乘学习法"></a>第三章 最小二乘学习法</h1><h2 id="3-1-最小二乘估计-（Least-Squares-Measure）"><a href="#3-1-最小二乘估计-（Least-Squares-Measure）" class="headerlink" title="3.1 最小二乘估计 （Least Squares Measure）"></a>3.1 最小二乘估计 （Least Squares Measure）</h2><p><strong>模型的输出</strong>： $f_\mathbf{\theta} (\mathbf{x}_i)$，即拟合值；</p>
+<p><strong>训练集的输出</strong>：$\mathbf{y} = {y<em>i}</em>{i=1}^n$，即真值；</p>
+<p>所以，两者的残差就是：$f_\mathbf{\theta} (\mathbf{x}_i) - \mathbf{y}$；</p>
+<p>取残差的 $l2$ 范数：</p>
+<pre class=" language-hljs math"><code class="language-hljs math">J_&#123;LS&#125;(\mathbf&#123;\theta&#125;) &#x3D; \frac&#123;1&#125;&#123;2&#125;\left \| f_\mathbf&#123;\theta&#125; (\mathbf&#123;x&#125;_i) - \mathbf&#123;y&#125; \right \|^2 &#x3D; \frac&#123;1&#125;&#123;2&#125; \sum_&#123;i&#x3D;1&#125;^n (f_\mathbf&#123;\theta&#125; (\mathbf&#123;x&#125;_i) - y_i)^2</code></pre>
+<p>$J<em>{LS}(\mathbf{\theta})$ 是模型输出 $f</em>\mathbf{\theta} (\mathbf{x}_i)$ 和训练集输出 $\mathbf{y}$ 的 <strong>平方误差</strong>；</p>
+<p>用向量形式表示模型的基函数：</p>
+<pre class=" language-hljs math"><code class="language-hljs math">\mathbf&#123;\Phi&#125; &#x3D; \mathbf&#123;\phi&#125;(\mathbf&#123;x&#125;) &#x3D; \left[ \begin&#123;matrix&#125; \phi_1(\mathbf&#123;x&#125;_1) & \cdots & \phi_b(\mathbf&#123;x&#125;_1) \\  \vdots & \ddots & \vdots \\ \phi_1(\mathbf&#123;x&#125;_n) & \cdots & \phi_b(\mathbf&#123;x&#125;_n) \end&#123;matrix&#125; \right]</code></pre>
+<p>称为 $n \times b$ 阶设计矩阵；</p>
+<p>这样就可以把线性模型的输出表示为：</p>
+<pre class=" language-hljs math"><code class="language-hljs math">\mathbf&#123;f&#125;_\mathbf&#123;\theta&#125; (\mathbf&#123;x&#125;_i) &#x3D; \mathbf&#123;\theta&#125;^\top \mathbf&#123;\phi&#125;(\mathbf&#123;x&#125;) &#x3D; \mathbf&#123;\Phi&#125; \mathbf&#123;\theta&#125;</code></pre>
+<p>则<strong>平方误差</strong> $J_{LS}(\mathbf{\theta})$ 就变形为：</p>
+<pre class=" language-hljs math"><code class="language-hljs math">J_&#123;LS&#125;(\mathbf&#123;\theta&#125;) &#x3D; \frac&#123;1&#125;&#123;2&#125;\left \| \mathbf&#123;\Phi&#125; \mathbf&#123;\theta&#125; - \mathbf&#123;y&#125; \right \|^2</code></pre>
+<p>我们的希望是：<strong>找到一个 $\theta$，使得在这个值下的平方误差最小</strong>；</p>
+<p>用数学语言描述就是：<strong>$J<em>{LS}$ 对 $\theta$ 的偏导 $\nabla</em>\theta J_{LS}$ （梯度） 为 $0$ 的时候的 $\theta$ 满足最小二乘解</strong>，即：</p>
+<pre class=" language-hljs math"><code class="language-hljs math">\nabla_\theta J_&#123;LS&#125; &#x3D; \mathbf&#123;\Phi&#125;^\top \mathbf&#123;\Phi&#125; \mathbf&#123;\theta&#125; - \mathbf&#123;\Phi&#125;^\top \mathbf&#123;y&#125; &#x3D; 0
+\\
+\Downarrow
+\\
+\mathbf&#123;\Phi&#125;^\top \mathbf&#123;\Phi&#125; \mathbf&#123;\theta&#125; &#x3D; \mathbf&#123;\Phi&#125;^\top \mathbf&#123;y&#125;</code></pre>
+<p>这个方程的解 $\mathbf{\theta} = \hat{\mathbf{\theta}}_{LS}$ 就是我们要求的<strong>最小二乘解</strong>：</p>
+<pre class=" language-hljs math"><code class="language-hljs math">\hat&#123;\mathbf&#123;\theta&#125;&#125;_&#123;LS&#125; &#x3D; \mathbf&#123;\Phi&#125;^\dag \mathbf&#123;y&#125;</code></pre>
+<p>其中，$\mathbf{\Phi}^\dag$表示广义逆：$\mathbf{\Phi}^\dag = (\mathbf{\Phi}^\top \mathbf{\Phi})^{-1} \mathbf{\Phi}^\top$。</p>
+<h2 id="3-2-最小二乘解的性质"><a href="#3-2-最小二乘解的性质" class="headerlink" title="3.2 最小二乘解的性质"></a>3.2 最小二乘解的性质</h2><ul>
+<li><p><strong>奇异值分解</strong> $\mathbf{\Phi} = \sum_{k=1}^{\min(n,b)} \kappa_k \psi_k \varphi_k$，其中 $\kappa_k$ 称为奇异值，总是非负；$\psi_k$ 和 $\varphi_k$ 为左、右奇异向量，都是满足正交性。</p>
+</li>
+<li><p>在MATLAB中可以使用 <code>svd()</code> 函数进行奇异值分解。</p>
+</li>
+</ul>
+<p>通过奇异值分解，$\mathbf{\Phi}^\dag$ 就可以表示为：$\mathbf{\Phi}^\dag = \sum_{k=1}^{\min(n,b)} \kappa_k^\dag \varphi_k \psi_k^\top$；</p>
+<p>所以，最小二乘解 $\hat{\mathbf{\theta}}_{LS}$ 可以表示为：</p>
+<pre class=" language-hljs math"><code class="language-hljs math">\hat&#123;\mathbf&#123;\theta&#125;&#125;_&#123;LS&#125;
+&#x3D; \mathbf&#123;\Phi&#125;^\dag \mathbf&#123;y&#125;
+&#x3D; \sum_&#123;k&#x3D;1&#125;^&#123;\min(n,b)&#125; \kappa_k^\dag (\psi_k^\top \mathbf&#123;y&#125;) \varphi_k</code></pre>
+<p>于是，最小二乘模型的输出 $\mathbf{f<em>{\hat{\mathbf{\theta}}</em>{LS}}}(\mathbf{x})$ 就表示为：</p>
+<pre class=" language-hljs math"><code class="language-hljs math">\mathbf&#123;f&#125;_\mathbf&#123;\theta&#125; (\mathbf&#123;x&#125;_i) &#x3D; \mathbf&#123;\Phi&#125; \mathbf&#123;\theta&#125; &#x3D; \mathbf&#123;\Phi&#125; \hat&#123;\mathbf&#123;\theta&#125;&#125;_&#123;LS&#125; &#x3D; \mathbf&#123;\Phi&#125; \mathbf&#123;\Phi&#125;^\dag \mathbf&#123;y&#125;</code></pre>
+<p>上式中的 $\mathbf{\Phi} \mathbf{\Phi}^\dag$ 是 $\mathbf{\Phi}$ 的值域 $\Re(\mathbf{\Phi})$ 的正投影矩阵，因此，输出向量 $\mathbf{f<em>{\hat{\mathbf{\theta}}</em>{LS}}}(\mathbf{x})$ 可以看作是由设计矩阵 $\mathbf{\Phi}$ 的正投影得到的（性质一）。</p>
+<p>性质二：最小二乘解 $\hat{\mathbf{\theta}}_{LS}$ 是真实的 $\mathbf{\theta}^\star$ 的无偏估计量。</p>
+<p>性质三：渐进无偏性。随者训练样本数 $n$ 的增加，最小二乘解 $\hat{\mathbf{\theta}}<em>{LS}$ 和其真实值 $\mathbf{\theta}^\star$ 的误差 $err(\hat{\mathbf{\theta}}</em>{LS}, \mathbf{\theta}^\star)$ 会逐渐向模型中的最优参数方向收敛。</p>
+<h2 id="3-3-大规模数据的学习算法（随机梯度法）"><a href="#3-3-大规模数据的学习算法（随机梯度法）" class="headerlink" title="3.3 大规模数据的学习算法（随机梯度法）"></a>3.3 大规模数据的学习算法（随机梯度法）</h2><p><strong>为什么会有随机梯度法</strong> 设计矩阵 $\mathbf{\Phi}$ 的维度为 $n \times b$ ，当训练样本数 $n$ 或参数个数 $b$ 很大时，设计矩阵的运算会十分复杂导致计算机内存不足；这时使用随机梯度法会很好的降低计算迭代次数和计算机内存消耗。</p>
+<p><strong>什么是随机梯度法</strong> 沿着训练平方误差 $J_{LS}$ 的梯度下降，对参数 $\mathbf{\theta}$ 依次进行学习的算法：</p>
+<p>一般情况下，训练平方误差 $J_{LS}$ 是凸函数，所以它的局部最优解就是全局最优解；而随机梯度法就是寻找这个局部最优解。</p>
+<p><strong>随机梯度法的算法流程</strong> </p>
+<ol>
+<li><p>选定适当的 $\mathbf{\theta}$ 初值。</p>
+</li>
+<li><p>随机选择一个样本 $(\mathbf{x}_k, y_k)$。</p>
+</li>
+<li><p>对于选定的样本，采用使其梯度下降的方式，对参数 $\mathbf{\theta}$ 进行更新。其中 $\varepsilon$ 是学习系数，表示梯度下降的步幅；$\nabla<em>\theta J</em>{LS}^{(k)}$ 是训练平方误差的梯度，表示梯度下降的方向：</p>
+<pre class=" language-hljs math"><code class="language-hljs math">\mathbf&#123;\theta&#125; &#x3D; \mathbf&#123;\theta&#125; - \varepsilon \nabla_\theta J_&#123;LS&#125;^&#123;(k)&#125;(\mathbf&#123;\theta&#125;)
+\\
+\ 
+\\
+\nabla_\theta J_&#123;LS&#125;^&#123;(k)&#125;(\mathbf&#123;\theta&#125;) &#x3D; \phi(\mathbf&#123;x&#125;_i)(f_&#123;\mathbf&#123;\theta&#125;&#125;(\mathbf&#123;x&#125;_i) - y_i)</code></pre>
+</li>
+<li><p>重复 2.、3. 步直到 $\mathbf{\theta}$ 达到收敛精度。</p>
+</li>
+</ol>
+<p><strong>Needs to know</strong> 随机梯度法的收敛速度强烈依赖于梯度下降步幅 $\varepsilon$，因此，选取合适的 $\varepsilon$ 值十分重要。然而实际中选择最优的 $\varepsilon$ （调参）也是很困难的。</p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/MachineLearning/">MachineLearning</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E5%9B%BE%E8%A7%A3%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B/">
+                        <span class="hidden-mobile">【笔记】图解机器学习第二章 学习模型</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      framed on <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>, 
+      based on <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>, modified by  <a href="https://github.com/ingingX" target="_blank" rel="nofollow noopener">
+        <span>ingingX</span></a>
+    </div>
+    
+  <div>
+    
+      <!-- 不蒜子统计PV -->
+      
+      <span id="busuanzi_container_site_pv" style="display: none">
+      总访问量 <span id="busuanzi_value_site_pv"></span> 次
+    </span>
+    
+    
+      <!-- 不蒜子统计UV -->
+      
+      <span id="busuanzi_container_site_uv" style="display: none">
+      总访客数 <span id="busuanzi_value_site_uv"></span> 人
+    </span>
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 6,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "【笔记】图解机器学习第三章 最小二乘学习法&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 40,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+  
+  
+    <script>
+      !function (e, t, a) {
+        function r() {
+          for (var e = 0; e < s.length; e++) s[e].alpha <= 0 ? (t.body.removeChild(s[e].el), s.splice(e, 1)) : (s[e].y--, s[e].scale += .004, s[e].alpha -= .013, s[e].el.style.cssText = "left:" + s[e].x + "px;top:" + s[e].y + "px;opacity:" + s[e].alpha + ";transform:scale(" + s[e].scale + "," + s[e].scale + ") rotate(45deg);background:" + s[e].color + ";z-index:99999");
+          requestAnimationFrame(r)
+        }
+
+        function n() {
+          var t = "function" == typeof e.onclick && e.onclick;
+          e.onclick = function (e) {
+            t && t(), o(e)
+          }
+        }
+
+        function o(e) {
+          var a = t.createElement("div");
+          a.className = "heart", s.push({
+            el: a,
+            x: e.clientX - 5,
+            y: e.clientY - 5,
+            scale: 1,
+            alpha: 1,
+            color: c()
+          }), t.body.appendChild(a)
+        }
+
+        function i(e) {
+          var a = t.createElement("style");
+          a.type = "text/css";
+          try {
+            a.appendChild(t.createTextNode(e))
+          } catch (t) {
+            a.styleSheet.cssText = e
+          }
+          t.getElementsByTagName("head")[0].appendChild(a)
+        }
+
+        function c() {
+          return "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")"
+        }
+
+        var s = [];
+        e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || e.oRequestAnimationFrame || e.msRequestAnimationFrame || function (e) {
+          setTimeout(e, 1e3 / 60)
+        }, i(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"), n(), r()
+      }(window, document);
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

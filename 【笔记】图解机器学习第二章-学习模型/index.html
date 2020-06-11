@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="IngingX">
+  <meta name="keywords" content="">
+  <title>【笔记】图解机器学习第二章 学习模型 - IngingX Notesbook</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 4.2.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>IngingX Notesbook</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              首页</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              归档</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              标签</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/bg_gray.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-06-09 11:45">
+                    2020年6月9日 中午
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    1.6k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    13
+                     分钟
+                  </span>
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  <span id="busuanzi_container_page_pv" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  Last updated：2 天前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h1 id="第二章-学习模型"><a href="#第二章-学习模型" class="headerlink" title="第二章 学习模型"></a>第二章 学习模型</h1><h2 id="2-1-线性模型"><a href="#2-1-线性模型" class="headerlink" title="2.1 线性模型"></a>2.1 线性模型</h2><p><strong>最简单的线性模型</strong> 输入是一维时，学习对象函数 $f = \theta \times x$，$\theta$ 表示模型的参数。这个模型只能表示线性的输入输出，在实际应用中没有很大价值。</p>
+<p><strong>基于参数的线性模型</strong> 对最简单的线性模型进行扩展：</p>
+<p>将一维的输入 $x$ 扩展为 $b$ 个基函数向量 $\mathbf{\phi} (x) = (\phi_1(x), \phi_2(x), …, \phi_b (x))^\top$；</p>
+<p>将参数 $\theta$ 扩展为 $b$ 维参数向量 $\mathbf{\theta} = (\theta_1, \theta_2, …, \theta_b)^\top$；</p>
+<p>就可以将简单的线性模型扩展为：</p>
+<script type="math/tex; mode=display">
+\mathbf{f_\theta}(x) = \sum_{j=1}^b \theta_j \phi_j(x) = \mathbf{\theta}^\top \mathbf{\phi}(x)</script><p>这时，该模型任然是基于参数向量 $\mathbf{\theta}$ 的线性形式。</p>
+<p>当基函数 $\mathbf{\phi}(x)$ 变为多项式形式 $\mathbf{\phi}(x) = (1, x, x^2, …, x^{b-1})^\top$ 或 $b = 2m +1$ 的三角多项式形式 $\mathbf{\phi}(x) = (1, \sin x, \cos x, \sin 2x, \cos 2x, …, \sin mx, \cos mx)^\top$ 时，该线性模型就可以表示复杂的非线性模型了。</p>
+<p><strong>基于参数的多维线性模型</strong> 在<strong>基于参数的线性模型</strong>中， 如果将输入 $x$ 继续扩展为 $d$ 维向量形式 $\mathbf{x} = (x^{(1)}, x^{(2)}, …, x^{(d)})^\top$ 则可以得到更复杂的多维模型：</p>
+<script type="math/tex; mode=display">
+\mathbf{f_\theta}(\mathbf{x}) = \sum_{j=1}^b \theta_j \phi_j(\mathbf{x}) = \mathbf{\theta}^\top \mathbf{\phi}(\mathbf{x})</script><ul>
+<li><strong>加法模型</strong> 把一维基函数作为因子，通过多个一维基函数相加而获得多维基函数的方法；它的所有参数个数是 $b’d$ 只会随者输入维数 $d$ 呈线性增长；所需算力更小，但是它的表现力更差。</li>
+</ul>
+<script type="math/tex; mode=display">
+\mathbf{f_\theta}(\mathbf{x}) = \sum_{k=1}^d \sum_{j=1}^{b'} \theta_{k, j} \phi_j(\mathbf{x^{(k)}})</script><ul>
+<li><strong>乘法模型</strong> 把一维基函数作为因子，通过多个一维基函数相乘而获得多维基函数的方法；它的所有参数个数是 $(b’)^d$， 会随者输入维数 $d$ 呈指数增长；它的表现力更强，但是所需算力更大。</li>
+</ul>
+<script type="math/tex; mode=display">
+\mathbf{f_\theta}(\mathbf{x}) = \sum_{j1=1}^{b'} ... \sum_{jd=1}^{b'} \theta_{j1, ... , jd} \phi_{j1}(x^{(1)}) ... \phi_{jd}(x^{(d)})</script><p>以上三种线性模型的基函数与训练样本 ${(\mathbf{x}_i, y_i)}$ 均是无关的；</p>
+<p>即，<strong>基函数的选取完全依靠经验和猜测，训练样本并不提供基函数选择的参考</strong>。</p>
+<h2 id="2-2-核模型"><a href="#2-2-核模型" class="headerlink" title="2.2 核模型"></a>2.2 核模型</h2><p><strong>核模型</strong> 以二元核函数 $K(\mathbf{x},\mathbf{x}_j)$ 的线性组合的方式进行定义：</p>
+<script type="math/tex; mode=display">
+\mathbf{f_\theta}(\mathbf{x}) = \sum_{j=1}^n \theta_j K(\mathbf{x},\mathbf{x}_j)</script><p><strong>核模型的特点</strong> </p>
+<ul>
+<li><p>不同于线性模型，核模型的构建需要根据输入变量 $\mathbf{x}$ 进行决定；但是它不依赖于 $\mathbf{x}$ 的维数 $d$，而只由训练样本数 $n$ 决定。因此，即便输入维数 $d$ 很大，只要训练样本数 $n$ 不大，也在普通计算机的承受范围内；而即使训练样本数 $n$ 很大，只要输入样本 ${\mathbf{x}_i}$ 的部分集合 ${\mathbf{c}_j}$ 作为核均值来进行计算，计算负荷也可以很好的抑制。</p>
+</li>
+<li><p>核模型也是参数向量 $\mathbf{\theta} = (\theta_1, \theta_2, …, \theta_b)^\top$ 的线性形式，因此可以看作是基于参数的线性模型的特例。</p>
+</li>
+<li><p><strong>核映射方法</strong> 当输入样本 $x$ 不是向量的时候，核模型也可以很容易的实现扩展。在核模型中，输入样本 $x$ 只存在于核函数 $K(\mathbf{x},\mathbf{x}_j)$ 中，因此，只需对两个输入样本 $x$ 和 $x_j$ 相对应的核函数加以定义即可，而不用关心输入样本 $x$ 具体是什么。</p>
+</li>
+</ul>
+<p><strong>高斯核函数</strong> 在众多核函数中，使用最为广泛：</p>
+<script type="math/tex; mode=display">
+K(\mathbf{x}, \mathbf{c}) = \exp(-\frac{\left \| \mathbf{x} - \mathbf{c} \right \|^2}{2h^2})</script><p>其中，$\left | \mathbf{x} - \mathbf{c} \right |^2$ 表示 $\mathbf{x} - \mathbf{c}$ 的 $l^2$ 范数，即，$\left | \mathbf{x} - \mathbf{c} \right |^2 = \sqrt{(\mathbf{x} - \mathbf{c})^\top (\mathbf{x} - \mathbf{c})}$；$h$ 和 $\mathbf{c}$ 分别对应于高斯核函数的带宽与均值。</p>
+<p>这样，核模型就变成了高斯核模型：</p>
+<script type="math/tex; mode=display">
+\mathbf{f_\theta}(\mathbf{x}) = \sum_{i=1}^n \theta_i K(\mathbf{x},\mathbf{x}_i) = \sum_{i=1}^n \theta_i \exp(-\frac{\left \| \mathbf{x} - \mathbf{\mathbf{x}_i} \right \|^2}{2h^2})</script><p>对每个输入样本 ${\mathbf{x}_i}$ 进行高斯核配置，并把其高度 ${\mathbf{\theta}_i}$ 作为参数进行学习。</p>
+<p>因此，在高斯核模型中，一般只能在训练集的输入样本附近对函数进行近似，这也减轻了维数灾难。</p>
+<h2 id="2-3-层级模型"><a href="#2-3-层级模型" class="headerlink" title="2.3 层级模型"></a>2.3 层级模型</h2><p>以上的<strong>线性模型</strong>和<strong>核模型</strong>都是关于参数向量的线性函数，它们都是线性模型；如果学习模型是关于参数的非线性关系，那它就是<strong>非线性模型</strong>。其中最常用的是<strong>层级模型</strong>：</p>
+<script type="math/tex; mode=display">
+\mathbf{f_\theta}(\mathbf{x}) = \sum_{j=1}^b \alpha_j \phi(\mathbf{x};\beta_j)</script><p>其中，$\phi(\mathbf{x};\beta_j)$ 是基函数，其中含有参数向量 $\mathbf{\beta}$；$\mathbf{\alpha}$ 也是参数向量，所以层级模型可以被看作是基于 $\mathbf{\alpha}$ 的线性模型；同时，基函数中又含有参数向量 $\mathbf{\beta}$，所以也可以看作是基于 $\mathbf{\phi} = (\mathbf{\alpha}^\top, \mathbf{\beta}_1^\top, …, \mathbf{\beta}_b^\top)^\top$ 的非线性模型。</p>
+<p>同样，层级模型中的基函数选取也很多样，通常采用 S 函数或者高斯函数。</p>
+<ul>
+<li><strong>S 型函数</strong>模仿的是人类脑细胞的输入输出，也被称为人工神经网络模型。</li>
+</ul>
+<script type="math/tex; mode=display">
+\phi(\mathbf{x};\mathbf{\beta})_{S-func} = \frac{1}{1 + \exp (-\mathbf{x}^\top \mathbf{\omega} - \gamma)}, \qquad \mathbf{\beta} = (\mathbf{\omega}^\top, \gamma)^\top</script><ul>
+<li><strong>高斯函数</strong>与核模型中使用的高斯函数相同，但是这里的均值和带宽都是进行学习得到的。因此，层级模型一般比核模型能过更加灵活地对函数进行近似。</li>
+</ul>
+<script type="math/tex; mode=display">
+\phi(\mathbf{x};\mathbf{\beta})_{Gaussian-func} = \exp (- \frac{\left \| \mathbf{x} - \mathbf{c} \right \|^2}{2h^2}), \qquad \mathbf{\beta} = (\mathbf{c}^\top, h)^\top</script><p>层级模型地学习过程较艰难，常采用贝叶斯学习的方法或者从邻近输入样本的层级开始逐层进行无监督学习来初始化模型。</p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/MachineLearning/">MachineLearning</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E5%9B%BE%E8%A7%A3%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%89%E7%AB%A0-%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E5%AD%A6%E4%B9%A0%E6%B3%95/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【笔记】图解机器学习第三章 最小二乘学习法</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E5%9B%BE%E8%A7%A3%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%80%E7%AB%A0-%E4%BB%80%E4%B9%88%E6%98%AF%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">
+                        <span class="hidden-mobile">【笔记】图解机器学习第一章 什么是机器学习</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      framed on <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>, 
+      based on <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>, modified by  <a href="https://github.com/ingingX" target="_blank" rel="nofollow noopener">
+        <span>ingingX</span></a>
+    </div>
+    
+  <div>
+    
+      <!-- 不蒜子统计PV -->
+      
+      <span id="busuanzi_container_site_pv" style="display: none">
+      总访问量 <span id="busuanzi_value_site_pv"></span> 次
+    </span>
+    
+    
+      <!-- 不蒜子统计UV -->
+      
+      <span id="busuanzi_container_site_uv" style="display: none">
+      总访客数 <span id="busuanzi_value_site_uv"></span> 人
+    </span>
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 6,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "【笔记】图解机器学习第二章 学习模型&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 40,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+  
+  
+    <script>
+      !function (e, t, a) {
+        function r() {
+          for (var e = 0; e < s.length; e++) s[e].alpha <= 0 ? (t.body.removeChild(s[e].el), s.splice(e, 1)) : (s[e].y--, s[e].scale += .004, s[e].alpha -= .013, s[e].el.style.cssText = "left:" + s[e].x + "px;top:" + s[e].y + "px;opacity:" + s[e].alpha + ";transform:scale(" + s[e].scale + "," + s[e].scale + ") rotate(45deg);background:" + s[e].color + ";z-index:99999");
+          requestAnimationFrame(r)
+        }
+
+        function n() {
+          var t = "function" == typeof e.onclick && e.onclick;
+          e.onclick = function (e) {
+            t && t(), o(e)
+          }
+        }
+
+        function o(e) {
+          var a = t.createElement("div");
+          a.className = "heart", s.push({
+            el: a,
+            x: e.clientX - 5,
+            y: e.clientY - 5,
+            scale: 1,
+            alpha: 1,
+            color: c()
+          }), t.body.appendChild(a)
+        }
+
+        function i(e) {
+          var a = t.createElement("style");
+          a.type = "text/css";
+          try {
+            a.appendChild(t.createTextNode(e))
+          } catch (t) {
+            a.styleSheet.cssText = e
+          }
+          t.getElementsByTagName("head")[0].appendChild(a)
+        }
+
+        function c() {
+          return "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")"
+        }
+
+        var s = [];
+        e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || e.oRequestAnimationFrame || e.msRequestAnimationFrame || function (e) {
+          setTimeout(e, 1e3 / 60)
+        }, i(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"), n(), r()
+      }(window, document);
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
