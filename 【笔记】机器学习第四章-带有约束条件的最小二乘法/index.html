@@ -19,7 +19,7 @@
   <meta name="description" content="">
   <meta name="author" content="IngingX">
   <meta name="keywords" content="">
-  <title>【笔记】图解机器学习第二章 学习模型 - IngingX Notesbook</title>
+  <title>【笔记】机器学习第四章 带有约束条件的最小二乘法 - IngingX Notesbook</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
@@ -125,8 +125,8 @@
               
                 <div class="mt-3 post-meta">
                   <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-                  <time datetime="2020-06-09 11:45">
-                    2020年6月9日 中午
+                  <time datetime="2020-06-12 14:28">
+                    2020年6月12日 下午
                   </time>
                 </div>
               
@@ -136,7 +136,7 @@
                   
                   <span class="post-meta mr-2">
                     <i class="iconfont icon-chart"></i>
-                    1.6k 字
+                    1.8k 字
                   </span>
                 
 
@@ -146,7 +146,7 @@
                       <i class="iconfont icon-clock-fill"></i>
                     
                     
-                    13
+                    15
                      分钟
                   </span>
                 
@@ -183,62 +183,75 @@
             
               <p class="note note-info">
                 
-                  Last updated：2 天前
+                  Last updated：1 分钟前
                 
               </p>
             
             <article class="markdown-body">
-              <h1 id="第二章-学习模型"><a href="#第二章-学习模型" class="headerlink" title="第二章 学习模型"></a>第二章 学习模型</h1><h2 id="2-1-线性模型"><a href="#2-1-线性模型" class="headerlink" title="2.1 线性模型"></a>2.1 线性模型</h2><p><strong>最简单的线性模型</strong> 输入是一维时，学习对象函数 $f = \theta \times x$，$\theta$ 表示模型的参数。这个模型只能表示线性的输入输出，在实际应用中没有很大价值。</p>
-<p><strong>基于参数的线性模型</strong> 对最简单的线性模型进行扩展：</p>
-<p>将一维的输入 $x$ 扩展为 $b$ 个基函数向量 $\mathbf{\phi} (x) = (\phi_1(x), \phi_2(x), …, \phi_b (x))^\top$；</p>
-<p>将参数 $\theta$ 扩展为 $b$ 维参数向量 $\mathbf{\theta} = (\theta_1, \theta_2, …, \theta_b)^\top$；</p>
-<p>就可以将简单的线性模型扩展为：</p>
-<script type="math/tex; mode=display">
-\mathbf{f_\theta}(x) = \sum_{j=1}^b \theta_j \phi_j(x) = \mathbf{\theta}^\top \mathbf{\phi}(x)</script><p>这时，该模型任然是基于参数向量 $\mathbf{\theta}$ 的线性形式。</p>
-<p>当基函数 $\mathbf{\phi}(x)$ 变为多项式形式 $\mathbf{\phi}(x) = (1, x, x^2, …, x^{b-1})^\top$ 或 $b = 2m +1$ 的三角多项式形式 $\mathbf{\phi}(x) = (1, \sin x, \cos x, \sin 2x, \cos 2x, …, \sin mx, \cos mx)^\top$ 时，该线性模型就可以表示复杂的非线性模型了。</p>
-<p><strong>基于参数的多维线性模型</strong> 在<strong>基于参数的线性模型</strong>中， 如果将输入 $x$ 继续扩展为 $d$ 维向量形式 $\mathbf{x} = (x^{(1)}, x^{(2)}, …, x^{(d)})^\top$ 则可以得到更复杂的多维模型：</p>
-<script type="math/tex; mode=display">
-\mathbf{f_\theta}(\mathbf{x}) = \sum_{j=1}^b \theta_j \phi_j(\mathbf{x}) = \mathbf{\theta}^\top \mathbf{\phi}(\mathbf{x})</script><ul>
-<li><strong>加法模型</strong> 把一维基函数作为因子，通过多个一维基函数相加而获得多维基函数的方法；它的所有参数个数是 $b’d$ 只会随者输入维数 $d$ 呈线性增长；所需算力更小，但是它的表现力更差。</li>
+              <h1 id="第四章-带有约束条件的最小二乘法"><a href="#第四章-带有约束条件的最小二乘法" class="headerlink" title="第四章 带有约束条件的最小二乘法"></a>第四章 带有约束条件的最小二乘法</h1><p>单纯的最小二乘法对于包含噪声的学习过程经常有过拟合的弱点，这是由于学习模型对于样本而言过度复杂而造成的。为了解决这个问题，本章介绍能够控制模型复杂程度的、带有约束条件的最小二乘学习法。</p>
+<h2 id="4-1-部分空间约束的最小二乘学习法"><a href="#4-1-部分空间约束的最小二乘学习法" class="headerlink" title="4.1 部分空间约束的最小二乘学习法"></a>4.1 部分空间约束的最小二乘学习法</h2><ul>
+<li>有参数的线性模型的参数可以自由设置，所以其参数空间是 <strong>全体参数空间</strong>：</li>
 </ul>
 <script type="math/tex; mode=display">
-\mathbf{f_\theta}(\mathbf{x}) = \sum_{k=1}^d \sum_{j=1}^{b'} \theta_{k, j} \phi_j(\mathbf{x^{(k)}})</script><ul>
-<li><strong>乘法模型</strong> 把一维基函数作为因子，通过多个一维基函数相乘而获得多维基函数的方法；它的所有参数个数是 $(b’)^d$， 会随者输入维数 $d$ 呈指数增长；它的表现力更强，但是所需算力更大。</li>
-</ul>
+f_{\theta}(\mathbf{x}) = \sum_{j=1}^b \theta_i \phi_i (\mathbf{x}) = \mathbf{\theta}^\top \mathbf{\phi}(\mathbf{x})</script><p>要约束学习模型的复杂程度，就是要给这些参数一个约束（乘一个系数），以降低其影响，防止过拟合现象：</p>
 <script type="math/tex; mode=display">
-\mathbf{f_\theta}(\mathbf{x}) = \sum_{j1=1}^{b'} ... \sum_{jd=1}^{b'} \theta_{j1, ... , jd} \phi_{j1}(x^{(1)}) ... \phi_{jd}(x^{(d)})</script><p>以上三种线性模型的基函数与训练样本 ${(\mathbf{x}_i, y_i)}$ 均是无关的；</p>
-<p>即，<strong>基函数的选取完全依靠经验和猜测，训练样本并不提供基函数选择的参考</strong>。</p>
-<h2 id="2-2-核模型"><a href="#2-2-核模型" class="headerlink" title="2.2 核模型"></a>2.2 核模型</h2><p><strong>核模型</strong> 以二元核函数 $K(\mathbf{x},\mathbf{x}_j)$ 的线性组合的方式进行定义：</p>
+\min\limits_{\mathbf{\theta}} J_{LS} (\mathbf{\theta}), \quad constraint: \mathbf{P\theta} = \mathbf{\theta}</script><p>式中，$\mathbf{P}$ 是满足 $\mathbf{P}^2 = \mathbf{P}$ 和 $\mathbf{P}^\top = \mathbf{P}$ 的 $b \times b$ 维矩阵，表示矩阵 $\mathbf{P}$ 的值域 $\Re({\mathbf{P})}$ 的正交投影矩阵。通过这个约束条件 $\mathbf{P}$ 矩阵，参数 $\mathbf{theta}$ 就不会偏移到值域 $\Re({\mathbf{P})}$ 的范围之外了。</p>
+<p>部分空间约束的最小二乘学习法的解 $\hat{\mathbf{\theta}}$ 可以通过将设计矩阵 $\mathbf{\Phi}$ 置换为 $\mathbf{\Phi P}$ 的方式求得：</p>
 <script type="math/tex; mode=display">
-\mathbf{f_\theta}(\mathbf{x}) = \sum_{j=1}^n \theta_j K(\mathbf{x},\mathbf{x}_j)</script><p><strong>核模型的特点</strong> </p>
+\hat{\mathbf{\theta}} = (\mathbf{\Phi P})^\dagger \mathbf{y}</script><p>正交投影矩阵 $\mathbf{P}$ 可以手动设置，也可以使用 <strong>主成分分析法</strong> 基于数据进行设置。</p>
+<h2 id="4-2-ell-2-约束的最小二乘学习法"><a href="#4-2-ell-2-约束的最小二乘学习法" class="headerlink" title="4.2 $\ell_2$ 约束的最小二乘学习法"></a>4.2 $\ell_2$ 约束的最小二乘学习法</h2><h3 id="4-2-1-部分空间约束的最小二乘学习法的局限"><a href="#4-2-1-部分空间约束的最小二乘学习法的局限" class="headerlink" title="4.2.1 部分空间约束的最小二乘学习法的局限"></a>4.2.1 部分空间约束的最小二乘学习法的局限</h3><p>部分空间约束的最小二乘学习法在设置正交投影矩阵 $\mathbf{P}$ 时有很大的自由度。一方面，这可以使得研究人员可以根据自己的需要对约束进行自由的定义；另一方面，这也使得在实际应用中很难确定具体的值。</p>
+<h3 id="4-2-2-ell-2-约束的最小二乘学习法的定义"><a href="#4-2-2-ell-2-约束的最小二乘学习法的定义" class="headerlink" title="4.2.2 $\ell_2$ 约束的最小二乘学习法的定义"></a>4.2.2 $\ell_2$ 约束的最小二乘学习法的定义</h3><p>$\ell_2$ 约束的最小二乘学习法利用拉格朗日对偶问题的求解法，在以参数空间的原点为圆心、半径一定的超球内寻找最优解：</p>
+<script type="math/tex; mode=display">
+\min \limits_\mathbf{\theta} J_{LS} (\mathbf{\theta}), \quad constraint: \left \| \mathbf{\theta} \right \|^2 \leq R</script><h3 id="4-2-3-拉格朗日对偶问题"><a href="#4-2-3-拉格朗日对偶问题" class="headerlink" title="4.2.3 拉格朗日对偶问题*"></a>4.2.3 拉格朗日对偶问题*</h3><p>可微凸函数 $f$ 和 $\mathbf{g}$ 的约束条件的最小化问题</p>
+<script type="math/tex; mode=display">
+\min \limits_\mathbf{t} f(\mathbf{t}), \quad constraint: \mathbf{g}(\mathbf{t}) \leq 0</script><p>的拉格朗日对偶问题，可以使用拉格朗日乘子</p>
+<script type="math/tex; mode=display">
+\mathbf{\lambda} = (\lambda_1, ..., \lambda_p)^\top</script><p>和拉格朗日函数</p>
+<script type="math/tex; mode=display">
+L(\mathbf{t}, \mathbf{\lambda}) = f(\mathbf{t}) + \mathbf{\lambda}^\top \mathbf{g}(\mathbf{t})</script><p>采用以下方式进行定义：</p>
+<script type="math/tex; mode=display">
+\max \limits_\mathbf{\lambda} \inf \limits_t L(\mathbf{t}, \mathbf{\lambda}), \quad constraint: \mathbf{\lambda}\geq 0</script><p>拉格朗日对偶问题的 $\mathbf{t}$ 的解与原来问题的解是一致的。</p>
+<h3 id="4-2-4-ell-2-约束最小二乘学习法"><a href="#4-2-4-ell-2-约束最小二乘学习法" class="headerlink" title="4.2.4 $\ell_2$ 约束最小二乘学习法"></a>4.2.4 $\ell_2$ 约束最小二乘学习法</h3><p>根据$\ell_2$ 约束最小二乘学习法的定义和拉格朗日对偶问题解法，可以得到：</p>
+<script type="math/tex; mode=display">
+\max \limits_\lambda \min \limits_{\mathbf{\theta}} [J_{LS}(\mathbf{\theta}) + \frac{\lambda}{2}(\left \| \mathbf{\theta} \right \|^2 - R)], \quad constraint: \lambda \geq 0</script><p>拉格朗日乘子  的解由圆的半径  决定或直接指定；在直接指定时，$\ell_2$ 约束的最小二乘学习法的解 $\hat{\mathbf{\theta}}$ 就是：</p>
+<script type="math/tex; mode=display">
+\hat{\mathbf{\theta}} = \arg \min \limits_{\mathbf{\theta}} [J_{LS}(\mathbf{\theta}) + \frac{\lambda}{2}\left \| \mathbf{\theta}  \right \|^2]</script><p>式中，第一项 $J_{LS}(\mathbf{\theta})$ 表示训练样本的拟合程度，通过与第二项的 $\frac{\lambda}{2}\left || \mathbf{\theta} \right ||^2$ 相结合得到最小值，以防止训练样本过拟合；$\left || \mathbf{\theta} \right ||^2$ 为正则项，$\lambda$ 为正则化系数。</p>
+<p>应用最小二乘法的定义，令：</p>
+<script type="math/tex; mode=display">
+\nabla_{\theta} J_{LS}(\mathbf{\theta})= 0</script><p>则 $\ell_2$ 约束的最小二乘学习法的解 $\hat{\mathbf{\theta}}$ 可以表示为：</p>
+<script type="math/tex; mode=display">
+\hat{\mathbf{\theta}} = (\mathbf{\Phi}^\top \mathbf{\Phi} + \lambda \mathbf{I})^{-1} \mathbf{\Phi}^\top \mathbf{y}</script><p>通过将矩阵 $\mathbf{\Phi}^\top \mathbf{\Phi}$ 与 $\lambda \mathbf{I}$ 相加提高其正则性，进而就可以更稳定地进行矩阵求逆。</p>
 <ul>
-<li><p>不同于线性模型，核模型的构建需要根据输入变量 $\mathbf{x}$ 进行决定；但是它不依赖于 $\mathbf{x}$ 的维数 $d$，而只由训练样本数 $n$ 决定。因此，即便输入维数 $d$ 很大，只要训练样本数 $n$ 不大，也在普通计算机的承受范围内；而即使训练样本数 $n$ 很大，只要输入样本 ${\mathbf{x}_i}$ 的部分集合 ${\mathbf{c}_j}$ 作为核均值来进行计算，计算负荷也可以很好的抑制。</p>
-</li>
-<li><p>核模型也是参数向量 $\mathbf{\theta} = (\theta_1, \theta_2, …, \theta_b)^\top$ 的线性形式，因此可以看作是基于参数的线性模型的特例。</p>
-</li>
-<li><p><strong>核映射方法</strong> 当输入样本 $x$ 不是向量的时候，核模型也可以很容易的实现扩展。在核模型中，输入样本 $x$ 只存在于核函数 $K(\mathbf{x},\mathbf{x}_j)$ 中，因此，只需对两个输入样本 $x$ 和 $x_j$ 相对应的核函数加以定义即可，而不用关心输入样本 $x$ 具体是什么。</p>
-</li>
-</ul>
-<p><strong>高斯核函数</strong> 在众多核函数中，使用最为广泛：</p>
-<script type="math/tex; mode=display">
-K(\mathbf{x}, \mathbf{c}) = \exp(-\frac{\left \| \mathbf{x} - \mathbf{c} \right \|^2}{2h^2})</script><p>其中，$\left | \mathbf{x} - \mathbf{c} \right |^2$ 表示 $\mathbf{x} - \mathbf{c}$ 的 $l^2$ 范数，即，$\left | \mathbf{x} - \mathbf{c} \right |^2 = \sqrt{(\mathbf{x} - \mathbf{c})^\top (\mathbf{x} - \mathbf{c})}$；$h$ 和 $\mathbf{c}$ 分别对应于高斯核函数的带宽与均值。</p>
-<p>这样，核模型就变成了高斯核模型：</p>
-<script type="math/tex; mode=display">
-\mathbf{f_\theta}(\mathbf{x}) = \sum_{i=1}^n \theta_i K(\mathbf{x},\mathbf{x}_i) = \sum_{i=1}^n \theta_i \exp(-\frac{\left \| \mathbf{x} - \mathbf{\mathbf{x}_i} \right \|^2}{2h^2})</script><p>对每个输入样本 ${\mathbf{x}_i}$ 进行高斯核配置，并把其高度 ${\mathbf{\theta}_i}$ 作为参数进行学习。</p>
-<p>因此，在高斯核模型中，一般只能在训练集的输入样本附近对函数进行近似，这也减轻了维数灾难。</p>
-<h2 id="2-3-层级模型"><a href="#2-3-层级模型" class="headerlink" title="2.3 层级模型"></a>2.3 层级模型</h2><p>以上的<strong>线性模型</strong>和<strong>核模型</strong>都是关于参数向量的线性函数，它们都是线性模型；如果学习模型是关于参数的非线性关系，那它就是<strong>非线性模型</strong>。其中最常用的是<strong>层级模型</strong>：</p>
-<script type="math/tex; mode=display">
-\mathbf{f_\theta}(\mathbf{x}) = \sum_{j=1}^b \alpha_j \phi(\mathbf{x};\beta_j)</script><p>其中，$\phi(\mathbf{x};\beta_j)$ 是基函数，其中含有参数向量 $\mathbf{\beta}$；$\mathbf{\alpha}$ 也是参数向量，所以层级模型可以被看作是基于 $\mathbf{\alpha}$ 的线性模型；同时，基函数中又含有参数向量 $\mathbf{\beta}$，所以也可以看作是基于 $\mathbf{\phi} = (\mathbf{\alpha}^\top, \mathbf{\beta}_1^\top, …, \mathbf{\beta}_b^\top)^\top$ 的非线性模型。</p>
-<p>同样，层级模型中的基函数选取也很多样，通常采用 S 函数或者高斯函数。</p>
-<ul>
-<li><strong>S 型函数</strong>模仿的是人类脑细胞的输入输出，也被称为人工神经网络模型。</li>
+<li>设计矩阵 $\mathbf{\Phi}$ 的奇异值分解为：</li>
 </ul>
 <script type="math/tex; mode=display">
-\phi(\mathbf{x};\mathbf{\beta})_{S-func} = \frac{1}{1 + \exp (-\mathbf{x}^\top \mathbf{\omega} - \gamma)}, \qquad \mathbf{\beta} = (\mathbf{\omega}^\top, \gamma)^\top</script><ul>
-<li><strong>高斯函数</strong>与核模型中使用的高斯函数相同，但是这里的均值和带宽都是进行学习得到的。因此，层级模型一般比核模型能过更加灵活地对函数进行近似。</li>
-</ul>
+\mathbf{\Phi} = \sum_{k=1}^{\min(n,b)} \kappa_k \psi_k \varphi_k^\top</script><p>则$\ell_2$ 约束的最小二乘学习法的解  就可以表示为：</p>
 <script type="math/tex; mode=display">
-\phi(\mathbf{x};\mathbf{\beta})_{Gaussian-func} = \exp (- \frac{\left \| \mathbf{x} - \mathbf{c} \right \|^2}{2h^2}), \qquad \mathbf{\beta} = (\mathbf{c}^\top, h)^\top</script><p>层级模型地学习过程较艰难，常采用贝叶斯学习的方法或者从邻近输入样本的层级开始逐层进行无监督学习来初始化模型。</p>
+\hat{\mathbf{\theta}} = \sum_{k=1}^{\min(n, b)} \frac{\kappa_k}{\kappa_k^2 + \lambda} \mathbf{\psi}_k^\top \mathbf{y} \mathbf{\varphi}_k</script><p>当 $\lambda = 0$ 的时候，$\ell_2$ 约束的最小二乘学习法与一般的最小二乘法相同；此时，如果 $\mathbf{\Phi}$ 包含很小的奇异值 $\kappa_k$（计算条件很恶劣）的时候，$\frac{\kappa_k}{\kappa_k^2} = \frac{1}{\kappa_k}$ 就非常大，训练输出向量 $\mathbf{y}$ 就会包含很多噪声。</p>
+<p>在分母中加入正常数 $\lambda$，就可以避免 $\frac{\kappa_k}{\kappa_k^2 + \lambda}$ 过大，从而防止过拟合。</p>
+<h3 id="4-2-5-一般-ell-2-约束的最小二乘学习法"><a href="#4-2-5-一般-ell-2-约束的最小二乘学习法" class="headerlink" title="4.2.5 一般 $\ell_2$ 约束的最小二乘学习法"></a>4.2.5 一般 $\ell_2$ 约束的最小二乘学习法</h3><p>对于 $\ell_2$ 约束的最小二乘学习法的更一般的表述为：</p>
+<script type="math/tex; mode=display">
+\min \limits_\mathbf{\theta} J_{LS} (\mathbf{\theta}), \quad constraint: \mathbf{\theta}^\top \mathbf{G} \mathbf{\theta} \leq R</script><p>式中，$\mathbf{G}$ 是 $b \times b$ 的正则化矩阵。</p>
+<p>当 $\mathbf{G}$ 是对称正定矩阵的时候，可以把数据限制在椭圆形状的数据区域内。</p>
+<p>一般 $\ell_2$ 约束的最小二乘学习法的解 $\hat{\mathbf{\theta}}$ 的求解过程与上述 $\ell_2$ 约束的最小二乘学习法大致相同：</p>
+<script type="math/tex; mode=display">
+\hat{\mathbf{\theta}} = (\mathbf{\Phi}^\top \mathbf{\Phi} + \lambda \mathbf{G})^{-1} \mathbf{\Phi}^\top \mathbf{y}</script><h2 id="4-3-模型选择"><a href="#4-3-模型选择" class="headerlink" title="4.3 模型选择"></a>4.3 模型选择</h2><p>无论是 <strong>部分空间约束的最小二乘学习法</strong> 还是 <strong>$\ell_2$ 约束的最小二乘学习法</strong>，它们对过拟合现象的缓解都依赖于参数的选择。为了获得更好的结果，选择合适的参数至关重要；同时，使用线性模型时基函数的种类和数量的选择，使用核模型时核函数的种类和参数的选择，也都会直接影响学习的效果。</p>
+<h3 id="4-3-1-模型选择"><a href="#4-3-1-模型选择" class="headerlink" title="4.3.1 模型选择"></a>4.3.1 模型选择</h3><p>通过采用不同的输入训练样本来决定机器学习算法中包含的各个参数值。流程如下：</p>
+<ol>
+<li><p>准备模型的候选 $M_1, M_2, …, M_k$。</p>
+</li>
+<li><p>对各个模型候选 $M_1, M_2, …, M_k$ 求解其学习结果 $f^{(1)}, f^{(2)}, …, f^{(k)}$。</p>
+</li>
+<li><p>对各学习结果 $f^{(1)}, f^{(2)}, …, f^{(k)}$ 的泛化误差 $G^{(1)}, G^{(2)}, …, G^{(k)}$ 进行评估。</p>
+</li>
+<li><p>选择泛化误差 $G^{(1)}, G^{(2)}, …, G^{(k)}$ 最小的模型为最终模型。</p>
+</li>
+</ol>
+<p>其中最为重要的是第 3 步：泛化误差的评估。</p>
+<h3 id="4-3-2-泛化误差"><a href="#4-3-2-泛化误差" class="headerlink" title="4.3.2 泛化误差"></a>4.3.2 泛化误差</h3><p>泛化是指机器学习对未知的测试输入样本的处理能力。</p>
+<p>泛化误差是指对未知的测试输入样本的输出所做的预测的误差。</p>
+<p>在泛化误差的评价过程中，尤为重要的是泛化误差不一定要与训练样本的误差相一致。因此，对于训练样本的误差，并不是要选择平方误差 $J_{LS}$ 最小时对应的模型。</p>
+<p>在实际应用中，通常采用 <strong>交叉验证法</strong> 评价泛化误差。即，把训练样本的一部分（通常取 $2-10$ 个）拿出来作为测试样本，不将其用于学习，而只用于评价最终学习结果的泛化误差。</p>
 
             </article>
             <hr>
@@ -262,18 +275,12 @@ K(\mathbf{x}, \mathbf{c}) = \exp(-\frac{\left \| \mathbf{x} - \mathbf{c} \right 
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E5%9B%BE%E8%A7%A3%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%89%E7%AB%A0-%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E5%AD%A6%E4%B9%A0%E6%B3%95/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">【笔记】图解机器学习第三章 最小二乘学习法</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </div>
                   <div class="post-next col-6">
                     
                     
-                      <a href="/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E5%9B%BE%E8%A7%A3%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%80%E7%AB%A0-%E4%BB%80%E4%B9%88%E6%98%AF%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">
-                        <span class="hidden-mobile">【笔记】图解机器学习第一章 什么是机器学习</span>
+                      <a href="/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%89%E7%AB%A0-%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E5%AD%A6%E4%B9%A0%E6%B3%95/">
+                        <span class="hidden-mobile">【笔记】机器学习第三章 最小二乘学习法</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -432,7 +439,7 @@ K(\mathbf{x}, \mathbf{c}) = \exp(-\frac{\left \| \mathbf{x} - \mathbf{c} \right 
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "【笔记】图解机器学习第二章 学习模型&nbsp;",
+        "【笔记】机器学习第四章 带有约束条件的最小二乘法&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 40,

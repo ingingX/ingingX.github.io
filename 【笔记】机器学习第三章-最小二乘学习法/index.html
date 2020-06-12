@@ -19,7 +19,7 @@
   <meta name="description" content="">
   <meta name="author" content="IngingX">
   <meta name="keywords" content="">
-  <title>First Step on Hexo - IngingX Notesbook</title>
+  <title>【笔记】机器学习第三章 最小二乘学习法 - IngingX Notesbook</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
@@ -125,8 +125,8 @@
               
                 <div class="mt-3 post-meta">
                   <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-                  <time datetime="2020-04-12 16:16">
-                    2020年4月12日 下午
+                  <time datetime="2020-06-11 15:32">
+                    2020年6月11日 下午
                   </time>
                 </div>
               
@@ -136,7 +136,7 @@
                   
                   <span class="post-meta mr-2">
                     <i class="iconfont icon-chart"></i>
-                    123 字
+                    1.1k 字
                   </span>
                 
 
@@ -146,7 +146,7 @@
                       <i class="iconfont icon-clock-fill"></i>
                     
                     
-                    1
+                    10
                      分钟
                   </span>
                 
@@ -183,27 +183,70 @@
             
               <p class="note note-info">
                 
-                  Last updated：1 个月前
+                  Last updated：14 分钟前
                 
               </p>
             
             <article class="markdown-body">
-              <p><a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> is a static blog framework, based on Node.js. This post is written for backupping installation procedue for Windows OS.</p>
-<h2 id="Content"><a href="#Content" class="headerlink" title="Content:"></a>Content:</h2><ul>
-<li>Install <a href="https://nodejs.org/zh-cn/download/" target="_blank" rel="noopener">Node.js</a></li>
-<li>Install <a href="https://www.github.com" target="_blank" rel="noopener">Git</a></li>
-<li>Sign in <a href="github.com">Github</a></li>
-<li>Install <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a></li>
-<li>Deploy local source to Github</li>
-<li>Write, review, and publish posts</li>
-<li>Customize domain name</li>
-<li>Customize blog outlook (<a href="https://github.com/hpcslag/hexo-theme-morgan" target="_blank" rel="noopener">Morgan</a> Theme)</li>
-<li>FAQ</li>
+              <h1 id="第三章-最小二乘学习法"><a href="#第三章-最小二乘学习法" class="headerlink" title="第三章 最小二乘学习法"></a>第三章 最小二乘学习法</h1><h2 id="3-1-最小二乘估计-（Least-Squares-Measure）"><a href="#3-1-最小二乘估计-（Least-Squares-Measure）" class="headerlink" title="3.1 最小二乘估计 （Least Squares Measure）"></a>3.1 最小二乘估计 （Least Squares Measure）</h2><p><strong>模型的输出</strong>： $f_\mathbf{\theta} (\mathbf{x}_i)$，即拟合值；</p>
+<p><strong>训练集的输出</strong>：$\mathbf{y} = {y_i}$，即真值；</p>
+<p>所以，两者的残差就是：$f_\mathbf{\theta} (\mathbf{x}_i) - \mathbf{y}$；</p>
+<p>取残差的 $l2$ 范数：</p>
+<script type="math/tex; mode=display">
+J_{LS}(\mathbf{\theta}) = \frac{1}{2}\left \| f_\mathbf{\theta} (\mathbf{x}_i) - \mathbf{y} \right \|^2 = \frac{1}{2} \sum_{i=1}^n (f_\mathbf{\theta} (\mathbf{x}_i) - y_i)^2</script><p>表示模型输出 $f_\mathbf{\theta} (\mathbf{x}_i)$ 和 训练集输出 $\mathbf{y} = {y_i}$ 的 <strong>平方误差</strong></p>
+<p>用向量形式表示模型的基函数：</p>
+<script type="math/tex; mode=display">
+\mathbf{\Phi} = \mathbf{\phi}(\mathbf{x}) = \left[ \begin{matrix} \phi_1(\mathbf{x}_1) & \cdots & \phi_b(\mathbf{x}_1) \\  \vdots & \ddots & \vdots \\ \phi_1(\mathbf{x}_n) & \cdots & \phi_b(\mathbf{x}_n) \end{matrix} \right]</script><p>称为 $n \times b$ 阶设计矩阵；</p>
+<p>这样就可以把线性模型的输出表示为：</p>
+<script type="math/tex; mode=display">
+\mathbf{f}_\mathbf{\theta} (\mathbf{x}_i) = \mathbf{\theta}^\top \mathbf{\phi}(\mathbf{x}) = \mathbf{\Phi} \mathbf{\theta}</script><p>则<strong>平方误差</strong> $J_{LS}(\mathbf{\theta})$ 就变形为：</p>
+<script type="math/tex; mode=display">
+J_{LS}(\mathbf{\theta}) = \frac{1}{2}\left \| \mathbf{\Phi} \mathbf{\theta} - \mathbf{y} \right \|^2</script><p>我们的希望是：<strong>找到一个 $\theta$，使得在这个值下的平方误差 $J_{LS}(\mathbf{\theta})$ 最小</strong>；</p>
+<p>用数学语言描述就是：<strong>$J_{LS}(\mathbf{\theta})$  对 $\theta$ 的偏导（梯度）为 $0$ 时候，$\theta$ 满足最小二乘解</strong>，即：</p>
+<script type="math/tex; mode=display">
+\nabla_\theta J_{LS} = \mathbf{\Phi}^\top \mathbf{\Phi} \mathbf{\theta} - \mathbf{\Phi}^\top \mathbf{y} = 0</script><p>变形得到：</p>
+<script type="math/tex; mode=display">
+\mathbf{\Phi}^\top \mathbf{\Phi} \mathbf{\theta} = \mathbf{\Phi}^\top \mathbf{y}</script><p>这个方程的解 $\mathbf{\theta} = \hat{\mathbf{\theta}}_{LS}$ 就是我们要求的<strong>最小二乘解</strong>：</p>
+<script type="math/tex; mode=display">
+\hat{\mathbf{\theta}}_{LS} = \mathbf{\Phi}^\dagger \mathbf{y}</script><p>其中，$\mathbf{\Phi}^\dagger$表示广义逆：$\mathbf{\Phi}^\dagger = (\mathbf{\Phi}^\top \mathbf{\Phi})^{-1} \mathbf{\Phi}^\top$。</p>
+<h2 id="3-2-最小二乘解的性质"><a href="#3-2-最小二乘解的性质" class="headerlink" title="3.2 最小二乘解的性质"></a>3.2 最小二乘解的性质</h2><ul>
+<li><strong>奇异值分解</strong> $\mathbf{\Phi} = \sum_{k=1}^{\min(n,b)} \kappa_k \psi_k \varphi_k$</li>
 </ul>
-<h2 id="Install-Node-js"><a href="#Install-Node-js" class="headerlink" title="Install Node.js"></a>Install <a href="https://nodejs.org/zh-cn/download/" target="_blank" rel="noopener">Node.js</a></h2><p>Download LTS version for Windows(.msi), and install as default (click <code>Next</code> all the way alone).</p>
-<p>Use <code>Win+R</code> and enter <code>cmd</code> to open MS-DOS. Enter <code>node -v</code> and <code>npm -v</code> checking whether Node.js has been set correctly.</p>
-<h2 id="Install-Git"><a href="#Install-Git" class="headerlink" title="Install Git"></a>Install <a href="https://www.github.com" target="_blank" rel="noopener">Git</a></h2><p>Please visit <a href="https://ingingx.xyz/Git-Installation-and-Badic-Git-Comments/" target="_blank" rel="noopener">here</a> for Git installation, but choose <code>Use Git from the Windows Command Prompt</code> at the last step. </p>
-<p>Enter <code>git --version</code> checking whether Git has been set correctly.</p>
+<p>其中 $\kappa_k$ 称为奇异值，总是非负；$\psi_k$ 和 $\varphi_k$ 为左、右奇异向量，都是满足正交性。</p>
+<ul>
+<li>在MATLAB中可以使用 <code>svd()</code> 函数进行奇异值分解。</li>
+</ul>
+<p><strong>性质一</strong>：通过奇异值分解，$\mathbf{\Phi}^\dagger$ 就可以表示为：</p>
+<script type="math/tex; mode=display">
+\mathbf{\Phi}^\dagger = \sum_{k=1}^{\min(n,b)} \kappa_k^\dagger \varphi_k \psi_k^\top</script><p>所以，最小二乘解 $\hat{\mathbf{\theta}}_{LS}$ 可以表示为：</p>
+<script type="math/tex; mode=display">
+\hat{\mathbf{\theta}}_{LS}
+= \mathbf{\Phi}^\dagger \mathbf{y}
+= \sum_{k=1}^{\min(n,b)} \kappa_k^\dagger (\psi_k^\top \mathbf{y}) \varphi_k</script><p>于是，最小二乘模型的输出就表示为：</p>
+<script type="math/tex; mode=display">
+\mathbf{f}_\mathbf{\theta} (\mathbf{x}_i) = \mathbf{\Phi} \mathbf{\theta} = \mathbf{\Phi} \hat{\mathbf{\theta}}_{LS} = \mathbf{\Phi} \mathbf{\Phi}^\dagger \mathbf{y}</script><p>上式中的 $\mathbf{\Phi} \mathbf{\Phi}^\dagger$ 是 $\mathbf{\Phi}$ 的值域 $\Re(\mathbf{\Phi})$ 的正投影矩阵，因此，模型的输出 $\mathbf{f}_{\theta} (\mathbf{x}_i)$ 可以看作是由设计矩阵 $\mathbf{\Phi}$ 的正投影得到的。</p>
+<p><strong>性质二</strong>：最小二乘解 $\hat{\mathbf{\theta}}_{LS}$ 是真实的 $\mathbf{\theta}^\star$ 的无偏估计量。</p>
+<p><strong>性质三</strong>：渐进无偏性。随者训练样本数 $n$ 的增加，最小二乘解 $\hat{\mathbf{\theta}}_{LS}$ 和其真实值 $\mathbf{\theta}^\star$ 的误差会逐渐向模型中的最优参数方向收敛。</p>
+<h2 id="3-3-大规模数据的学习算法（随机梯度法）"><a href="#3-3-大规模数据的学习算法（随机梯度法）" class="headerlink" title="3.3 大规模数据的学习算法（随机梯度法）"></a>3.3 大规模数据的学习算法（随机梯度法）</h2><p><strong>为什么会有随机梯度法</strong> 设计矩阵 $\mathbf{\Phi}$ 的维度为 $n \times b$ ，当训练样本数 $n$ 或参数个数 $b$ 很大时，设计矩阵的运算会十分复杂导致计算机内存不足；这时使用随机梯度法会很好的降低计算迭代次数和计算机内存消耗。</p>
+<p><strong>什么是随机梯度法</strong> 沿着训练平方误差 $J_{LS}$ 的梯度下降，对参数 $\mathbf{\theta}$ 依次进行学习的算法：</p>
+<p>一般情况下，训练平方误差 $J_{LS}$ 是凸函数，所以它的局部最优解就是全局最优解；而随机梯度法就是寻找这个局部最优解。</p>
+<p><strong>随机梯度法的算法流程</strong> </p>
+<ol>
+<li><p>选定适当的 $\mathbf{\theta}$ 初值。</p>
+</li>
+<li><p>随机选择一个样本 $(\mathbf{x}_k, y_k)$。</p>
+</li>
+<li><p>对于选定的样本，采用使其梯度下降的方式，对参数 $\mathbf{\theta}$ 进行更新。</p>
+</li>
+<li><p>重复 2.、3. 步直到 $\mathbf{\theta}$ 达到收敛精度。</p>
+</li>
+</ol>
+<p>具体使用下式计算每一个 $\mathbf{\theta}$：</p>
+<script type="math/tex; mode=display">
+\mathbf{\theta} = \mathbf{\theta} - \varepsilon \nabla_\theta J_{LS}^{(k)}(\mathbf{\theta})</script><p>式中：</p>
+<script type="math/tex; mode=display">
+\nabla_\theta J_{LS}^{(k)}(\mathbf{\theta}) = \phi(\mathbf{x}_i)(f_{\mathbf{\theta}}(\mathbf{x}_i) - y_i)</script><p>是训练平方误差的梯度，表示梯度下降的方向；$\varepsilon$ 是学习系数，表示梯度下降的步幅。</p>
+<p><strong>Needs to know</strong> 随机梯度法的收敛速度强烈依赖于梯度下降步幅 $\varepsilon$，因此，选取合适的 $\varepsilon$ 值十分重要。然而实际中选择最优的 $\varepsilon$ （调参）也是很困难的。</p>
 
             </article>
             <hr>
@@ -214,9 +257,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/Hexo/">Hexo</a>
-                    
-                      <a class="hover-with-bg" href="/tags/draft/">draft</a>
+                      <a class="hover-with-bg" href="/tags/MachineLearning/">MachineLearning</a>
                     
                   </div>
                 
@@ -229,9 +270,9 @@
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/%E3%80%90%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E3%80%91%E4%B9%8C%E5%90%88%E4%B9%8B%E4%BC%97%EF%BC%9A%E5%A4%A7%E4%BC%97%E5%BF%83%E7%90%86%E7%A0%94%E7%A9%B6/">
+                      <a href="/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E5%B8%A6%E6%9C%89%E7%BA%A6%E6%9D%9F%E6%9D%A1%E4%BB%B6%E7%9A%84%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">【读书笔记】乌合之众：大众心理研究</span>
+                        <span class="hidden-mobile">【笔记】机器学习第四章 带有约束条件的最小二乘法</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -239,8 +280,8 @@
                   <div class="post-next col-6">
                     
                     
-                      <a href="/git%20clone%20%E4%BB%A3%E7%90%86%E4%B8%8E%E5%8A%A0%E9%80%9F/">
-                        <span class="hidden-mobile">git 代理配置与 git clone 下载加速</span>
+                      <a href="/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B/">
+                        <span class="hidden-mobile">【笔记】机器学习第二章 学习模型</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -399,7 +440,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "First Step on Hexo&nbsp;",
+        "【笔记】机器学习第三章 最小二乘学习法&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 40,

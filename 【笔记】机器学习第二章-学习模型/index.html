@@ -19,7 +19,7 @@
   <meta name="description" content="">
   <meta name="author" content="IngingX">
   <meta name="keywords" content="">
-  <title>【笔记】图解机器学习第一章 什么是机器学习 - IngingX Notesbook</title>
+  <title>【笔记】机器学习第二章 学习模型 - IngingX Notesbook</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
@@ -125,8 +125,8 @@
               
                 <div class="mt-3 post-meta">
                   <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-                  <time datetime="2020-06-08 09:55">
-                    2020年6月8日 上午
+                  <time datetime="2020-06-09 11:45">
+                    2020年6月9日 中午
                   </time>
                 </div>
               
@@ -146,7 +146,7 @@
                       <i class="iconfont icon-clock-fill"></i>
                     
                     
-                    12
+                    13
                      分钟
                   </span>
                 
@@ -183,60 +183,63 @@
             
               <p class="note note-info">
                 
-                  Last updated：3 天前
+                  Last updated：14 分钟前
                 
               </p>
             
             <article class="markdown-body">
-              <h1 id="第一章-什么是机器学习"><a href="#第一章-什么是机器学习" class="headerlink" title="第一章 什么是机器学习"></a>第一章 什么是机器学习</h1><h2 id="1-1-学习的种类"><a href="#1-1-学习的种类" class="headerlink" title="1.1 学习的种类"></a>1.1 学习的种类</h2><p><strong>监督学习</strong> 根据学习过程中所获得的经验、技能，对没有学习过的问题也能做出正确的解答。eg. 回归、分类、排序。</p>
-<p><strong>无监督学习</strong> 计算机在互联网中自动收集信息，并从中获取有用的信息；它不局限在解决有明确答案的问题，学习目标可以不很明确。eg. 异常检测、聚类。</p>
-<p><strong>强化学习</strong> 在没有老师提示对错的情况下，自己对预测的结果进行评估的方法。eg. 分类、聚类、降维。</p>
-<h2 id="1-2-机器学习任务的例子"><a href="#1-2-机器学习任务的例子" class="headerlink" title="1.2 机器学习任务的例子"></a>1.2 机器学习任务的例子</h2><h3 id="回归"><a href="#回归" class="headerlink" title="回归"></a><strong>回归</strong></h3><p>把实函数在样本附近加以近似的有监督的函数近似问题；对一个或多个自变量和因变量之间的关系进行建模、求解的一种统计方法。</p>
-<ul>
-<li>以 $d$ 维实向量 $\mathbf{x}$ 作为输入，实数值 $y$ 作为输出的函数 $y = f(\mathbf{x})$ 的学习问题为例：</li>
-</ul>
-<p>在监督学习里，真实的函数关系 $f$ 是未知的，训练集输入输出样本 $\lbrace (\mathbf{x}_i, y_i) \rbrace$ 是已知的；同时输出样本 $y_i$ 的真实值 $f(\mathbf{x} _i)$ 中会观察到噪声。</p>
-<p>学习过程就是：将输入样本 $\mathbf{x}_i$ 解答为输出样本 $y_i$，中间的解答过程用 $\hat{f}$ 表示。获得 $\hat{f}$ 函数就是监督学习的最终目标，而 $\hat{f}$ 与 $f$ 的相似性可以用来分析 $\hat{f}$ 的泛化能力。</p>
-<h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a><strong>分类</strong></h3><p>对于指定的模式进行识别的有监督的模式识别问题；也可以被看作是函数近似的问题（回归也是）。</p>
-<ul>
-<li>以 $d$ 维实向量 $\mathbf{x}$ 作为输入，且所有输入样本可以被划分为 $c$ 个类别的学习问题为例：</li>
-</ul>
-<p>输入输出样本 ${(\mathbf{x}_i, y_i)}$ 是已知的；但是输出样本 $y_i$ 并不是具体的实数，而是分别代表类别 $1, 2, …, c$。</p>
-<p>学习过程就是：从输入样本 $\mathbf{x}_i$ 得到输出类别 $1, 2, …, c$ 的函数 $y = f(\mathbf{x})$ 的过程。</p>
-<p>与回归不同，分类只是单纯对样本应该属于哪一类别进行预测，而不存在“类别A比类别C跟接近类别B”这样的说法。</p>
-<h3 id="异常检测"><a href="#异常检测" class="headerlink" title="异常检测"></a><strong>异常检测</strong></h3><p>寻找输入样本 ${\mathbf{x}_i}$ 中所包含的异常数据的问题。</p>
-<p>在已知正常数据和异常数据的例子的情况下，与有监督的分类问题相同；在异常数据未知的情况下，就成为无监督学习问题，这时常采用密度估计的方法（把靠近密度中心的数据作为正常数据，远离的作为异常数据）。</p>
-<h3 id="聚类"><a href="#聚类" class="headerlink" title="聚类"></a><strong>聚类</strong></h3><p>只给出输入样本 ${\mathbf{x}_i}$，然后判断各个样本分别属于 $1, 2, …, c$ 中的哪个簇。是无监督学习的模式识别问题</p>
-<h3 id="降维"><a href="#降维" class="headerlink" title="降维"></a><strong>降维</strong></h3><p>从高纬度数据中提取关键信息，将其转换为易于计算的低纬度问题而求解的方法；将高维的输入样本 ${\mathbf{x}_i}$ 转换为低维度的样本 ${\mathbf{z}_i}$ 的的方法。</p>
-<p>线性降维的情况下，存在横向量 $\mathbf{T}$，使得 $\mathbf{z}_i = \mathbf{T}\mathbf{x}_i$。</p>
-<p>当输入输出样本 ${(\mathbf{x}_i, y_i)}$ 是已知时，属于监督学习，可以把样本转换为较低维度的样本 ${\mathbf{z}_i}$，从而获得较高的泛化能力。</p>
-<p>当只有输入样本 ${\mathbf{x}_i}$ 是已知时，属于无监督学习，样本转换为较低维度的样本 ${\mathbf{z}_i}$ 后，应该保持原始输入样本 ${\mathbf{x}_i}$ 的数据分布性质以及数据间的近邻关系不变。</p>
-<h2 id="1-3-机器学习的方法"><a href="#1-3-机器学习的方法" class="headerlink" title="1.3 机器学习的方法"></a>1.3 机器学习的方法</h2><ul>
-<li>后验概率 $p(y\mid \mathbf{x})$ 与生成概率 $p(\mathbf{x}, y)$：</li>
+              <h1 id="第二章-学习模型"><a href="#第二章-学习模型" class="headerlink" title="第二章 学习模型"></a>第二章 学习模型</h1><h2 id="2-1-线性模型"><a href="#2-1-线性模型" class="headerlink" title="2.1 线性模型"></a>2.1 线性模型</h2><p><strong>最简单的线性模型</strong> 输入是一维时，学习对象函数 $f = \theta \times x$，$\theta$ 表示模型的参数。这个模型只能表示线性的输入输出，在实际应用中没有很大价值。</p>
+<p><strong>基于参数的线性模型</strong> 对最简单的线性模型进行扩展：</p>
+<p>将一维的输入 $x$ 扩展为 $b$ 个基函数向量 $\mathbf{\phi} (x) = (\phi_1(x), \phi_2(x), …, \phi_b (x))^\top$；</p>
+<p>将参数 $\theta$ 扩展为 $b$ 维参数向量 $\mathbf{\theta} = (\theta_1, \theta_2, …, \theta_b)^\top$；</p>
+<p>就可以将简单的线性模型扩展为：</p>
+<script type="math/tex; mode=display">
+\mathbf{f_\theta}(x) = \sum_{j=1}^b \theta_j \phi_j(x) = \mathbf{\theta}^\top \mathbf{\phi}(x)</script><p>这时，该模型任然是基于参数向量 $\mathbf{\theta}$ 的线性形式。</p>
+<p>当基函数 $\mathbf{\phi}(x)$ 变为多项式形式 $\mathbf{\phi}(x) = (1, x, x^2, …, x^{b-1})^\top$ 或 $b = 2m +1$ 的三角多项式形式 $\mathbf{\phi}(x) = (1, \sin x, \cos x, \sin 2x, \cos 2x, …, \sin mx, \cos mx)^\top$ 时，该线性模型就可以表示复杂的非线性模型了。</p>
+<p><strong>基于参数的多维线性模型</strong> 在<strong>基于参数的线性模型</strong>中， 如果将输入 $x$ 继续扩展为 $d$ 维向量形式 $\mathbf{x} = (x^{(1)}, x^{(2)}, …, x^{(d)})^\top$ 则可以得到更复杂的多维模型：</p>
+<script type="math/tex; mode=display">
+\mathbf{f_\theta}(\mathbf{x}) = \sum_{j=1}^b \theta_j \phi_j(\mathbf{x}) = \mathbf{\theta}^\top \mathbf{\phi}(\mathbf{x})</script><ul>
+<li><strong>加法模型</strong> 把一维基函数作为因子，通过多个一维基函数相加而获得多维基函数的方法；它的所有参数个数是 $b’d$ 只会随者输入维数 $d$ 呈线性增长；所需算力更小，但是它的表现力更差。</li>
 </ul>
 <script type="math/tex; mode=display">
-p(y\mid \mathbf{x}) = \frac{p(\mathbf{x}, y)}{p(\mathbf{x})} = \frac{p(\mathbf{x}, y)}{\sum_{y} p(\mathbf{x},y)} \propto p(\mathbf{x}, y)</script><hr>
-<ul>
-<li>以对模式 $\mathbf{x}$ 的类别 $y$ 进行预测的分类问题为例。</li>
+\mathbf{f_\theta}(\mathbf{x}) = \sum_{k=1}^d \sum_{j=1}^{b'} \theta_{k, j} \phi_j(\mathbf{x^{(k)}})</script><ul>
+<li><strong>乘法模型</strong> 把一维基函数作为因子，通过多个一维基函数相乘而获得多维基函数的方法；它的所有参数个数是 $(b’)^d$， 会随者输入维数 $d$ 呈指数增长；它的表现力更强，但是所需算力更大。</li>
 </ul>
-<h3 id="生成式分类"><a href="#生成式分类" class="headerlink" title="生成式分类"></a><strong>生成式分类</strong></h3><p>通过预测数据的生成概率 $p(\mathbf{x},y)$ 来进行模式识别的分类方法。</p>
-<h3 id="判别式分类"><a href="#判别式分类" class="headerlink" title="判别式分类"></a><strong>判别式分类</strong></h3><p>应用训练集直接对后验概率 $p(y\mid \mathbf{x})$ 进行学习的过程。</p>
-<p>有时，我们手中的数据不足以解决一般性问题，但是足够解决特定问题；后验概率（特定问题的解）可以由生成概率推出，但是生成概率（一般性问题的解）不能由后验概率得到，则判别式分类就是比生成式分类更好的机器学习方法。</p>
-<p>另一方面，在其他的一些问题中，我们可以获得一些数据生成概率的先验知识，这时，生成式分类就是更好的方法。</p>
-<hr>
+<script type="math/tex; mode=display">
+\mathbf{f_\theta}(\mathbf{x}) = \sum_{j1=1}^{b'} ... \sum_{jd=1}^{b'} \theta_{j1, ... , jd} \phi_{j1}(x^{(1)}) ... \phi_{jd}(x^{(d)})</script><p>以上三种线性模型的基函数与训练样本 ${(\mathbf{x}_i, y_i)}$ 均是无关的；</p>
+<p>即，<strong>基函数的选取完全依靠经验和猜测，训练样本并不提供基函数选择的参考</strong>。</p>
+<h2 id="2-2-核模型"><a href="#2-2-核模型" class="headerlink" title="2.2 核模型"></a>2.2 核模型</h2><p><strong>核模型</strong> 以二元核函数 $K(\mathbf{x},\mathbf{x}_j)$ 的线性组合的方式进行定义：</p>
+<script type="math/tex; mode=display">
+\mathbf{f_\theta}(\mathbf{x}) = \sum_{j=1}^n \theta_j K(\mathbf{x},\mathbf{x}_j)</script><p><strong>核模型的特点</strong> </p>
 <ul>
-<li>以包含参数 $\mathbf{\theta}$ 的模型 $q(\mathbf{x}, y; \mathbf{\theta})$ 为例。</li>
+<li><p>不同于线性模型，核模型的构建需要根据输入变量 $\mathbf{x}$ 进行决定；但是它不依赖于 $\mathbf{x}$ 的维数 $d$，而只由训练样本数 $n$ 决定。因此，即便输入维数 $d$ 很大，只要训练样本数 $n$ 不大，也在普通计算机的承受范围内；而即使训练样本数 $n$ 很大，只要输入样本 ${\mathbf{x}_i}$ 的部分集合 ${\mathbf{c}_j}$ 作为核均值来进行计算，计算负荷也可以很好的抑制。</p>
+</li>
+<li><p>核模型也是参数向量 $\mathbf{\theta} = (\theta_1, \theta_2, …, \theta_b)^\top$ 的线性形式，因此可以看作是基于参数的线性模型的特例。</p>
+</li>
+<li><p><strong>核映射方法</strong> 当输入样本 $x$ 不是向量的时候，核模型也可以很容易的实现扩展。在核模型中，输入样本 $x$ 只存在于核函数 $K(\mathbf{x},\mathbf{x}_j)$ 中，因此，只需对两个输入样本 $x$ 和 $x_j$ 相对应的核函数加以定义即可，而不用关心输入样本 $x$ 具体是什么。</p>
+</li>
 </ul>
-<h3 id="频率派"><a href="#频率派" class="headerlink" title="频率派"></a><strong>频率派</strong></h3><p>事物是服从一个参数未知、但固定的分布。</p>
-<p>将模式 $\mathbf{\theta}$ 作为决定论的变量，使用手头的训练样本 $\xi = {(\mathbf{x}_i, y_i)}$ 对模式 $\mathbf{\theta}$ 进行学习。如何由训练集 $\xi$ 得到高精度的模式 $\mathbf{\theta}$ 是主要的研究课题。</p>
-<p>在最大似然算法中，一般对生成训练集 $\xi$ 的最容易的方法所对应的模式 $\xi$ 进行学习：</p>
+<p><strong>高斯核函数</strong> 在众多核函数中，使用最为广泛：</p>
 <script type="math/tex; mode=display">
-\max \limits_ \theta \prod_{i=1}^y q(\mathbf{x}_i, y_i; \mathbf{\theta})</script><h3 id="贝叶斯派"><a href="#贝叶斯派" class="headerlink" title="贝叶斯派"></a><strong>贝叶斯派</strong></h3><p>事物是不确定的，人们只能找到最优（但是不可能准确）的概率分布。</p>
-<p>将模式 $\mathbf{\theta}$ 作为概率变量，对其先验概率 $p(\mathbf{\theta})$ 加以考虑，计算与训练集 $\xi$ 相对应的后验概率 $p(\mathbf{\theta} \mid \xi)$。如何精确计算后验概率是主要的研究课题。</p>
-<p>在贝叶斯估计中，可以使用先验概率 $p(\mathbf{\theta})$ 来求解后验概率 $p(\mathbf{\theta} \mid \xi)$：</p>
+K(\mathbf{x}, \mathbf{c}) = \exp(-\frac{\left \| \mathbf{x} - \mathbf{c} \right \|^2}{2h^2})</script><p>其中，$\left | \mathbf{x} - \mathbf{c} \right |^2$ 表示 $\mathbf{x} - \mathbf{c}$ 的 $l^2$ 范数，即，$\left | \mathbf{x} - \mathbf{c} \right |^2 = \sqrt{(\mathbf{x} - \mathbf{c})^\top (\mathbf{x} - \mathbf{c})}$；$h$ 和 $\mathbf{c}$ 分别对应于高斯核函数的带宽与均值。</p>
+<p>这样，核模型就变成了高斯核模型：</p>
 <script type="math/tex; mode=display">
-p(\mathbf{\theta} \mid \xi) = \frac{p(\xi \mid \mathbf{\theta})p(\mathbf{\theta})}{p(\xi)} = \frac{\prod_{i=1}^n q(\mathbf{x}_i, y_i \mid \mathbf{\theta})p(\mathbf{\theta})}{\int\prod_{i=1}^n q(\mathbf{x}_i, y_i \mid \mathbf{\theta})p(\mathbf{\theta}) d\mathbf{\theta}}</script><hr>
-<h3 id="本书主要讲解基于频率派的判别派机器学习算法。"><a href="#本书主要讲解基于频率派的判别派机器学习算法。" class="headerlink" title="本书主要讲解基于频率派的判别派机器学习算法。"></a>本书主要讲解基于<strong>频率派</strong>的<strong>判别派</strong>机器学习算法。</h3>
+\mathbf{f_\theta}(\mathbf{x}) = \sum_{i=1}^n \theta_i K(\mathbf{x},\mathbf{x}_i) = \sum_{i=1}^n \theta_i \exp(-\frac{\left \| \mathbf{x} - \mathbf{\mathbf{x}_i} \right \|^2}{2h^2})</script><p>对每个输入样本 ${\mathbf{x}_i}$ 进行高斯核配置，并把其高度 ${\mathbf{\theta}_i}$ 作为参数进行学习。</p>
+<p>因此，在高斯核模型中，一般只能在训练集的输入样本附近对函数进行近似，这也减轻了维数灾难。</p>
+<h2 id="2-3-层级模型"><a href="#2-3-层级模型" class="headerlink" title="2.3 层级模型"></a>2.3 层级模型</h2><p>以上的<strong>线性模型</strong>和<strong>核模型</strong>都是关于参数向量的线性函数，它们都是线性模型；如果学习模型是关于参数的非线性关系，那它就是<strong>非线性模型</strong>。其中最常用的是<strong>层级模型</strong>：</p>
+<script type="math/tex; mode=display">
+\mathbf{f_\theta}(\mathbf{x}) = \sum_{j=1}^b \alpha_j \phi(\mathbf{x};\beta_j)</script><p>其中，$\phi(\mathbf{x};\beta_j)$ 是基函数，其中含有参数向量 $\mathbf{\beta}$；$\mathbf{\alpha}$ 也是参数向量，所以层级模型可以被看作是基于 $\mathbf{\alpha}$ 的线性模型；同时，基函数中又含有参数向量 $\mathbf{\beta}$，所以也可以看作是基于 $\mathbf{\phi} = (\mathbf{\alpha}^\top, \mathbf{\beta}_1^\top, …, \mathbf{\beta}_b^\top)^\top$ 的非线性模型。</p>
+<p>同样，层级模型中的基函数选取也很多样，通常采用 S 函数或者高斯函数。</p>
+<ul>
+<li><strong>S 型函数</strong>模仿的是人类脑细胞的输入输出，也被称为人工神经网络模型。</li>
+</ul>
+<script type="math/tex; mode=display">
+\phi(\mathbf{x};\mathbf{\beta})_{S-func} = \frac{1}{1 + \exp (-\mathbf{x}^\top \mathbf{\omega} - \gamma)}, \qquad \mathbf{\beta} = (\mathbf{\omega}^\top, \gamma)^\top</script><ul>
+<li><strong>高斯函数</strong>与核模型中使用的高斯函数相同，但是这里的均值和带宽都是进行学习得到的。因此，层级模型一般比核模型能过更加灵活地对函数进行近似。</li>
+</ul>
+<script type="math/tex; mode=display">
+\phi(\mathbf{x};\mathbf{\beta})_{Gaussian-func} = \exp (- \frac{\left \| \mathbf{x} - \mathbf{c} \right \|^2}{2h^2}), \qquad \mathbf{\beta} = (\mathbf{c}^\top, h)^\top</script><p>层级模型地学习过程较艰难，常采用贝叶斯学习的方法或者从邻近输入样本的层级开始逐层进行无监督学习来初始化模型。</p>
+
             </article>
             <hr>
             <div>
@@ -259,9 +262,9 @@ p(\mathbf{\theta} \mid \xi) = \frac{p(\xi \mid \mathbf{\theta})p(\mathbf{\theta}
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E5%9B%BE%E8%A7%A3%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B/">
+                      <a href="/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%89%E7%AB%A0-%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E5%AD%A6%E4%B9%A0%E6%B3%95/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">【笔记】图解机器学习第二章 学习模型</span>
+                        <span class="hidden-mobile">【笔记】机器学习第三章 最小二乘学习法</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -269,8 +272,8 @@ p(\mathbf{\theta} \mid \xi) = \frac{p(\xi \mid \mathbf{\theta})p(\mathbf{\theta}
                   <div class="post-next col-6">
                     
                     
-                      <a href="/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E5%9B%BE%E5%83%8F%E8%B4%A8%E9%87%8F%E9%87%8F%E5%8C%96%E8%AF%84%E4%BC%B0%E7%BB%BC%E8%BF%B0/">
-                        <span class="hidden-mobile">【笔记】图像质量量化评估综述</span>
+                      <a href="/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%80%E7%AB%A0-%E4%BB%80%E4%B9%88%E6%98%AF%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">
+                        <span class="hidden-mobile">【笔记】机器学习第一章 什么是机器学习</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -429,7 +432,7 @@ p(\mathbf{\theta} \mid \xi) = \frac{p(\xi \mid \mathbf{\theta})p(\mathbf{\theta}
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "【笔记】图解机器学习第一章 什么是机器学习&nbsp;",
+        "【笔记】机器学习第二章 学习模型&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 40,
