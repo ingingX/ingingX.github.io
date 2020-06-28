@@ -4,6 +4,25 @@
   
   
   <entry>
+    <title>【笔记】机器学习第七章 基于最小二乘的分类</title>
+    <link href="/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%83%E7%AB%A0-%E5%9F%BA%E4%BA%8E%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E7%9A%84%E5%88%86%E7%B1%BB/"/>
+    <url>/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%83%E7%AB%A0-%E5%9F%BA%E4%BA%8E%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E7%9A%84%E5%88%86%E7%B1%BB/</url>
+    
+    <content type="html"><![CDATA[<h1 id="第七章-基于最小二乘法的分类"><a href="#第七章-基于最小二乘法的分类" class="headerlink" title="第七章 基于最小二乘法的分类"></a>第七章 基于最小二乘法的分类</h1><p>以<strong>2类别</strong>分类问题为例，研究机器学习在处理分类问题时的方法。</p><p>对于2分类问题，分类器的学习可以近似地定义为取值为 $+1$ 或 $-1$ 的二值函数问题。</p><h2 id="7-1-最小二乘分类"><a href="#7-1-最小二乘分类" class="headerlink" title="7.1 最小二乘分类"></a>7.1 最小二乘分类</h2><p>对于最简单的这样的二值函数问题，可以用最小二乘法。其过程与回归问题相同：</p><script type="math/tex; mode=display">\hat{\mathbf{\theta}} = \arg \min \limits_{\mathbf{\theta}} \frac{1}{2} \sum_{i=1}^n (f_{\mathbf{\theta}}(\mathbf{x}_i) - y_i)^2</script><p>模型输入 $x$ 所对应的类别 $y$ 的预测值 $\hat{y}$ 是由学习后输出结果的符号决定的：</p><script type="math/tex; mode=display">\hat{y} = sign(f_{\hat{\mathbf{\theta}}}(\mathbf{x})) = \left\{\begin{aligned}+1 \qquad f_{\hat{\mathbf{\theta}}}(\mathbf{x}) > 0 \\0 \qquad f_{\hat{\mathbf{\theta}}}(\mathbf{x}) = 0 \\-1 \qquad f_{\hat{\mathbf{\theta}}}(\mathbf{x}) < 0\end{aligned}\right.</script><p>其中 $f_{\hat{\mathbf{\theta}}}(\mathbf{x}) = 0$ 是指小概率事件。</p><p>当正负两类样本的模式都服从<strong>协方差矩阵相同的高斯分布</strong>时，分类器可以获得最佳的泛化能力。</p><h2 id="7-2-0-1-损失和间隔"><a href="#7-2-0-1-损失和间隔" class="headerlink" title="7.2 $0/1$ 损失和间隔"></a>7.2 $0/1$ 损失和间隔</h2><p>由于我们只用了输出结果的符号，而函数值本身并不重要，因此，如果应用 $0/1$ 损失可以获得更好的效果：</p><script type="math/tex; mode=display">\frac{1}{2} (1 - sign (f_{\mathbf{\theta}}(\mathbf{x})y))</script><p>即：</p><script type="math/tex; mode=display">\delta (sign(f_{\mathbf{\theta}}(\mathbf{x})) \neq y) =\left\{\begin{aligned}1 \qquad (sign(f_{\mathbf{\theta}}(\mathbf{x})) \neq y) \\0 \qquad (sign(f_{\mathbf{\theta}}(\mathbf{x})) = y)\end{aligned}\right.</script><p>当分类错误的时候，函数结果为 $1$；当分类正确的时候，函数结果为 $0$。这样，$0/1$ 损失就可以用来对错误分类的样本个数进行统计。</p><p>我们将 $m = f_{\mathbf{\theta}}(\mathbf{x})y$ 称为训练样本的间隔。当 $m &gt; 0$ 的时候，损失为 $0$（即分类正确）；$m \leq 0$ 的时候，损失为 $1$（即分类错误）。</p><p>$0/1$ 损失并不依赖 $m$ 的大小，只依赖于其正负，所以，$m$ 应尽可能取得更大的值，使得学习结果更加稳定。</p><p>然而 $0/1$ 损失很难计算，也就难以用它对学习能力和泛化性做出评估。实际中通常使用 $\ell_2$ 损失作为它的代理损失进行计算。</p><p>由于 $y \in {+1, -1}$，所以 $y^2 = 1$ 和 $1/y = y$ 成立，这样 $\ell_2$ 损失就可以变形成：</p><script type="math/tex; mode=display">r^2 = (y - f_{\mathbf{\theta}}(\mathbf{x}))^2 = (1 - f_{\mathbf{\theta}}(\mathbf{x})y)^2 = (1 - m)^2</script><p>其中，$m= f_{\mathbf{\theta}}(\mathbf{x})y$ 是训练样本的间隔。</p><p>$\ell_2$ 损失具有值越小越容易学习的特点；但是当 $m &gt;1$ 的时候，$\ell_2$ 损失有倾向正的可能，因此最终不会得到最小二乘的最优解。</p><p>较好的代理损失应当是间隔 $m$ 的单调非增函数，且当间隔 $m=0$ 时微分为负。后几章将会介绍其他较好的代理损失函数。</p><h2 id="7-3-多类别的情形"><a href="#7-3-多类别的情形" class="headerlink" title="7.3 多类别的情形"></a>7.3 多类别的情形</h2><p>以上两节我们介绍了2类别分类问题的最简单学习方法——基于最小二乘的分类。但是实际中分类的类别往往不止两个。这里，我们可以用两种方法扩展2类别分类方法为多类别分类方法。</p><ul><li>需要分类的类别有 $y = 1, 2, 3, …, c$</li></ul><h3 id="7-3-1-一对多法"><a href="#7-3-1-一对多法" class="headerlink" title="7.3.1 一对多法"></a>7.3.1 一对多法</h3><p>首先，将类别1设置为 $+1$，而其他所有类别， 即 $y = 2, 3, …, c$ 全部设置为 $-1$。这样，我们就把多类别分类转换化了2类别分类。训练得到第一个识别函数 $\hat{f}_1$。</p><p>这样将每一个分类转化为2分类问题并求其识别函数就可以得到 $\hat{f}_1, \hat{f}_2, …, \hat{f}_c$。</p><p>总的分类函数就是：</p><script type="math/tex; mode=display">\hat{y} = \arg \max \limits_{y = 1, 2, ..., c} \hat{f}_y(\mathbf{x})</script><p>即在一对多法中，从各个2类别的分类问题中训练得到的 $c$ 个识别函数 $\hat{f}_1, \hat{f}_2, …, \hat{f}_c$ 的输出，表示的是测试样本 $\mathbf{x}$ 属于类别 $y$ 的概率，概率最大的那个一就是测试样本 $\mathbf{x}$ 所属的类别。</p><h3 id="7-3-2-一对一法"><a href="#7-3-2-一对一法" class="headerlink" title="7.3.2 一对一法"></a>7.3.2 一对一法</h3><p>首先，对于所有的 $y, y’ = 1, 2, …, c$ ，在任意两类之间训练一个分类器，属于类别 $y$ 的标签为 $+1$，$y’$ 的标签为 $-1$。</p><p>这样就得到了 $c(c-1)/2$ 个识别函数 ${\hat{f}_{y, y’}(\mathbf{x})}$，用这些识别函数对样本进行预测，再用投票法决定最终的类别：</p><script type="math/tex; mode=display">sign(\hat{f}_{y, y'}(\mathbf{x})) = \left\{\begin{aligned}+ 1 \quad 投票给类别y \\- 1 \quad 投票给类别y'\end{aligned}\right.</script><p>的票最多的类别就是样本 $\mathbf{x}$ 所属的类别。</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>MachineLearning</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>【笔记】机器学习第四章 带有约束条件的最小二乘法</title>
     <link href="/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E5%B8%A6%E6%9C%89%E7%BA%A6%E6%9D%9F%E6%9D%A1%E4%BB%B6%E7%9A%84%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95/"/>
     <url>/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E5%B8%A6%E6%9C%89%E7%BA%A6%E6%9D%9F%E6%9D%A1%E4%BB%B6%E7%9A%84%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95/</url>
@@ -128,9 +147,9 @@
     
     <tags>
       
-      <tag>Hexo</tag>
-      
       <tag>draft</tag>
+      
+      <tag>Hexo</tag>
       
     </tags>
     
