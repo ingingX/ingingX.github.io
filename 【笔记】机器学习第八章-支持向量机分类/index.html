@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="IngingX">
+  <meta name="keywords" content="">
+  <title>【笔记】机器学习第八章 支持向量机分类 - IngingX Notesbook</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 4.2.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>IngingX Notesbook</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              首页</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              归档</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              标签</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/bg_gray.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-06-28 20:52">
+                    2020年6月28日 晚上
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    3.2k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    26
+                     分钟
+                  </span>
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  <span id="busuanzi_container_page_pv" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  Last updated：几秒前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h1 id="第八章-支持向量机分类"><a href="#第八章-支持向量机分类" class="headerlink" title="第八章 支持向量机分类"></a>第八章 支持向量机分类</h1><p>在最小二乘法分类中，由于 $0/1$ 损失的代理损失 $\ell_2$ 损失不是单调非增的，所以使用最小二乘法进行模式识别还是有很多情况找不到最优解。因此，本章介绍支持向量机分类，它是专门用于模式识别的机器学习算法。</p>
+<h2 id="8-1-间隔最大化分类"><a href="#8-1-间隔最大化分类" class="headerlink" title="8.1 间隔最大化分类"></a>8.1 间隔最大化分类</h2><ul>
+<li>支持向量机分类的数学原理。</li>
+</ul>
+<p>对于线性2分类问题：</p>
+<script type="math/tex; mode=display">
+f_{\omega,\gamma}(x) = \omega^\top x + \gamma</script><p>上式中 $\omega$ 为把正样本与负样本隔开的超平面法线，$\gamma$ 为截距。只要能够对各个训练样本的间隔 $m = f_{\omega, \gamma}(\mathbf{x}) y$ 为正时的 $\omega$ 和进行学习，就可以利用这个模型对所有训练样本 ${(\mathbf{x}, y)}$ 进行正确的分类，即得到：</p>
+<script type="math/tex; mode=display">
+(\mathbf{\omega}^\top \mathbf{x}_i + \gamma) > 0</script><p>但是在数学上难以对 $(\mathbf{\omega}^\top \mathbf{x}_i + \gamma) &gt; 0$ 这样的没有等号的开集约束条件进行处理，通过利用 $\omega$ 和 $\gamma$ 的值可以任意决定的性质，它可以变换为：</p>
+<script type="math/tex; mode=display">
+(\mathbf{\omega}^\top \mathbf{x}_i + \gamma) y_i \geq 1</script><p>当存在满足这样的条件的 $\omega$ 和 $\gamma$ 时，我们称这样的训练样本为线性可分的样本。</p>
+<p>对于线性可分的样本，可以把所有训练样本都正确分类的解有无数个。我们选取能够最充裕地把正负样本分离的超平面作为最优解。这个最充裕的概念是与正则化后的间隔的最大值相对应的：</p>
+<script type="math/tex; mode=display">
+\max \{\frac{(\mathbf{\omega}^\top \mathbf{x}_i + \gamma) y_i}{||\mathbf{\omega}||}\}_{i=1}^n = \frac{1}{||\mathbf{\omega}||}</script><p>从几何学上讲，间隔为两端的两个超平面 $\omega^\top x + \gamma = +1$ 和 $\omega^\top x + \gamma = -1$ 的间距的一半。</p>
+<p>使这个间隔最大的超平面所对应的分类器称为<strong>硬间隔支持向量机分类器</strong>：</p>
+<script type="math/tex; mode=display">
+\min \limits_{\omega, \gamma} \frac{1}{2} ||\omega||^2 \qquad 约束条件: (\omega^\top \mathbf{x}_i + \gamma) y_i \geq 1</script><p>硬间隔支持向量机分类器假定训练样本都是线性可分的，但是实际中这样的情况并不多见。因此，我们引入<strong>软间隔支持向量机分类器</strong>：</p>
+<script type="math/tex; mode=display">
+\min \limits_{\omega, \gamma, \xi} \frac{1}{2} ||\omega||^2 + C \sum_{i=1}^n \xi_i \quad 约束条件: (\omega^\top x_i + \gamma) y_i \geq 1- \xi_i, \quad \xi_i \geq 0</script><p>在软间隔支持向量机分类器中，间隔的计算出现少许误差是被允许的。式中，$C$ 是调整误差允许范围的参数；$C$ 越大，$\sum_{i=1}^n$ 越接近于 $0$，软间隔支持向量机分类器就越接近于硬间隔支持向量机分类器。</p>
+<ul>
+<li>以下所说的<strong>支持向量机</strong>都是指软间隔支持向量机分类器。</li>
+</ul>
+<h2 id="8-2-支持向量机分类的求解方法"><a href="#8-2-支持向量机分类的求解方法" class="headerlink" title="8.2 支持向量机分类的求解方法"></a>8.2 支持向量机分类的求解方法</h2><ul>
+<li>支持向量机分类器的最优化问题，是目标函数为二次函数、约束条件为线性的典型二次规划问题。</li>
+</ul>
+<h3 id="8-2-1-二次规划问题"><a href="#8-2-1-二次规划问题" class="headerlink" title="8.2.1 二次规划问题"></a>8.2.1 二次规划问题</h3><p>二次规划问题，是与矩阵 $F$、$G$ 以及向量 $f$、$g$ 相对应的由下式定义的最优化问题。</p>
+<script type="math/tex; mode=display">
+\min \limits_\theta [\frac{1}{2} \mathbf{\theta}^\top \mathbf{F} \mathbf{\theta} + f^\top \mathbf{\theta}] \qquad 约束条件: \mathbf{G \theta} \leq \mathbf{g}</script><p>这里，我们将不等式 $\mathbf{G \theta} \leq \mathbf{g}$ 分解，表示为各个元素的不等式：</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+  a \\
+  b
+\end{bmatrix} \leq
+\begin{bmatrix}
+  c \\
+  d
+\end{bmatrix} \Leftrightarrow
+\begin{cases}
+a \leq c \\
+b\leq d
+\end{cases}</script><p>假定矩阵 $F$ 是正定矩阵（当条件不充分，数值不稳定的时候，为 $F$ 的对角元素加上一个特别小的正值）。</p>
+<h3 id="8-2-2-支持向量机求解"><a href="#8-2-2-支持向量机求解" class="headerlink" title="8.2.2 支持向量机求解"></a>8.2.2 支持向量机求解</h3><p>最原始的 $d$ 维线性分类器 $f(\mathbf{x}) = \mathbf{\omega}^\top \mathbf{x} + \gamma$ 中只包含 $d+1$ 个 $\omega$ 和 $\gamma$ 变量，而最优化问题中还必须对松弛变量 $\xi$ 进行求解。因此，需要最优化的变量就增加为 $d + n +1$ 个。</p>
+<p>引入拉格朗如变量：</p>
+<script type="math/tex; mode=display">
+L(\omega, \gamma, \xi, \alpha, \beta) = \frac{1}{2} ||\omega||^2 + C\sum_{i=1}^n\xi_i - \sum_{i=1}^n\alpha_i((\omega^\top\mathbf{x}_i + \gamma)y_i - 1 + \xi_i) - \sum_{i=1}^n \beta_i \xi_i</script><p>并考虑其最优化问题的等价形式，即拉格朗日对偶问题：</p>
+<script type="math/tex; mode=display">
+\max \limits_{\alpha, \beta} \inf \limits_{\omega, \gamma, \xi} L(\omega, \gamma, \xi, \alpha, \beta) \qquad 约束条件: \alpha \geq 0, \beta \geq 0</script><p>根据 $\inf \limits_{\omega, \gamma, \xi} L(\omega, \gamma, \xi, \alpha, \beta)$ 的最优条件，可得：</p>
+<script type="math/tex; mode=display">
+\frac{\partial L}{\partial \omega} = 0 \Rightarrow \omega = \sum_{i=1}^n \alpha_i y_i \mathbf{x}_i</script><script type="math/tex; mode=display">
+\frac{\partial L}{\partial \gamma} = 0 \Rightarrow \sum_{i=1}^n \alpha_i y_i = 0</script><script type="math/tex; mode=display">
+\frac{\partial L}{\partial \xi_i} = 0 \Rightarrow \alpha_i + \beta_i = C</script><p>引入变量 $\alpha$，然后把 $\omega$ 以 $\omega = \sum_{i=1}^n \alpha_i y_i \mathbf{x}_i$ 的形式表示；<br>引入变量 $\beta$，使得 $\alpha_i + \beta_i = C$，并带入拉格朗日函数，就可以把松弛变量 $\xi$ 去掉了。</p>
+<p>这样，拉格朗日对偶问题就可以表示为：</p>
+<script type="math/tex; mode=display">
+\hat{\alpha} = \arg \max \limits_{\alpha} (\sum_{i=1}^n \alpha_i - \frac{1}{2} \sum_{i, j=1}^n \alpha_i \alpha_j y_i y_j x_i^\top x_j) \quad 约束条件: \sum_{i=1}^n \alpha_i y_i = 0, 0 \leq \alpha_i \leq C</script><p>这个最优化问题,利用只有 $n$ 个最优变量的二次规划问题实现了高效求解。</p>
+<h3 id="8-2-3-支持向量机分类器的解"><a href="#8-2-3-支持向量机分类器的解" class="headerlink" title="8.2.3 支持向量机分类器的解"></a>8.2.3 支持向量机分类器的解</h3><p>利用上述求解中引入的 $\alpha$ 变量，可以很简单的表示支持向量机分类器的解：</p>
+<script type="math/tex; mode=display">
+\hat{\omega} = \sum_{i=1}^n \hat{\alpha_i} y_i \mathbf{x}_i</script><p>截距的解 $\hat{\gamma}$，可以使用满足条件 $0 &lt; \hat{\alpha_i} &lt; C$ 的 $\mathbf{x}_i$ 表示：</p>
+<script type="math/tex; mode=display">
+\hat{\gamma} = y_i - \sum_{j: \hat{\alpha_i} > 0} \hat{\alpha_j} y_j \mathbf{x}_i^\top \mathbf{x}_j</script><h3 id="8-2-4-几点说明"><a href="#8-2-4-几点说明" class="headerlink" title="8.2.4 几点说明"></a>8.2.4 几点说明</h3><p>这里的求解过程并是不是最优的，对于如何求解一直是研究热点，也由许多能够对大规模数据进行快速求解的优秀软件，例如<strong>支持向量机SVM</strong>。</p>
+<p>支持向量机分类器是比最小二乘分类器更好的工具，但是它还不够好。因此，下面我们将扩展这个优秀的模型。</p>
+<h2 id="8-4-使用核映射的非线性模型"><a href="#8-4-使用核映射的非线性模型" class="headerlink" title="8.4 使用核映射的非线性模型"></a>8.4 使用核映射的非线性模型</h2><p>支持向量机分类器不仅可以用于<strong>线性可分模型</strong>的分类，对于<strong>非线性模型</strong>，经过扩展的支持向量机分类器也可以很好地分类。</p>
+<h3 id="8-4-1-基本思想"><a href="#8-4-1-基本思想" class="headerlink" title="8.4.1 基本思想"></a>8.4.1 基本思想</h3><p>首先，使用非线性函数 $\psi$，对训练输入样本 $\mathbf{x}$ 的特征空间进行描述；</p>
+<p>然后，对特征空间内的训练输入样本 $\psi(\mathbf{x})$，使用线性的支持向量机分类器。</p>
+<p>通过这样的方法，就可以得到在特征空间内的线性分类器，在原始的输入空间的非线性分类器。</p>
+<h3 id="8-4-2-特征空间的选择"><a href="#8-4-2-特征空间的选择" class="headerlink" title="8.4.2 特征空间的选择"></a>8.4.2 特征空间的选择</h3><p>如果选择比原始输入维数 $d$ 更高的空间作为特征空间，则训练样本的线性性更好，但是代价则是需要更大的计算量。</p>
+<h3 id="8-4-3-核映射方法"><a href="#8-4-3-核映射方法" class="headerlink" title="8.4.3 核映射方法"></a>8.4.3 核映射方法</h3><p>为了用更少的计算量得到更好的线性性，通常我们选择核映射的方法。</p>
+<p>在支持向量机分类器的学习算法中，训练输入样本只存在 $\mathbf{x}_i^\top \mathbf{x}_j = [\mathbf{x}_i, \mathbf{x}_j]$ 这种内积的形式。同样，在非线性的支持向量机分类器中，特征空间中的训练输入样本只存在 $[\psi(\mathbf{x}_i), \psi(\mathbf{x}_j)]$ 这种内积形式。</p>
+<p>这里，直接通过核函数 $K(x, x’) = (x^\top x’ + c)^p$ 定义内积 $[\psi(\mathbf{x}_i), \psi(\mathbf{x}_j)]$，而不需要明确知道特征变换 $\psi$ 是什么的方法，就称为<strong>核映射方法</strong>。</p>
+<p>通过核映射方法，如果核函数的值于特征空间的维数无关、相互独立的话，非线性支持向量机的全体学习时间就完全不依赖于特征空间的维数了。</p>
+<p>我们通常使用多项式核函数：</p>
+<script type="math/tex; mode=display">
+K(x, x') = (x^\top x' + c)^p</script><p>以及高斯核函数：</p>
+<script type="math/tex; mode=display">
+K(x, x') = \exp (- \frac{||x - x'||^2}{2h^2})</script><h3 id="8-4-4-核映射方法的扩展"><a href="#8-4-4-核映射方法的扩展" class="headerlink" title="8.4.4 核映射方法的扩展"></a>8.4.4 核映射方法的扩展</h3><p>这里介绍的核映射方法可以适用于任何只关注内积的算法，例如：聚类分析和降维。利用核映射方法，可以将线性算法轻松转换为非线性。</p>
+<h2 id="8-5-使用-Hinge-损失最小化学习来解释"><a href="#8-5-使用-Hinge-损失最小化学习来解释" class="headerlink" title="8.5 使用 Hinge 损失最小化学习来解释"></a>8.5 使用 Hinge 损失最小化学习来解释</h2><ul>
+<li>从最小二乘学习的观点出发，对支持向量机分类器进行推导。</li>
+</ul>
+<h3 id="8-5-1-Hinge损失"><a href="#8-5-1-Hinge损失" class="headerlink" title="8.5.1 Hinge损失"></a>8.5.1 Hinge损失</h3><p>之前我们使用了 $\ell_2$ 损失作为 $0/1$ 损失的代理损失解释了最小二乘分类，但是它并不是单调非增的，所以我们力求找到更好的代理损失。</p>
+<p>这里，我们使用 Hinge 损失来作为 $0/1$ 损失的代理损失：</p>
+<script type="math/tex; mode=display">
+\max\{0, 1-m\}</script><p>Hinge 损失，当 $m \geq 0$ 的时候，与 $0/1$ 损失相同，其损失为 $0$；当 $m &lt; 1$ 的时候，其损失为 $1-m &gt; 0$。这意味着当 Hinge 损失为正的时候，与 $m$ 相关的函数有倾向于负的趋势。</p>
+<h3 id="8-5-2-Hinge-损失最小化学习"><a href="#8-5-2-Hinge-损失最小化学习" class="headerlink" title="8.5.2 Hinge 损失最小化学习"></a>8.5.2 Hinge 损失最小化学习</h3><p>使于训练样本相关的 Hinge 损失达到最小，就是 Hinge 损失最小化学习。</p>
+<script type="math/tex; mode=display">
+\min \limits_\theta = \sum_{i=1}^n \max \{0, 1-m\}</script><p>对在核模型中引入了截距 $\gamma$ 的下式：</p>
+<script type="math/tex; mode=display">
+f_{\theta, \gamma}(x) = \sum_{j=1}^{n} \theta_j K(x, x_j) + \gamma</script><p>进行 Hinge 损失最小化学习，加入使用了核矩阵 $K_{i, j} = K(x_i, x_j)$ 的一般化 $\ell_2$ 的正则化项：</p>
+<script type="math/tex; mode=display">
+\min \limits_{\theta, \gamma}[C \sum_{i=1}^n \max\{0, 1-f_{\theta, \gamma}(x_i)y_i\} + \frac{1}{2}\sum_{i,j=1}^n \theta_i \theta_j K(x_i, x_j)]</script><p>这里，为了与支持向量机分类器相对应，式中没有使用 $\gamma$ 作为正则化参数，而使用了其倒数 $C = \frac{1}{\gamma}$。</p>
+<p>如图所示，Hinge 损失与 $0$ 和 $1 - m$ 中较大的一个对应：</p>
+<script type="math/tex; mode=display">
+\max \{0, 1-m\} = \min \limits_\xi \xi \qquad 约束条件: \xi \geq 1-m, \xi \geq 0</script><p>通过引入虚拟变量 $\xi$，正则化 Hinge 损失最小化学习的最优化问题可以表示为：</p>
+<script type="math/tex; mode=display">
+\min \limits_{\theta, \gamma, \xi}[C \sum_{i=1}^n\xi_i + \frac{1}{2}\sum_{i,j=1}^n \theta_i \theta_j K(x_i, x_j)] \quad 约束条件: \xi_i \geq 1-f_{\theta, \gamma}(x_i)y_i, \quad \xi_i \geq 0</script><p>对比支持向量机分类器的最优化问题：</p>
+<script type="math/tex; mode=display">
+\min \limits_{\omega, \gamma, \xi} \frac{1}{2} ||\omega||^2 + C \sum_{i=1}^n \xi_i \quad 约束条件: (\omega^\top x_i + \gamma) y_i \geq 1- \xi_i, \quad \xi_i \geq 0</script><p>设 $\omega = \sum_{j=1}^n \theta_j \psi(x_j)$，如果利用条件 $\psi(x_i)^\top \psi(x_j) = K(x_i, x_j)$ 的话，支持向量机分类器可以用一般化 $\ell_2$ 约束的 Hinge 损失最小化学习来解释。</p>
+<h2 id="8-6-使用-Ramp-损失的鲁棒学习"><a href="#8-6-使用-Ramp-损失的鲁棒学习" class="headerlink" title="8.6 使用 Ramp 损失的鲁棒学习"></a>8.6 使用 Ramp 损失的鲁棒学习</h2><h3 id="8-6-1-支持向量机的不足"><a href="#8-6-1-支持向量机的不足" class="headerlink" title="8.6.1 支持向量机的不足"></a>8.6.1 支持向量机的不足</h3><p>上一节介绍的 Hinge 损失是没有上界的。因此，当间隔为比较大的复数值时，损失会变得很大。所以在训练样本中包含这样的异常值时，支持向量机分类器非常容易受到影响。</p>
+<h3 id="8-6-2-Ramp-损失"><a href="#8-6-2-Ramp-损失" class="headerlink" title="8.6.2 Ramp 损失"></a>8.6.2 Ramp 损失</h3><p>通过使用拥有上界的损失函数可以增强学习的鲁棒性。我们可以构造这样的函数：</p>
+<script type="math/tex; mode=display">
+\min \{1, \max(0, 1-m)\} = 
+\begin{cases}
+1 & m < 0\\
+1 - m & 0 \leq m \leq 1\\
+o & m>1
+\end{cases}</script><p>称为 Ramp 损失函数，来提升机器学习的鲁棒性。</p>
+<p>Ramp 损失实际上是 Hinge 损失的左侧以范围为 $1$ 做截断的损失。</p>
+<p>因为 Ramp 损失有边界，所以使用 Ramp 损失的 Ramp 损失最小化学习为：</p>
+<script type="math/tex; mode=display">
+\min \limits_\theta \sum _{i=1}^n \min \{1, \max(0, 1-m)\}</script><h3 id="8-6-3-Ramp-损失的求解"><a href="#8-6-3-Ramp-损失的求解" class="headerlink" title="8.6.3 Ramp 损失的求解"></a>8.6.3 Ramp 损失的求解</h3><p>可以发现，Ramp 损失是非凸函数，因此很难求其全局最优解，只能求其局部最优解。</p>
+<p>首先，使用下式：</p>
+<script type="math/tex; mode=display">
+v = m + \min \{1, \max (0, 1-m)\}</script><p>将 Ramp 损失变形为：</p>
+<script type="math/tex; mode=display">
+\min \{1, \max (0, 1-m)\} = |v - m|</script><p>这样，如果 $\ell_1$ 损失最小化学习的间隔 $m$ 与输出值 $v$ 相吻合的话，Ramp 损失就可以达到极值：</p>
+<script type="math/tex; mode=display">
+\min \limits_\theta \sum_{i=1}^n |v_i - m_i|</script><p>当间隔 $m &gt; 1$ 时，可以对所有样本正确分类，因此输出值 $v$ 应该设定为间隔 $m$ 的值，使 $m$ 不变；当 $m \leq 0$ 时，有些样本会被错误分类，因此 $v$ 应当设定为较 $m$ 稍大的值，即 $v = m + 1$，这样间隔就会变大；当 $0 &lt; m \leq 1$ 时，虽然也可以正确分类，但是还是把 $v$ 设定为较 $m$ 稍大的值，即 $v=1$，以保证间隔足够大。</p>
+<p>我们可以发现，输出值 $v$ 中包含有间隔 $m$，所以很难直接求解。通常，我们使用<strong>反复迭算法</strong>求解 $v$。</p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/MachineLearning/">MachineLearning</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%83%E7%AB%A0-%E5%9F%BA%E4%BA%8E%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E7%9A%84%E5%88%86%E7%B1%BB/">
+                        <span class="hidden-mobile">【笔记】机器学习第七章 基于最小二乘的分类</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      framed on <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>, 
+      based on <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>, modified by  <a href="https://github.com/ingingX" target="_blank" rel="nofollow noopener">
+        <span>ingingX</span></a>
+    </div>
+    
+  <div>
+    
+      <!-- 不蒜子统计PV -->
+      
+      <span id="busuanzi_container_site_pv" style="display: none">
+      总访问量 <span id="busuanzi_value_site_pv"></span> 次
+    </span>
+    
+    
+      <!-- 不蒜子统计UV -->
+      
+      <span id="busuanzi_container_site_uv" style="display: none">
+      总访客数 <span id="busuanzi_value_site_uv"></span> 人
+    </span>
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 6,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "【笔记】机器学习第八章 支持向量机分类&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 40,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+  
+  
+    <script>
+      !function (e, t, a) {
+        function r() {
+          for (var e = 0; e < s.length; e++) s[e].alpha <= 0 ? (t.body.removeChild(s[e].el), s.splice(e, 1)) : (s[e].y--, s[e].scale += .004, s[e].alpha -= .013, s[e].el.style.cssText = "left:" + s[e].x + "px;top:" + s[e].y + "px;opacity:" + s[e].alpha + ";transform:scale(" + s[e].scale + "," + s[e].scale + ") rotate(45deg);background:" + s[e].color + ";z-index:99999");
+          requestAnimationFrame(r)
+        }
+
+        function n() {
+          var t = "function" == typeof e.onclick && e.onclick;
+          e.onclick = function (e) {
+            t && t(), o(e)
+          }
+        }
+
+        function o(e) {
+          var a = t.createElement("div");
+          a.className = "heart", s.push({
+            el: a,
+            x: e.clientX - 5,
+            y: e.clientY - 5,
+            scale: 1,
+            alpha: 1,
+            color: c()
+          }), t.body.appendChild(a)
+        }
+
+        function i(e) {
+          var a = t.createElement("style");
+          a.type = "text/css";
+          try {
+            a.appendChild(t.createTextNode(e))
+          } catch (t) {
+            a.styleSheet.cssText = e
+          }
+          t.getElementsByTagName("head")[0].appendChild(a)
+        }
+
+        function c() {
+          return "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")"
+        }
+
+        var s = [];
+        e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || e.oRequestAnimationFrame || e.msRequestAnimationFrame || function (e) {
+          setTimeout(e, 1e3 / 60)
+        }, i(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"), n(), r()
+      }(window, document);
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
