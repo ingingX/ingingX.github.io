@@ -183,7 +183,7 @@
             
               <p class="note note-info">
                 
-                  Last updated：几秒前
+                  Last updated：7 分钟前
                 
               </p>
             
@@ -194,19 +194,24 @@
 </ul>
 <p>对于线性2分类问题：</p>
 <script type="math/tex; mode=display">
-f_{\omega,\gamma}(x) = \omega^\top x + \gamma</script><p>上式中 $\omega$ 为把正样本与负样本隔开的超平面法线，$\gamma$ 为截距。只要能够对各个训练样本的间隔 $m = f_{\omega, \gamma}(\mathbf{x}) y$ 为正时的 $\omega$ 和进行学习，就可以利用这个模型对所有训练样本 ${(\mathbf{x}, y)}$ 进行正确的分类，即得到：</p>
+f_{\omega,\gamma}(x) = \omega^\top x + \gamma</script><p>上式中 $\omega$ 为把正样本与负样本隔开的超平面法线，$\gamma$ 为截距：</p>
+<p><img src="/image/8-1.jpg" srcset="/img/loading.gif" alt=""></p>
+<p>只要能够对各个训练样本的间隔 $m = f_{\omega, \gamma}(\mathbf{x}) y$ 为正时的 $\omega$ 和进行学习，就可以利用这个模型对所有训练样本 ${(\mathbf{x}, y)}$ 进行正确的分类，即得到：</p>
 <script type="math/tex; mode=display">
 (\mathbf{\omega}^\top \mathbf{x}_i + \gamma) > 0</script><p>但是在数学上难以对 $(\mathbf{\omega}^\top \mathbf{x}_i + \gamma) &gt; 0$ 这样的没有等号的开集约束条件进行处理，通过利用 $\omega$ 和 $\gamma$ 的值可以任意决定的性质，它可以变换为：</p>
 <script type="math/tex; mode=display">
 (\mathbf{\omega}^\top \mathbf{x}_i + \gamma) y_i \geq 1</script><p>当存在满足这样的条件的 $\omega$ 和 $\gamma$ 时，我们称这样的训练样本为线性可分的样本。</p>
 <p>对于线性可分的样本，可以把所有训练样本都正确分类的解有无数个。我们选取能够最充裕地把正负样本分离的超平面作为最优解。这个最充裕的概念是与正则化后的间隔的最大值相对应的：</p>
 <script type="math/tex; mode=display">
-\max \{\frac{(\mathbf{\omega}^\top \mathbf{x}_i + \gamma) y_i}{||\mathbf{\omega}||}\}_{i=1}^n = \frac{1}{||\mathbf{\omega}||}</script><p>从几何学上讲，间隔为两端的两个超平面 $\omega^\top x + \gamma = +1$ 和 $\omega^\top x + \gamma = -1$ 的间距的一半。</p>
+\max \{\frac{(\mathbf{\omega}^\top \mathbf{x}_i + \gamma) y_i}{||\mathbf{\omega}||}\}_{i=1}^n = \frac{1}{||\mathbf{\omega}||}</script><p><img src="/image/8-2.jpg" srcset="/img/loading.gif" alt=""></p>
+<p>从几何学上讲，间隔为两端的两个超平面 $\omega^\top x + \gamma = +1$ 和 $\omega^\top x + \gamma = -1$ 的间距的一半。</p>
 <p>使这个间隔最大的超平面所对应的分类器称为<strong>硬间隔支持向量机分类器</strong>：</p>
 <script type="math/tex; mode=display">
-\min \limits_{\omega, \gamma} \frac{1}{2} ||\omega||^2 \qquad 约束条件: (\omega^\top \mathbf{x}_i + \gamma) y_i \geq 1</script><p>硬间隔支持向量机分类器假定训练样本都是线性可分的，但是实际中这样的情况并不多见。因此，我们引入<strong>软间隔支持向量机分类器</strong>：</p>
+\min \limits_{\omega, \gamma} \frac{1}{2} ||\omega||^2 \qquad 约束条件: (\omega^\top \mathbf{x}_i + \gamma) y_i \geq 1</script><p><img src="/image/8-3.jpg" srcset="/img/loading.gif" alt=""></p>
+<p>硬间隔支持向量机分类器假定训练样本都是线性可分的，但是实际中这样的情况并不多见。因此，我们引入<strong>软间隔支持向量机分类器</strong>：</p>
 <script type="math/tex; mode=display">
-\min \limits_{\omega, \gamma, \xi} \frac{1}{2} ||\omega||^2 + C \sum_{i=1}^n \xi_i \quad 约束条件: (\omega^\top x_i + \gamma) y_i \geq 1- \xi_i, \quad \xi_i \geq 0</script><p>在软间隔支持向量机分类器中，间隔的计算出现少许误差是被允许的。式中，$C$ 是调整误差允许范围的参数；$C$ 越大，$\sum_{i=1}^n$ 越接近于 $0$，软间隔支持向量机分类器就越接近于硬间隔支持向量机分类器。</p>
+\min \limits_{\omega, \gamma, \xi} \frac{1}{2} ||\omega||^2 + C \sum_{i=1}^n \xi_i \quad 约束条件: (\omega^\top x_i + \gamma) y_i \geq 1- \xi_i, \quad \xi_i \geq 0</script><p><img src="/image/8-4.jpg" srcset="/img/loading.gif" alt=""></p>
+<p>在软间隔支持向量机分类器中，间隔的计算出现少许误差是被允许的。式中，$C$ 是调整误差允许范围的参数；$C$ 越大，$\sum_{i=1}^n$ 越接近于 $0$，软间隔支持向量机分类器就越接近于硬间隔支持向量机分类器。</p>
 <ul>
 <li>以下所说的<strong>支持向量机</strong>都是指软间隔支持向量机分类器。</li>
 </ul>
@@ -249,7 +254,8 @@ L(\omega, \gamma, \xi, \alpha, \beta) = \frac{1}{2} ||\omega||^2 + C\sum_{i=1}^n
 \hat{\gamma} = y_i - \sum_{j: \hat{\alpha_i} > 0} \hat{\alpha_j} y_j \mathbf{x}_i^\top \mathbf{x}_j</script><h3 id="8-2-4-几点说明"><a href="#8-2-4-几点说明" class="headerlink" title="8.2.4 几点说明"></a>8.2.4 几点说明</h3><p>这里的求解过程并是不是最优的，对于如何求解一直是研究热点，也由许多能够对大规模数据进行快速求解的优秀软件，例如<strong>支持向量机SVM</strong>。</p>
 <p>支持向量机分类器是比最小二乘分类器更好的工具，但是它还不够好。因此，下面我们将扩展这个优秀的模型。</p>
 <h2 id="8-4-使用核映射的非线性模型"><a href="#8-4-使用核映射的非线性模型" class="headerlink" title="8.4 使用核映射的非线性模型"></a>8.4 使用核映射的非线性模型</h2><p>支持向量机分类器不仅可以用于<strong>线性可分模型</strong>的分类，对于<strong>非线性模型</strong>，经过扩展的支持向量机分类器也可以很好地分类。</p>
-<h3 id="8-4-1-基本思想"><a href="#8-4-1-基本思想" class="headerlink" title="8.4.1 基本思想"></a>8.4.1 基本思想</h3><p>首先，使用非线性函数 $\psi$，对训练输入样本 $\mathbf{x}$ 的特征空间进行描述；</p>
+<h3 id="8-4-1-基本思想"><a href="#8-4-1-基本思想" class="headerlink" title="8.4.1 基本思想"></a>8.4.1 基本思想</h3><p>首先，使用非线性函数 $\psi$，对训练输入样本 $\mathbf{x}$ 的特征空间进行描述：</p>
+<p><img src="/image/8-9.jpg" srcset="/img/loading.gif" alt=""></p>
 <p>然后，对特征空间内的训练输入样本 $\psi(\mathbf{x})$，使用线性的支持向量机分类器。</p>
 <p>通过这样的方法，就可以得到在特征空间内的线性分类器，在原始的输入空间的非线性分类器。</p>
 <h3 id="8-4-2-特征空间的选择"><a href="#8-4-2-特征空间的选择" class="headerlink" title="8.4.2 特征空间的选择"></a>8.4.2 特征空间的选择</h3><p>如果选择比原始输入维数 $d$ 更高的空间作为特征空间，则训练样本的线性性更好，但是代价则是需要更大的计算量。</p>
@@ -269,6 +275,7 @@ K(x, x') = \exp (- \frac{||x - x'||^2}{2h^2})</script><h3 id="8-4-4-核映射方
 <p>这里，我们使用 Hinge 损失来作为 $0/1$ 损失的代理损失：</p>
 <script type="math/tex; mode=display">
 \max\{0, 1-m\}</script><p>Hinge 损失，当 $m \geq 0$ 的时候，与 $0/1$ 损失相同，其损失为 $0$；当 $m &lt; 1$ 的时候，其损失为 $1-m &gt; 0$。这意味着当 Hinge 损失为正的时候，与 $m$ 相关的函数有倾向于负的趋势。</p>
+<p><img src="/image/8-11.jpg" srcset="/img/loading.gif" alt=""></p>
 <h3 id="8-5-2-Hinge-损失最小化学习"><a href="#8-5-2-Hinge-损失最小化学习" class="headerlink" title="8.5.2 Hinge 损失最小化学习"></a>8.5.2 Hinge 损失最小化学习</h3><p>使于训练样本相关的 Hinge 损失达到最小，就是 Hinge 损失最小化学习。</p>
 <script type="math/tex; mode=display">
 \min \limits_\theta = \sum_{i=1}^n \max \{0, 1-m\}</script><p>对在核模型中引入了截距 $\gamma$ 的下式：</p>
@@ -278,12 +285,14 @@ f_{\theta, \gamma}(x) = \sum_{j=1}^{n} \theta_j K(x, x_j) + \gamma</script><p>�
 \min \limits_{\theta, \gamma}[C \sum_{i=1}^n \max\{0, 1-f_{\theta, \gamma}(x_i)y_i\} + \frac{1}{2}\sum_{i,j=1}^n \theta_i \theta_j K(x_i, x_j)]</script><p>这里，为了与支持向量机分类器相对应，式中没有使用 $\gamma$ 作为正则化参数，而使用了其倒数 $C = \frac{1}{\gamma}$。</p>
 <p>如图所示，Hinge 损失与 $0$ 和 $1 - m$ 中较大的一个对应：</p>
 <script type="math/tex; mode=display">
-\max \{0, 1-m\} = \min \limits_\xi \xi \qquad 约束条件: \xi \geq 1-m, \xi \geq 0</script><p>通过引入虚拟变量 $\xi$，正则化 Hinge 损失最小化学习的最优化问题可以表示为：</p>
+\max \{0, 1-m\} = \min \limits_\xi \xi \qquad 约束条件: \xi \geq 1-m, \xi \geq 0</script><p><img src="/image/8-13.jpg" srcset="/img/loading.gif" alt=""></p>
+<p>通过引入虚拟变量 $\xi$，正则化 Hinge 损失最小化学习的最优化问题可以表示为：</p>
 <script type="math/tex; mode=display">
 \min \limits_{\theta, \gamma, \xi}[C \sum_{i=1}^n\xi_i + \frac{1}{2}\sum_{i,j=1}^n \theta_i \theta_j K(x_i, x_j)] \quad 约束条件: \xi_i \geq 1-f_{\theta, \gamma}(x_i)y_i, \quad \xi_i \geq 0</script><p>对比支持向量机分类器的最优化问题：</p>
 <script type="math/tex; mode=display">
 \min \limits_{\omega, \gamma, \xi} \frac{1}{2} ||\omega||^2 + C \sum_{i=1}^n \xi_i \quad 约束条件: (\omega^\top x_i + \gamma) y_i \geq 1- \xi_i, \quad \xi_i \geq 0</script><p>设 $\omega = \sum_{j=1}^n \theta_j \psi(x_j)$，如果利用条件 $\psi(x_i)^\top \psi(x_j) = K(x_i, x_j)$ 的话，支持向量机分类器可以用一般化 $\ell_2$ 约束的 Hinge 损失最小化学习来解释。</p>
-<h2 id="8-6-使用-Ramp-损失的鲁棒学习"><a href="#8-6-使用-Ramp-损失的鲁棒学习" class="headerlink" title="8.6 使用 Ramp 损失的鲁棒学习"></a>8.6 使用 Ramp 损失的鲁棒学习</h2><h3 id="8-6-1-支持向量机的不足"><a href="#8-6-1-支持向量机的不足" class="headerlink" title="8.6.1 支持向量机的不足"></a>8.6.1 支持向量机的不足</h3><p>上一节介绍的 Hinge 损失是没有上界的。因此，当间隔为比较大的复数值时，损失会变得很大。所以在训练样本中包含这样的异常值时，支持向量机分类器非常容易受到影响。</p>
+<h2 id="8-6-使用-Ramp-损失的鲁棒学习"><a href="#8-6-使用-Ramp-损失的鲁棒学习" class="headerlink" title="8.6 使用 Ramp 损失的鲁棒学习"></a>8.6 使用 Ramp 损失的鲁棒学习</h2><h3 id="8-6-1-支持向量机的不足"><a href="#8-6-1-支持向量机的不足" class="headerlink" title="8.6.1 支持向量机的不足"></a>8.6.1 支持向量机的不足</h3><p>上一节介绍的 Hinge 损失是没有上界的。因此，当间隔为比较大的复数值时，损失会变得很大。所以在训练样本中包含这样的异常值时，支持向量机分类器非常容易受到影响：</p>
+<p><img src="/image/8-14.jpg" srcset="/img/loading.gif" alt=""></p>
 <h3 id="8-6-2-Ramp-损失"><a href="#8-6-2-Ramp-损失" class="headerlink" title="8.6.2 Ramp 损失"></a>8.6.2 Ramp 损失</h3><p>通过使用拥有上界的损失函数可以增强学习的鲁棒性。我们可以构造这样的函数：</p>
 <script type="math/tex; mode=display">
 \min \{1, \max(0, 1-m)\} = 
@@ -292,6 +301,7 @@ f_{\theta, \gamma}(x) = \sum_{j=1}^{n} \theta_j K(x, x_j) + \gamma</script><p>�
 1 - m & 0 \leq m \leq 1\\
 o & m>1
 \end{cases}</script><p>称为 Ramp 损失函数，来提升机器学习的鲁棒性。</p>
+<p><img src="/image/8-15.jpg" srcset="/img/loading.gif" alt=""></p>
 <p>Ramp 损失实际上是 Hinge 损失的左侧以范围为 $1$ 做截断的损失。</p>
 <p>因为 Ramp 损失有边界，所以使用 Ramp 损失的 Ramp 损失最小化学习为：</p>
 <script type="math/tex; mode=display">
@@ -303,6 +313,7 @@ v = m + \min \{1, \max (0, 1-m)\}</script><p>将 Ramp 损失变形为：</p>
 \min \{1, \max (0, 1-m)\} = |v - m|</script><p>这样，如果 $\ell_1$ 损失最小化学习的间隔 $m$ 与输出值 $v$ 相吻合的话，Ramp 损失就可以达到极值：</p>
 <script type="math/tex; mode=display">
 \min \limits_\theta \sum_{i=1}^n |v_i - m_i|</script><p>当间隔 $m &gt; 1$ 时，可以对所有样本正确分类，因此输出值 $v$ 应该设定为间隔 $m$ 的值，使 $m$ 不变；当 $m \leq 0$ 时，有些样本会被错误分类，因此 $v$ 应当设定为较 $m$ 稍大的值，即 $v = m + 1$，这样间隔就会变大；当 $0 &lt; m \leq 1$ 时，虽然也可以正确分类，但是还是把 $v$ 设定为较 $m$ 稍大的值，即 $v=1$，以保证间隔足够大。</p>
+<p><img src="/image/8-17.jpg" srcset="/img/loading.gif" alt=""></p>
 <p>我们可以发现，输出值 $v$ 中包含有间隔 $m$，所以很难直接求解。通常，我们使用<strong>反复迭算法</strong>求解 $v$。</p>
 
             </article>
@@ -326,6 +337,12 @@ v = m + \min \{1, \max (0, 1-m)\}</script><p>将 Ramp 损失变形为：</p>
                 <div class="post-prevnext row">
                   <div class="post-prev col-6">
                     
+                    
+                      <a href="/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B9%9D%E7%AB%A0-%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【笔记】机器学习第九章 集成学习</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </div>
                   <div class="post-next col-6">

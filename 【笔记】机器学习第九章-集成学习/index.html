@@ -19,7 +19,7 @@
   <meta name="description" content="">
   <meta name="author" content="IngingX">
   <meta name="keywords" content="">
-  <title>【笔记】机器学习第二章 学习模型 - IngingX Notesbook</title>
+  <title>【笔记】机器学习第九章 集成学习 - IngingX Notesbook</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
@@ -125,8 +125,8 @@
               
                 <div class="mt-3 post-meta">
                   <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-                  <time datetime="2020-06-09 11:45">
-                    2020年6月9日 中午
+                  <time datetime="2020-07-17 13:28">
+                    2020年7月17日 下午
                   </time>
                 </div>
               
@@ -136,7 +136,7 @@
                   
                   <span class="post-meta mr-2">
                     <i class="iconfont icon-chart"></i>
-                    1.6k 字
+                    1.9k 字
                   </span>
                 
 
@@ -146,7 +146,7 @@
                       <i class="iconfont icon-clock-fill"></i>
                     
                     
-                    13
+                    15
                      分钟
                   </span>
                 
@@ -183,62 +183,106 @@
             
               <p class="note note-info">
                 
-                  Last updated：1 个月前
+                  Last updated：1 分钟前
                 
               </p>
             
             <article class="markdown-body">
-              <h1 id="第二章-学习模型"><a href="#第二章-学习模型" class="headerlink" title="第二章 学习模型"></a>第二章 学习模型</h1><h2 id="2-1-线性模型"><a href="#2-1-线性模型" class="headerlink" title="2.1 线性模型"></a>2.1 线性模型</h2><p><strong>最简单的线性模型</strong> 输入是一维时，学习对象函数 $f = \theta \times x$，$\theta$ 表示模型的参数。这个模型只能表示线性的输入输出，在实际应用中没有很大价值。</p>
-<p><strong>基于参数的线性模型</strong> 对最简单的线性模型进行扩展：</p>
-<p>将一维的输入 $x$ 扩展为 $b$ 个基函数向量 $\mathbf{\phi} (x) = (\phi_1(x), \phi_2(x), …, \phi_b (x))^\top$；</p>
-<p>将参数 $\theta$ 扩展为 $b$ 维参数向量 $\mathbf{\theta} = (\theta_1, \theta_2, …, \theta_b)^\top$；</p>
-<p>就可以将简单的线性模型扩展为：</p>
-<script type="math/tex; mode=display">
-\mathbf{f_\theta}(x) = \sum_{j=1}^b \theta_j \phi_j(x) = \mathbf{\theta}^\top \mathbf{\phi}(x)</script><p>这时，该模型任然是基于参数向量 $\mathbf{\theta}$ 的线性形式。</p>
-<p>当基函数 $\mathbf{\phi}(x)$ 变为多项式形式 $\mathbf{\phi}(x) = (1, x, x^2, …, x^{b-1})^\top$ 或 $b = 2m +1$ 的三角多项式形式 $\mathbf{\phi}(x) = (1, \sin x, \cos x, \sin 2x, \cos 2x, …, \sin mx, \cos mx)^\top$ 时，该线性模型就可以表示复杂的非线性模型了。</p>
-<p><strong>基于参数的多维线性模型</strong> 在<strong>基于参数的线性模型</strong>中， 如果将输入 $x$ 继续扩展为 $d$ 维向量形式 $\mathbf{x} = (x^{(1)}, x^{(2)}, …, x^{(d)})^\top$ 则可以得到更复杂的多维模型：</p>
-<script type="math/tex; mode=display">
-\mathbf{f_\theta}(\mathbf{x}) = \sum_{j=1}^b \theta_j \phi_j(\mathbf{x}) = \mathbf{\theta}^\top \mathbf{\phi}(\mathbf{x})</script><ul>
-<li><strong>加法模型</strong> 把一维基函数作为因子，通过多个一维基函数相加而获得多维基函数的方法；它的所有参数个数是 $b’d$ 只会随者输入维数 $d$ 呈线性增长；所需算力更小，但是它的表现力更差。</li>
-</ul>
-<script type="math/tex; mode=display">
-\mathbf{f_\theta}(\mathbf{x}) = \sum_{k=1}^d \sum_{j=1}^{b'} \theta_{k, j} \phi_j(\mathbf{x^{(k)}})</script><ul>
-<li><strong>乘法模型</strong> 把一维基函数作为因子，通过多个一维基函数相乘而获得多维基函数的方法；它的所有参数个数是 $(b’)^d$， 会随者输入维数 $d$ 呈指数增长；它的表现力更强，但是所需算力更大。</li>
-</ul>
-<script type="math/tex; mode=display">
-\mathbf{f_\theta}(\mathbf{x}) = \sum_{j1=1}^{b'} ... \sum_{jd=1}^{b'} \theta_{j1, ... , jd} \phi_{j1}(x^{(1)}) ... \phi_{jd}(x^{(d)})</script><p>以上三种线性模型的基函数与训练样本 ${(\mathbf{x}_i, y_i)}$ 均是无关的；</p>
-<p>即，<strong>基函数的选取完全依靠经验和猜测，训练样本并不提供基函数选择的参考</strong>。</p>
-<h2 id="2-2-核模型"><a href="#2-2-核模型" class="headerlink" title="2.2 核模型"></a>2.2 核模型</h2><p><strong>核模型</strong> 以二元核函数 $K(\mathbf{x},\mathbf{x}_j)$ 的线性组合的方式进行定义：</p>
-<script type="math/tex; mode=display">
-\mathbf{f_\theta}(\mathbf{x}) = \sum_{j=1}^n \theta_j K(\mathbf{x},\mathbf{x}_j)</script><p><strong>核模型的特点</strong> </p>
-<ul>
-<li><p>不同于线性模型，核模型的构建需要根据输入变量 $\mathbf{x}$ 进行决定；但是它不依赖于 $\mathbf{x}$ 的维数 $d$，而只由训练样本数 $n$ 决定。因此，即便输入维数 $d$ 很大，只要训练样本数 $n$ 不大，也在普通计算机的承受范围内；而即使训练样本数 $n$ 很大，只要输入样本 ${\mathbf{x}_i}$ 的部分集合 ${\mathbf{c}_j}$ 作为核均值来进行计算，计算负荷也可以很好的抑制。</p>
+              <h1 id="第九章-集成分类"><a href="#第九章-集成分类" class="headerlink" title="第九章 集成分类"></a>第九章 集成分类</h1><p>集成学习（Ensemble）是指把性能较低的多种弱学习器通过适当的组合而形成高性能的强学习器的方法。</p>
+<p>这里的弱学习器称为 <strong>剪枝分类器</strong>。通过组合多个剪枝分类器，我们可以得到高性能的分类器，而组合方法的不同我们又可以将学习方法分为：<strong>Bagging学习法</strong> 和 <strong>Boosting学习法</strong>。</p>
+<p><img src="/image/9-2.jpg" srcset="/img/loading.gif" alt=""></p>
+<h2 id="9-1-剪枝分类"><a href="#9-1-剪枝分类" class="headerlink" title="9.1 剪枝分类"></a>9.1 剪枝分类</h2><p>剪枝分类器是一种弱学习的单纯分类器：对于 $d$ 次维的输入变量 $x$，任选其中一维，通过将其值与给定的阈值性比较来进行分类，即通过 <strong>输入空间内的坐标轴与超平面进行正交</strong> 的方式进行分类。</p>
+<p><img src="/image/9-3.jpg" srcset="/img/loading.gif" alt=""></p>
+<p>剪枝分类器自由度低，对于 $n$ 个训练样本，它最多只有 $n-1$ 个候补解。通过对所有可能的解进行分类误差的计算并确定最小值，就可以求出最终的解。</p>
+<h2 id="9-2-Bagging-学习法"><a href="#9-2-Bagging-学习法" class="headerlink" title="9.2 Bagging 学习法"></a>9.2 Bagging 学习法</h2><h3 id="9-2-1-Booststrap：自助法"><a href="#9-2-1-Booststrap：自助法" class="headerlink" title="9.2.1 Booststrap：自助法"></a>9.2.1 Booststrap：自助法</h3><p>自助法是指：从 $n$ 个样本 $(x_i, y_i)$ 中随机抽取 $n$ 个，允许重复，生成与原始训练样本有些许差异的方法。</p>
+<p>对于训练样本而言，因为采样后原始的训练样本集得以重新生成，因而可以灵活应用于各种计算。</p>
+<h3 id="9-2-2-Bootstrap-Aggregation-Bagging"><a href="#9-2-2-Bootstrap-Aggregation-Bagging" class="headerlink" title="9.2.2 Bootstrap + Aggregation = Bagging"></a>9.2.2 Bootstrap + Aggregation = Bagging</h3><p>在 Bagging 学习中，首先经由自助法生成虚拟的训练样本，并对这些样本进行学习；然后重复这一过程，对得到的多个分类器的输出求平均值。</p>
+<p>通过这样的方法，就可以从大量略有不同的训练样本集合中得到多个稍不同的弱分类器，然后再对这些分类器加以统合，得到稳定、可靠、有复杂边界的分类器。</p>
+<h3 id="9-2-3-Bagging-学习算法"><a href="#9-2-3-Bagging-学习算法" class="headerlink" title="9.2.3 Bagging 学习算法"></a>9.2.3 Bagging 学习算法</h3><ol>
+<li><p>从 $n$ 个样本 $(x_i, y_i)$ 中随机抽取 $n$ 个，允许重复，生成若干个与原始训练样本有些许差异的新样本。</p>
 </li>
-<li><p>核模型也是参数向量 $\mathbf{\theta} = (\theta_1, \theta_2, …, \theta_b)^\top$ 的线性形式，因此可以看作是基于参数的线性模型的特例。</p>
+<li><p>使用上述样本集训练弱学习器 $\varphi_j$。</p>
 </li>
-<li><p><strong>核映射方法</strong> 当输入样本 $x$ 不是向量的时候，核模型也可以很容易的实现扩展。在核模型中，输入样本 $x$ 只存在于核函数 $K(\mathbf{x},\mathbf{x}_j)$ 中，因此，只需对两个输入样本 $x$ 和 $x_j$ 相对应的核函数加以定义即可，而不用关心输入样本 $x$ 具体是什么。</p>
+<li><p>对所有的 $j=1, 2, …, b$ 重复上述两步。</p>
 </li>
-</ul>
-<p><strong>高斯核函数</strong> 在众多核函数中，使用最为广泛：</p>
+<li><p>对所有的弱学习器 $\varphi_j$ 求平均值，得到一个强学习器 $f$。</p>
+</li>
+</ol>
 <script type="math/tex; mode=display">
-K(\mathbf{x}, \mathbf{c}) = \exp(-\frac{\left \| \mathbf{x} - \mathbf{c} \right \|^2}{2h^2})</script><p>其中，$\left | \mathbf{x} - \mathbf{c} \right |^2$ 表示 $\mathbf{x} - \mathbf{c}$ 的 $l^2$ 范数，即，$\left | \mathbf{x} - \mathbf{c} \right |^2 = \sqrt{(\mathbf{x} - \mathbf{c})^\top (\mathbf{x} - \mathbf{c})}$；$h$ 和 $\mathbf{c}$ 分别对应于高斯核函数的带宽与均值。</p>
-<p>这样，核模型就变成了高斯核模型：</p>
+f(x) \leftarrow \frac{1}{b} \sum_{j=1}^b \varphi_j(x)</script><h3 id="9-2-4-随机森林学习"><a href="#9-2-4-随机森林学习" class="headerlink" title="9.2.4 随机森林学习"></a>9.2.4 随机森林学习</h3><p>剪枝分类器不断生长、积累，形成多层级的模型，该模型就称为 <strong>决策树分类器</strong>。</p>
+<p>对决策树分类器进行 Bagging 学习的时候，通过随机选择输入变量中的某个维度进行学习，可以大幅提升分类器的性能。这种方法称为 <strong>随机森林学习</strong>。</p>
+<h2 id="9-3-Boosting-学习法"><a href="#9-3-Boosting-学习法" class="headerlink" title="9.3 Boosting 学习法"></a>9.3 Boosting 学习法</h2><p>Bagging 学习法是对多个弱学习器进行独立学习的；Boosting 学习法是对多个弱学习器依次进行学习。</p>
+<h3 id="9-3-1-Adaptive-Boosting-Adaboost"><a href="#9-3-1-Adaptive-Boosting-Adaboost" class="headerlink" title="9.3.1 Adaptive + Boosting = Adaboost"></a>9.3.1 Adaptive + Boosting = Adaboost</h3><p>Boosting 学习，首先使用一个原始的学习算法，对训练样本进行普通的分类器学习。这个原始的学习算法性能不高，也很难对所有训练样本正确分类。</p>
+<p>这时，我们对不能正确分类的样本加大权重，重新学习得到一个较上一次更好的分类器。这样循环多次就可以逐渐得到越来越好的分类器，最终可以得到一个对所有训练样本都可以正确分类的分类器。</p>
+<p>但是，在不断加权中，最开始可以正确分类的样本权重会变小，有可能造成简单样本不能正确分类的情况，因此，Boosting 学习应该边学习边更新样本的权重，并把学习过程中得到的所有分类器放在一起，对其可信度进行平均后训练得到最终的强分类器。</p>
+<h3 id="9-3-2-Adaboosting-学习算法"><a href="#9-3-2-Adaboosting-学习算法" class="headerlink" title="9.3.2 Adaboosting 学习算法"></a>9.3.2 Adaboosting 学习算法</h3><ol>
+<li>把训练样本 $(x_i, y_i)$ 对应的各个权重 $w_i$ 设为均等，即 $1/n$，并把强分类器 $f$ 的初始值设为 $0$：</li>
+</ol>
 <script type="math/tex; mode=display">
-\mathbf{f_\theta}(\mathbf{x}) = \sum_{i=1}^n \theta_i K(\mathbf{x},\mathbf{x}_i) = \sum_{i=1}^n \theta_i \exp(-\frac{\left \| \mathbf{x} - \mathbf{\mathbf{x}_i} \right \|^2}{2h^2})</script><p>对每个输入样本 ${\mathbf{x}_i}$ 进行高斯核配置，并把其高度 ${\mathbf{\theta}_i}$ 作为参数进行学习。</p>
-<p>因此，在高斯核模型中，一般只能在训练集的输入样本附近对函数进行近似，这也减轻了维数灾难。</p>
-<h2 id="2-3-层级模型"><a href="#2-3-层级模型" class="headerlink" title="2.3 层级模型"></a>2.3 层级模型</h2><p>以上的<strong>线性模型</strong>和<strong>核模型</strong>都是关于参数向量的线性函数，它们都是线性模型；如果学习模型是关于参数的非线性关系，那它就是<strong>非线性模型</strong>。其中最常用的是<strong>层级模型</strong>：</p>
+w_1, ..., w_n \leftarrow 1/n, \quad f \leftarrow 0</script><ol>
+<li>对于现在的样本权重 $w_i$，对加权的误分类率（$0/1$ 损失的权重之和）$R(\varphi)$ 为最小的弱分类器 $\varphi_j$ 进行学习：</li>
+</ol>
 <script type="math/tex; mode=display">
-\mathbf{f_\theta}(\mathbf{x}) = \sum_{j=1}^b \alpha_j \phi(\mathbf{x};\beta_j)</script><p>其中，$\phi(\mathbf{x};\beta_j)$ 是基函数，其中含有参数向量 $\mathbf{\beta}$；$\mathbf{\alpha}$ 也是参数向量，所以层级模型可以被看作是基于 $\mathbf{\alpha}$ 的线性模型；同时，基函数中又含有参数向量 $\mathbf{\beta}$，所以也可以看作是基于 $\mathbf{\phi} = (\mathbf{\alpha}^\top, \mathbf{\beta}_1^\top, …, \mathbf{\beta}_b^\top)^\top$ 的非线性模型。</p>
-<p>同样，层级模型中的基函数选取也很多样，通常采用 S 函数或者高斯函数。</p>
-<ul>
-<li><strong>S 型函数</strong>模仿的是人类脑细胞的输入输出，也被称为人工神经网络模型。</li>
-</ul>
+\varphi_j = \arg \max\limits_\varphi R(\varphi), \quad R(\varphi) = \sum_{i=1}^n \frac{w_i}{2}(1 - \varphi(x_i)y_i)</script><ol>
+<li>通过下式定义弱分类器 $\varphi_j$ 的权重 $\theta_j$：</li>
+</ol>
 <script type="math/tex; mode=display">
-\phi(\mathbf{x};\mathbf{\beta})_{S-func} = \frac{1}{1 + \exp (-\mathbf{x}^\top \mathbf{\omega} - \gamma)}, \qquad \mathbf{\beta} = (\mathbf{\omega}^\top, \gamma)^\top</script><ul>
-<li><strong>高斯函数</strong>与核模型中使用的高斯函数相同，但是这里的均值和带宽都是进行学习得到的。因此，层级模型一般比核模型能过更加灵活地对函数进行近似。</li>
-</ul>
+\theta_j = \frac{1}{2} \log \frac{1 - R(\varphi_j)}{R(\varphi_j)}</script><ol>
+<li>通过下式更新强分类器 $f$：</li>
+</ol>
 <script type="math/tex; mode=display">
-\phi(\mathbf{x};\mathbf{\beta})_{Gaussian-func} = \exp (- \frac{\left \| \mathbf{x} - \mathbf{c} \right \|^2}{2h^2}), \qquad \mathbf{\beta} = (\mathbf{c}^\top, h)^\top</script><p>层级模型地学习过程较艰难，常采用贝叶斯学习的方法或者从邻近输入样本的层级开始逐层进行无监督学习来初始化模型。</p>
+f \leftarrow f + \theta_j \varphi_j</script><ol>
+<li>通过下式更新样本权重 $w_i$：</li>
+</ol>
+<script type="math/tex; mode=display">
+w_i \leftarrow \frac{\exp(-f(x_i)y_i)}{\sum_{i'=1}^n \exp(-f(x_{i'})y_i)}</script><ol>
+<li>对于 $j = 1, 2, …, b$ 重复 2-5 步骤。</li>
+</ol>
+<p>根据上述步骤3，加权的误分类率 $R(\varphi_j)$ 越小，其权重 $\theta_j$ 越大。</p>
+<p><img src="/image/9-12.jpg" srcset="/img/loading.gif" alt=""></p>
+<p>对于上述步骤5，如果是标准化 $\sum_{i=1}^n w_i = 1$ 后，更新样本权重 $w_i$ 的式子则可以是：</p>
+<script type="math/tex; mode=display">
+w_i \leftarrow w_i \exp (- \theta_j \varphi_j(x_i)y_i)</script><p>这意味着当间隔 $m_i = \varphi_j(x_i)y_i$ 为正（可以正确分类）时，使其权重变小；当 $m_i$ 为负（不能正确分类）时，使其权重变大。</p>
+<h3 id="9-3-3-使用指数损失最小化学习来解释"><a href="#9-3-3-使用指数损失最小化学习来解释" class="headerlink" title="9.3.3 使用指数损失最小化学习来解释"></a>9.3.3 使用指数损失最小化学习来解释</h3><p>实际上，Adaboost学习算法也可以看作时最小二乘学习法的一种扩展。</p>
+<p>使用指数损失作为 $0/1$ 损失的代理损失，$m = f_\theta (x)y$ 为间隔：</p>
+<script type="math/tex; mode=display">
+\exp(-m)</script><p><img src="/image/9-15.jpg" srcset="/img/loading.gif" alt=""></p>
+<p>考虑对输出为 $-1$ 和 $+1$ 的二值基函数 $\varphi$ 的线性模型：</p>
+<script type="math/tex; mode=display">
+f_\theta(x) = \sum_{j=1}^b \theta_j \varphi_j(x)</script><p>进行指数损失最小化学习：</p>
+<script type="math/tex; mode=display">
+\min \limits_\theta \sum_{i=1}^n \exp(-f_\theta(x_i)y_i)</script><p>这里，学习对象不仅仅时参数 $\theta$，对基函数 $\varphi$ 本身也可以进行学习。</p>
+<p>通过对其逐个地依次进行学习，将已经学习完的函数命名为 $\widetilde{f}$：</p>
+<script type="math/tex; mode=display">
+\min \limits_{\theta, \varphi} \sum_{i=1}^n \exp (-\{\widetilde{f}(x_i) + \theta \varphi(x_i)\}y_i) = \min \limits_{\theta, \varphi} \sum_{i=1}^n \widetilde{w}_i \exp (-\theta \varphi(x_i) y_i)</script><p>其中：</p>
+<script type="math/tex; mode=display">
+\widetilde{w}_i = \exp(- \widetilde{f}(x_i)y_i)</script><p>假设 $\theta \geq 0$，上述的顺次加权指数损失最小化学习可以变形为：</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+\begin{split}
+\sum_{i=1}^n \widetilde{w}_i \exp (-\theta \varphi(x_i) y_i) = & \{\exp(\theta) - \exp(-\theta)\} \sum_{i=1}^n \frac{\widetilde{w}_i}{2}(1 - \varphi(x_i) y_i)\\\\
+& + \exp (-\theta) \sum_{i=1}^n \widetilde{w}_i 
+\end{split}
+\end{equation}
+\tag{9.1}</script><p>上式中，因为第一项的 $\exp(\theta) - \exp(-\theta) \geq 0$ 和第二项的 $\exp (-\theta) \sum_{i=1}^n \widetilde{w}_i$ 都不依赖于 $\varphi$，所以最终顺次加权指数损失最小化学习的 $\varphi$ 的解 $\widetilde{\varphi}$，可以通过加权 $0/1$ 损失最小化学习得到：</p>
+<script type="math/tex; mode=display">
+\widetilde{\varphi} = \arg \min \limits_\varphi \sum_{i=1}^n \frac{\widetilde{w}_i}{2}(1 - \varphi(x_i) y_i)</script><p>而顺次加权指数损失最小化学习的 $\theta$ 的解 $\hat{\theta}$，可以通过下述方式求得。</p>
+<p>首先，将 $\hat{\varphi}$ 带入式(9.1)中的 $\varphi$，然后对 $\theta$ 求偏微分并令其为 $0$：</p>
+<script type="math/tex; mode=display">
+\{\exp(\theta) + \exp(-\theta)\} \sum_{i=1}^n \frac{\widetilde{w}_i}{2}(1 - \varphi(x_i) y_i) - \exp (-\theta) \sum_{i=1}^n \widetilde{w}_i = 0</script><p>对 $\theta$ 求解：</p>
+<script type="math/tex; mode=display">
+\hat{\theta} = \frac{1}{2} \log \frac {1 - \hat{R}}{\hat{R}}</script><p>这里 $\hat{R}$ 是 $\hat{\varphi}$ 的加权 $0/1$ 损失的具体数值：</p>
+<script type="math/tex; mode=display">
+\hat{R} = \{\sum_{i=1}^n \frac{\widetilde{w}_i}{2}(1 - \hat{\varphi}(x_i)y_i)\} / \{\sum_{i'=1}^n \widetilde{w}_{i'}\}</script><p>这样，Adaboost就可以作为 <strong>指数损失最小化学习的顺次学习</strong> 算法得到了。</p>
+<h3 id="9-3-4-其他-Boosting-学习算法"><a href="#9-3-4-其他-Boosting-学习算法" class="headerlink" title="9.3.4 其他 Boosting 学习算法"></a>9.3.4 其他 Boosting 学习算法</h3><p>基于上节的讨论，我们可以考虑其他的代理损失来推导相应的 Boosting 学习算法。</p>
+<p>如 Madaboost 学习：</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+-m + 1/2 & m \leq 0\\
+\exp (-2m)/2 & m> 0
+\end{cases}</script><p>Logitboost 学习（Logistic 回归学习算法的 Boosting 版）：</p>
+<script type="math/tex; mode=display">
+\log (1 + \exp(-2m))</script><p><img src="/image/9-16.jpg" srcset="/img/loading.gif" alt=""></p>
 
             </article>
             <hr>
@@ -262,18 +306,12 @@ K(\mathbf{x}, \mathbf{c}) = \exp(-\frac{\left \| \mathbf{x} - \mathbf{c} \right 
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%89%E7%AB%A0-%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E5%AD%A6%E4%B9%A0%E6%B3%95/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">【笔记】机器学习第三章 最小二乘学习法</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </div>
                   <div class="post-next col-6">
                     
                     
-                      <a href="/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%80%E7%AB%A0-%E4%BB%80%E4%B9%88%E6%98%AF%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">
-                        <span class="hidden-mobile">【笔记】机器学习第一章 什么是机器学习</span>
+                      <a href="/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%AC%E5%85%AB%E7%AB%A0-%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA%E5%88%86%E7%B1%BB/">
+                        <span class="hidden-mobile">【笔记】机器学习第八章 支持向量机分类</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -432,7 +470,7 @@ K(\mathbf{x}, \mathbf{c}) = \exp(-\frac{\left \| \mathbf{x} - \mathbf{c} \right 
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "【笔记】机器学习第二章 学习模型&nbsp;",
+        "【笔记】机器学习第九章 集成学习&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 40,
