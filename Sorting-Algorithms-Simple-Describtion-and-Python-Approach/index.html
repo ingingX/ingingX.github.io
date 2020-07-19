@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="IngingX">
+  <meta name="keywords" content="">
+  <title>Sorting Algorithms: Simple Describtion and Python Approach - IngingX Notesbook</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 4.2.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>IngingX Notesbook</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              首页</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              归档</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              标签</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/bg_gray.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-07-19 09:49">
+                    2020年7月19日 上午
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    512 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    6
+                     分钟
+                  </span>
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  <span id="busuanzi_container_page_pv" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>
+                
+              </div>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  Last updated：2 分钟前
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h1 id="Sorting-Algorithms-Simple-Describtion-and-Python-Approach"><a href="#Sorting-Algorithms-Simple-Describtion-and-Python-Approach" class="headerlink" title="Sorting Algorithms: Simple Describtion and Python Approach"></a>Sorting Algorithms: Simple Describtion and Python Approach</h1><ul>
+<li><p>Average-/Best-/Worst-Case Time Complexity: the algorithm time requirement for respectively <em>on averaged</em>, <em>at least</em>, and <em>at most</em> input.</p>
+</li>
+<li><p>Space Complexity: the amount of working storage for an algorithm needs.</p>
+</li>
+<li><p>In-/Out-Place: Whether needing additional RAM space.</p>
+</li>
+<li><p>Stability: Whether maintaining the origianl order for same elements.</p>
+</li>
+</ul>
+<p><img src="/image/SortAlgorithm.png" srcset="/img/loading.gif" alt=""></p>
+<!--
+| Algorithm | AverComp | BestComp | WorstComp | SpComp | I/O | Stab |
+| ------ | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
+| Bubble Sort | $O(n^2)$ | $O(n)$ | $O(n^2)$ | $O(1)$ | In-Place | Stable |
+| Selection Sort | $O(n^2)$ | $O(n^2)$ | $O(n^2)$ | $O(1)$ | In-Place | Unstable |
+| Insertion Sort | $O(n^2)$ | $O(n)$ | $O(n^2)$ | $O(1)$ | In-Place | Stable |
+| Shell Sort | $O(n \log n)$ | $O(n \log^2 n)$ | $O(n \log^2 n)$ | $O(1)$ | In-Place | Unstable |
+| Merge Sort | $O(n \log n)$ | $O(n \log n)$ | $O(n \log n)$ | $O(n)$ |Out-Place| Stable |
+| Quick Sort | $O(n \log n)$ | $O(n \log n)$ | $O(n^2)$ | $O(\log n)$ |In-Place| Unstable |
+| Heap Sort | $O(n \log n)$ | $O(n \log n)$ | $O(n \log n)$ | $O(1)$ | In-Place | Unstable |
+| Count Sort | $O(n + k)$ | $O(n + k)$ | $O(n + k)$ | $O(k)$ | Out-Place | Stable |
+| Bucket Sort | $O(n + k)$ | $O(n + k)$ | $O(n^2)$ | $O(n + k)$ | Out-Place | Stable |
+| Radix Sort | $O(n \times k)$ | $O(n \times k)$ | $O(n \times k)$ | $O(n + k)$ | Out-Place | Stable |
+-->
+<h2 id="1-Bubble-Sort"><a href="#1-Bubble-Sort" class="headerlink" title="1. Bubble Sort"></a>1. Bubble Sort</h2><ol>
+<li><p>Sort adjacent two elements.</p>
+</li>
+<li><p>Repeat Step 1 for all elements. The Biggest one will appear at the last place.</p>
+</li>
+<li><p>Repeat Step 1 and 2 for all elements but the last one. Each sorting array will ‘bubble’ the maximum one at the last place.</p>
+</li>
+<li><p>When only ONE elements left, the sorting is complete.</p>
+</li>
+</ol>
+<pre class=" language-hljs python"><code class="language-hljs python">
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">bubbleSort</span><span class="hljs-params">(arr)</span>:</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>, len(arr)):
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>, len(arr)-i):
+            <span class="hljs-keyword">if</span> arr[j] > arr[j+<span class="hljs-number">1</span>]:
+                arr[j], arr[j + <span class="hljs-number">1</span>] = arr[j + <span class="hljs-number">1</span>], arr[j]
+    <span class="hljs-keyword">return</span> arr</code></pre>
+<p><img src="/image/Bubble.gif" srcset="/img/loading.gif" alt=""></p>
+<h2 id="2-Selection-Sort"><a href="#2-Selection-Sort" class="headerlink" title="2. Selection Sort"></a>2. Selection Sort</h2><ol>
+<li><p>Check the minimum element for all unsorting array, swap it to the first place.</p>
+</li>
+<li><p>Repeat Step 1 when no element left.</p>
+</li>
+</ol>
+<pre class=" language-hljs Python"><code class="language-hljs Python">
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">selectionSort</span><span class="hljs-params">(arr)</span>:</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(len(arr) - <span class="hljs-number">1</span>):
+        <span class="hljs-comment"># Save the index of min</span>
+        minIndex = i
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(i + <span class="hljs-number">1</span>, len(arr)):
+            <span class="hljs-keyword">if</span> arr[j] < arr[minIndex]:
+                minIndex = j
+        <span class="hljs-comment"># if i is not min, swap them</span>
+        <span class="hljs-keyword">if</span> i != minIndex:
+            arr[i], arr[minIndex] = arr[minIndex], arr[i]
+    <span class="hljs-keyword">return</span> arr</code></pre>
+<p><img src="/image/Selection.gif" srcset="/img/loading.gif" alt=""></p>
+<h2 id="3-Insertion-Sort"><a href="#3-Insertion-Sort" class="headerlink" title="3. Insertion Sort"></a>3. Insertion Sort</h2><ol>
+<li><p>Check the First element as sorted array, and the others as unsorted.</p>
+</li>
+<li><p>Scan unsorted array, insert each element to its rightful place in sorted array.</p>
+</li>
+</ol>
+<pre class=" language-hljs Python"><code class="language-hljs Python">
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">insertionSort</span><span class="hljs-params">(arr)</span>:</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(len(arr)):
+        preIndex = i<span class="hljs-number">-1</span>
+        current = arr[i]
+        <span class="hljs-keyword">while</span> preIndex >= <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> arr[preIndex] > current:
+            arr[preIndex+<span class="hljs-number">1</span>] = arr[preIndex]
+            preIndex-=<span class="hljs-number">1</span>
+        arr[preIndex+<span class="hljs-number">1</span>] = current
+    <span class="hljs-keyword">return</span> arr</code></pre>
+<p><img src="/image/Insertion.gif" srcset="/img/loading.gif" alt=""></p>
+<h2 id="4-Shell-Sort"><a href="#4-Shell-Sort" class="headerlink" title="4. Shell Sort"></a>4. Shell Sort</h2><ol>
+<li><p>Choose a Gap Sequence: $t_1, t_2, …, t_k$. Typically: $N/2, N/4, …, 1$, $N$ for the Length of input.</p>
+</li>
+<li><p>According to the Length of Gap Sequence $k$, sort the array $k$ times.</p>
+</li>
+<li><p>For each sorting, according to Gap $t_i$, split the array to $t_i$ subarrays and sort each one using Insertion Sort. </p>
+</li>
+<li><p>Only when $t_i = 1$, sort the whole array and complete the algorithm.</p>
+</li>
+</ol>
+<pre class=" language-hljs Python"><code class="language-hljs Python">
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">shellSort</span><span class="hljs-params">(arr)</span>:</span>
+    <span class="hljs-keyword">import</span> math
+    gap=<span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span>(gap < len(arr)/<span class="hljs-number">3</span>):
+        gap = gap*<span class="hljs-number">3</span>+<span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span> gap > <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(gap,len(arr)):
+            temp = arr[i]
+            j = i-gap
+            <span class="hljs-keyword">while</span> j >=<span class="hljs-number">0</span> <span class="hljs-keyword">and</span> arr[j] > temp:
+                arr[j+gap]=arr[j]
+                j-=gap
+            arr[j+gap] = temp
+        gap = math.floor(gap/<span class="hljs-number">3</span>)
+    <span class="hljs-keyword">return</span> arr</code></pre>
+<h2 id="5-Merge-Sort"><a href="#5-Merge-Sort" class="headerlink" title="5. Merge Sort"></a>5. Merge Sort</h2><ol>
+<li><p>Sort every two elements. Now the every two elements are called Sorted Sequences. </p>
+</li>
+<li><p>Allocate RAM with space of the sum of two Sorted Sequences.</p>
+</li>
+<li><p>Set two points at the first place of each Sorted Sequences.</p>
+</li>
+<li><p>Compare two pointed elements. The less one save into allocation RAM, and point to next elements.</p>
+</li>
+<li><p>Repeat Step 4 when one point out of space. Then copy all the elements left in another sequence. Now the new sequence is a new Sorted Sequence.</p>
+</li>
+<li><p>Repeat Step 2-5 when the Sorted Sequence is as long as the origianl.</p>
+</li>
+</ol>
+<pre class=" language-hljs Python"><code class="language-hljs Python">
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">mergeSort</span><span class="hljs-params">(arr)</span>:</span>
+    <span class="hljs-keyword">import</span> math
+    <span class="hljs-keyword">if</span>(len(arr)<<span class="hljs-number">2</span>):
+        <span class="hljs-keyword">return</span> arr
+    middle = math.floor(len(arr)/<span class="hljs-number">2</span>)
+    left, right = arr[<span class="hljs-number">0</span>:middle], arr[middle:]
+    <span class="hljs-keyword">return</span> merge(mergeSort(left), mergeSort(right))
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">merge</span><span class="hljs-params">(left,right)</span>:</span>
+    result = []
+    <span class="hljs-keyword">while</span> left <span class="hljs-keyword">and</span> right:
+        <span class="hljs-keyword">if</span> left[<span class="hljs-number">0</span>] <= right[<span class="hljs-number">0</span>]:
+            result.append(left.pop(<span class="hljs-number">0</span>))
+        <span class="hljs-keyword">else</span>:
+            result.append(right.pop(<span class="hljs-number">0</span>))
+    <span class="hljs-keyword">while</span> left:
+        result.append(left.pop(<span class="hljs-number">0</span>))
+    <span class="hljs-keyword">while</span> right:
+        result.append(right.pop(<span class="hljs-number">0</span>))
+    <span class="hljs-keyword">return</span> result</code></pre>
+<p><img src="/image/Merge.gif" srcset="/img/loading.gif" alt=""></p>
+<h2 id="6-Quick-Sort"><a href="#6-Quick-Sort" class="headerlink" title="6. Quick Sort"></a>6. Quick Sort</h2><ol>
+<li><p>Choose one element, called Pivot. Typically the first one.</p>
+</li>
+<li><p>Set two points at first and last elements: $i, j$.</p>
+</li>
+<li><p>$j$ start from the last and move to the first, finding the first element less than Pivot; $i$ start from the first and move to the last, find the first element greater than Pivot. When they both do, swap elements and keep moving and swapping.</p>
+</li>
+<li><p>When $i = j$, swap Pivot and current element. Now Pivot is set the right order, and its left is all less than it and right greater.</p>
+</li>
+<li><p>Repeat Step 1-4 until no swapping happens.</p>
+</li>
+</ol>
+<pre class=" language-hljs Python"><code class="language-hljs Python">
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">quickSort</span><span class="hljs-params">(arr, left=None, right=None)</span>:</span>
+    left = <span class="hljs-number">0</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> isinstance(left,(int, float)) <span class="hljs-keyword">else</span> left
+    right = len(arr)<span class="hljs-number">-1</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> isinstance(right,(int, float)) <span class="hljs-keyword">else</span> right
+    <span class="hljs-keyword">if</span> left < right:
+        partitionIndex = partition(arr, left, right)
+        quickSort(arr, left, partitionIndex<span class="hljs-number">-1</span>)
+        quickSort(arr, partitionIndex+<span class="hljs-number">1</span>, right)
+    <span class="hljs-keyword">return</span> arr
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">partition</span><span class="hljs-params">(arr, left, right)</span>:</span>
+    pivot = left
+    index = pivot+<span class="hljs-number">1</span>
+    i = index
+    <span class="hljs-keyword">while</span>  i <= right:
+        <span class="hljs-keyword">if</span> arr[i] < arr[pivot]:
+            swap(arr, i, index)
+            index+=<span class="hljs-number">1</span>
+        i+=<span class="hljs-number">1</span>
+    swap(arr,pivot,index<span class="hljs-number">-1</span>)
+    <span class="hljs-keyword">return</span> index<span class="hljs-number">-1</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">swap</span><span class="hljs-params">(arr, i, j)</span>:</span>
+    arr[i], arr[j] = arr[j], arr[i]</code></pre>
+<p><img src="/image/Quick.gif" srcset="/img/loading.gif" alt=""></p>
+<h2 id="7-Heap-Sort"><a href="#7-Heap-Sort" class="headerlink" title="7. Heap Sort"></a>7. Heap Sort</h2><ol>
+<li><p>Build Heap with original array.</p>
+</li>
+<li><p>Modify the Heap into a Max Heap, and swap the Root and end element. Remove the end element from the Heap.</p>
+</li>
+<li><p>Now, the end element is the biggest one and in right order.</p>
+</li>
+<li><p>Repeat Step 2 until all elements are set ordered.</p>
+</li>
+</ol>
+<pre class=" language-hljs Python"><code class="language-hljs Python">
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">buildMaxHeap</span><span class="hljs-params">(arr)</span>:</span>
+    <span class="hljs-keyword">import</span> math
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(math.floor(len(arr)/<span class="hljs-number">2</span>),<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>):
+        heapify(arr,i)
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">heapify</span><span class="hljs-params">(arr, i)</span>:</span>
+    left = <span class="hljs-number">2</span>*i+<span class="hljs-number">1</span>
+    right = <span class="hljs-number">2</span>*i+<span class="hljs-number">2</span>
+    largest = i
+    <span class="hljs-keyword">if</span> left < arrLen <span class="hljs-keyword">and</span> arr[left] > arr[largest]:
+        largest = left
+    <span class="hljs-keyword">if</span> right < arrLen <span class="hljs-keyword">and</span> arr[right] > arr[largest]:
+        largest = right
+
+    <span class="hljs-keyword">if</span> largest != i:
+        swap(arr, i, largest)
+        heapify(arr, largest)
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">swap</span><span class="hljs-params">(arr, i, j)</span>:</span>
+    arr[i], arr[j] = arr[j], arr[i]
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">heapSort</span><span class="hljs-params">(arr)</span>:</span>
+    <span class="hljs-keyword">global</span> arrLen
+    arrLen = len(arr)
+    buildMaxHeap(arr)
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(len(arr)<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>):
+        swap(arr,<span class="hljs-number">0</span>,i)
+        arrLen -=<span class="hljs-number">1</span>
+        heapify(arr, <span class="hljs-number">0</span>)
+    <span class="hljs-keyword">return</span> arr</code></pre>
+<p><img src="/image/Heap.gif" srcset="/img/loading.gif" alt=""></p>
+<h2 id="8-Count-Sort"><a href="#8-Count-Sort" class="headerlink" title="8. Count Sort"></a>8. Count Sort</h2><ul>
+<li>Prerequist: Input array must be Ranged Integer.</li>
+</ul>
+<ol>
+<li>Find the range <code>(min, max)</code></li>
+<li><p>Count every element occurrences <code>C</code>, length is <code>max - min</code></p>
+</li>
+<li><p>For every <code>C[i]</code>, fill the Result Array with value for <code>index(C[i])-min</code>, and count for <code>C[i]</code></p>
+</li>
+</ol>
+<pre class=" language-hljs Python"><code class="language-hljs Python">
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">countingSort</span><span class="hljs-params">(arr, maxValue)</span>:</span>
+    bucketLen = maxValue+<span class="hljs-number">1</span>
+    bucket = [<span class="hljs-number">0</span>]*bucketLen
+    sortedIndex =<span class="hljs-number">0</span>
+    arrLen = len(arr)
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(arrLen):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> bucket[arr[i]]:
+            bucket[arr[i]]=<span class="hljs-number">0</span>
+        bucket[arr[i]]+=<span class="hljs-number">1</span>
+    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(bucketLen):
+        <span class="hljs-keyword">while</span> bucket[j]><span class="hljs-number">0</span>:
+            arr[sortedIndex] = j
+            sortedIndex+=<span class="hljs-number">1</span>
+            bucket[j]-=<span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> arr</code></pre>
+<p><img src="/image/Count.gif" srcset="/img/loading.gif" alt=""></p>
+<h2 id="9-Bucket-Sort"><a href="#9-Bucket-Sort" class="headerlink" title="9. Bucket Sort"></a>9. Bucket Sort</h2><ol>
+<li><p>Find the input range <code>(min, max)</code></p>
+</li>
+<li><p>Set Bucket number <code>K</code>, compute bucket range <code>BR = (max-min)/K</code></p>
+</li>
+<li><p>Traverse original array. For each element, put into right bucket.</p>
+</li>
+<li><p>Sort in each bucket.</p>
+</li>
+<li><p>Merge all bucket and output the sorted array.</p>
+</li>
+</ol>
+<pre class=" language-hljs Python"><code class="language-hljs Python">
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">bucket_sort</span><span class="hljs-params">(s)</span>:</span>
+    min_num = min(s)
+    max_num = max(s)
+
+    bucket_range = (max_num-min_num) / len(s)
+    <span class="hljs-comment"># Create Bucket</span>
+    count_list = [ [] <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(len(s) + <span class="hljs-number">1</span>)]
+    <span class="hljs-comment"># Put element into Buckets</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> s:
+        count_list[int((i-min_num)//bucket_range)].append(i)
+    s.clear()
+    <span class="hljs-comment"># Regenerate sorted array</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> count_list:
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> sorted(i):
+            s.append(j)</code></pre>
+<h2 id="10-Radix-Sort"><a href="#10-Radix-Sort" class="headerlink" title="10. Radix Sort"></a>10. Radix Sort</h2><ol>
+<li><p>Unify all elements length (add <code>0</code>s to the shorter elements).</p>
+</li>
+<li><p>Start from the Least Significant Digit to the Highest, sort all by Stable sorting algorithm time by time.</p>
+</li>
+<li><p>When the HSD sort is done, the array is set sorted.</p>
+</li>
+</ol>
+<pre class=" language-hljs Python"><code class="language-hljs Python">
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">RadixSort</span><span class="hljs-params">(list)</span>:</span>
+    i = <span class="hljs-number">0</span>
+    n = <span class="hljs-number">1</span>
+    max_num = max(list)
+    <span class="hljs-keyword">while</span> max_num > <span class="hljs-number">10</span>**n:
+        n += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span> i < n:
+        bucket = &#123;&#125;
+        <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> range(<span class="hljs-number">10</span>):
+            bucket.setdefault(x, [])
+        <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> list:
+            radix =int((x / (<span class="hljs-number">10</span>**i)) % <span class="hljs-number">10</span>)
+            bucket[radix].append(x)
+        j = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> range(<span class="hljs-number">10</span>):
+            <span class="hljs-keyword">if</span> len(bucket[k]) != <span class="hljs-number">0</span>:
+                <span class="hljs-keyword">for</span> y <span class="hljs-keyword">in</span> bucket[k]:
+                    list[j] = y
+                    j += <span class="hljs-number">1</span>
+        i += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span>  list</code></pre>
+<p><img src="/image/Radix.gif" srcset="/img/loading.gif" alt=""></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Algorithm/">Algorithm</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Codes/">Codes</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B9%9D%E7%AB%A0-%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/">
+                        <span class="hidden-mobile">【笔记】机器学习第九章 集成学习</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      framed on <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>, 
+      based on <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>, modified by  <a href="https://github.com/ingingX" target="_blank" rel="nofollow noopener">
+        <span>ingingX</span></a>
+    </div>
+    
+  <div>
+    
+      <!-- 不蒜子统计PV -->
+      
+      <span id="busuanzi_container_site_pv" style="display: none">
+      总访问量 <span id="busuanzi_value_site_pv"></span> 次
+    </span>
+    
+    
+      <!-- 不蒜子统计UV -->
+      
+      <span id="busuanzi_container_site_uv" style="display: none">
+      总访客数 <span id="busuanzi_value_site_uv"></span> 人
+    </span>
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 6,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Sorting Algorithms: Simple Describtion and Python Approach&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 40,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+  
+  
+    <script>
+      !function (e, t, a) {
+        function r() {
+          for (var e = 0; e < s.length; e++) s[e].alpha <= 0 ? (t.body.removeChild(s[e].el), s.splice(e, 1)) : (s[e].y--, s[e].scale += .004, s[e].alpha -= .013, s[e].el.style.cssText = "left:" + s[e].x + "px;top:" + s[e].y + "px;opacity:" + s[e].alpha + ";transform:scale(" + s[e].scale + "," + s[e].scale + ") rotate(45deg);background:" + s[e].color + ";z-index:99999");
+          requestAnimationFrame(r)
+        }
+
+        function n() {
+          var t = "function" == typeof e.onclick && e.onclick;
+          e.onclick = function (e) {
+            t && t(), o(e)
+          }
+        }
+
+        function o(e) {
+          var a = t.createElement("div");
+          a.className = "heart", s.push({
+            el: a,
+            x: e.clientX - 5,
+            y: e.clientY - 5,
+            scale: 1,
+            alpha: 1,
+            color: c()
+          }), t.body.appendChild(a)
+        }
+
+        function i(e) {
+          var a = t.createElement("style");
+          a.type = "text/css";
+          try {
+            a.appendChild(t.createTextNode(e))
+          } catch (t) {
+            a.styleSheet.cssText = e
+          }
+          t.getElementsByTagName("head")[0].appendChild(a)
+        }
+
+        function c() {
+          return "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")"
+        }
+
+        var s = [];
+        e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || e.oRequestAnimationFrame || e.msRequestAnimationFrame || function (e) {
+          setTimeout(e, 1e3 / 60)
+        }, i(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"), n(), r()
+      }(window, document);
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
