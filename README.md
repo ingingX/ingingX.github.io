@@ -17,6 +17,9 @@ This is the commented learning version of the website.
 - `cv.html`
   - Online CV page.
 
+- `downloads.html`
+  - Downloads page for the VPLink Chrome extension ZIP.
+
 - `style.css`
   - Controls almost all visual appearance and responsive layout.
   - Organized into sections with detailed comments.
@@ -57,6 +60,7 @@ All pages are independent HTML files. The navigation simply links between them:
 - `publications.html`
 - `projects.html`
 - `cv.html`
+- `downloads.html`
 
 All pages load the same:
 
